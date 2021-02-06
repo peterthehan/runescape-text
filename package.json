@@ -57,6 +57,9 @@
   "bin": {
     "runescape-text": "./src/cli.js"
   },
+  "files": [
+    "src/**"
+  ],
   "scripts": {
     "format": "npx eslint --fix . && prettier --no-config --write .",
     "start": "node src/cli.js",
