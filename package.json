@@ -1,0 +1,75 @@
+{
+  "name": "runescape-text",
+  "version": "1.0.0",
+  "description": "Convert text to a text image with RuneScape chat effects.",
+  "keywords": [
+    "cli",
+    "console",
+    "image",
+    "terminal",
+    "runescape",
+    "command-line",
+    "animation",
+    "text",
+    "buffer",
+    "gif",
+    "text-animation",
+    "effects"
+  ],
+  "homepage": "https://github.com/peterthehan/runescape-text",
+  "bugs": {
+    "url": "https://github.com/peterthehan/runescape-text/issues",
+    "email": "peter.han.9493@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/peterthehan/runescape-text"
+  },
+  "funding": [
+    {
+      "type": "GitHub",
+      "url": "https://github.com/sponsors/peterthehan"
+    },
+    {
+      "type": "Patreon",
+      "url": "https://www.patreon.com/peterthehan"
+    },
+    {
+      "type": "PayPal",
+      "url": "https://paypal.me/peterthehan"
+    },
+    {
+      "type": "Ko-fi",
+      "url": "https://ko-fi.com/peterthehan"
+    },
+    {
+      "type": "Venmo",
+      "url": "https://venmo.com/peterthehan"
+    }
+  ],
+  "license": "MIT",
+  "author": {
+    "name": "Peter Han",
+    "email": "peter.han.9493@gmail.com",
+    "url": "https://github.com/peterthehan"
+  },
+  "main": "./src/index.js",
+  "bin": {
+    "runescape-text": "./src/cli.js"
+  },
+  "scripts": {
+    "format": "npx eslint --fix . && prettier --no-config --write .",
+    "start": "node src/cli.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "canvas": "^2.6.1",
+    "gif-encoder": "^0.7.2",
+    "word-wrap": "^1.2.3"
+  },
+  "devDependencies": {
+    "eslint": "^7.19.0",
+    "jest": "^26.6.3",
+    "prettier": "^2.2.1"
+  }
+}
