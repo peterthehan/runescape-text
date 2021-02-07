@@ -4,13 +4,41 @@
 
 Convert text to a text image with [RuneScape](https://www.runescape.com/) chat effects.
 
-<div align="center">
-  <img src="https://raw.githubusercontent.com/peterthehan/runescape-text/master/assets/demo.png" title="Default styling" alt="Default styling" />
+<div>
+  <img
+    src="https://raw.githubusercontent.com/peterthehan/runescape-text/master/assets/selling_rune_scimmy_15k.gif"
+    title="Selling rune scimmy 15k"
+    alt="Selling rune scimmy 15k"
+  />
 </div>
 
-<div align="center">
-  <img src="https://raw.githubusercontent.com/peterthehan/runescape-text/master/assets/demo.gif" title="Selling rune scimmy 15k" alt="Selling rune scimmy 15k" />
-</div>
+<details>
+  <summary>More examples</summary>
+
+  <div>
+    <img
+      src="https://raw.githubusercontent.com/peterthehan/runescape-text/master/assets/default_styling.png"
+      title="Default styling"
+      alt="Default styling"
+    />
+  </div>
+
+  <div>
+    <img
+      src="https://raw.githubusercontent.com/peterthehan/runescape-text/master/assets/free_armor_trimming.gif"
+      title="Free armor trimming!"
+      alt="Free armor trimming!"
+    />
+  </div>
+
+  <div>
+    <img
+      src="https://raw.githubusercontent.com/peterthehan/runescape-text/master/assets/lorem_ipsum.gif"
+      title="Lorem ipsum"
+      alt="Lorem ipsum"
+    />
+  </div>
+</details>
 
 Refer to this wikiHow guide on [How to Write Text Effects on RuneScape](https://www.wikihow.com/Write-Text-Effects-on-Runescape).
 
@@ -80,8 +108,8 @@ getRuneScapeText(string, [options], [wordWrapOptions]);
 | Property         | Type      | Required | Default    | Description                                                    |
 | ---------------- | --------- | -------- | ---------- | -------------------------------------------------------------- |
 | version          | `string`  | No       | `"osrs"`   | Game version to use [0]                                        |
-| color            | `string`  | No       | `"yellow"` | Color effect of the text [1]                                   |
-| motion           | `string`  | No       | `"none"`   | Motion effect of the text [2]                                  |
+| color            | `string`  | No       | `"yellow"` | Default color effect of the text [1]                           |
+| motion           | `string`  | No       | `"none"`   | Default motion effect of the text [2]                          |
 | suffix           | `string`  | No       | `":"`      | String that should suffix each color and motion string         |
 | replacement      | `string`  | No       | `""`       | String to replace characters the font does not support         |
 | maxMessageLength | `number`  | No       | `280`      | Max message length allowed after the string has been sanitized |
