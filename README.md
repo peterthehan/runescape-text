@@ -4,6 +4,14 @@
 
 Convert text to a text image with [RuneScape](https://www.runescape.com/) chat effects.
 
+<div align="center">
+  <img src="https://raw.githubusercontent.com/peterthehan/runescape-text/master/assets/demo.png" title="Default styling" alt="Default styling" />
+</div>
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/peterthehan/runescape-text/master/assets/demo.gif" title="Selling rune scimmy 15k" alt="Selling rune scimmy 15k" />
+</div>
+
 Refer to this wikiHow guide on [How to Write Text Effects on RuneScape](https://www.wikihow.com/Write-Text-Effects-on-Runescape).
 
 ## Table of contents
