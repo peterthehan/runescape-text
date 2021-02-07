@@ -1,7 +1,8 @@
+const Color = require("./classes/Color");
 const Encoder = require("./classes/Encoder");
 const Logger = require("./classes/Logger");
+const Motion = require("./classes/Motion");
 const Parser = require("./classes/Parser");
-const Renderer = require("./classes/Renderer");
 const { getConfig, getWordWrapConfig } = require("./utils/configUtil");
 const { validateInputs } = require("./utils/validateInputs");
 
@@ -13,17 +14,27 @@ const getRuneScapeText = (string, options = {}, wordWrapOptions = {}) => {
 
   const logger = new Logger(config.showLogs);
 
-  const parsed = logger.time("Parsing", () =>
-    new Parser(string, config, wordWrapConfig).parseString()
-  );
-  const contexts = logger.time("Rendering", () =>
-    new Renderer(parsed, config).renderContexts()
-  );
-  const encodedImage = logger.time("Encoding", () =>
-    new Encoder(contexts, config).encodeImage()
-  );
+  const { parser, color, motion, encoder } = logger.time("Initializing", () => {
+    const parser = new Parser(config, wordWrapConfig);
+    const color = new Color(config);
+    const motion = new Motion(config);
+    const encoder = new Encoder(config);
 
-  return encodedImage;
+    return { parser, color, motion, encoder };
+  });
+
+  const parsed = logger.time("Parsing", () => parser.parse(string));
+
+  const contexts = logger.time("Rendering", () => {
+    color.setColor(parsed.color);
+    motion.setMotion(parsed.motion);
+
+    return motion.render(parsed.message, color);
+  });
+
+  const encoded = logger.time("Encoding", () => encoder.encode(contexts));
+
+  return encoded;
 };
 
 module.exports = getRuneScapeText;

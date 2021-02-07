@@ -21,9 +21,21 @@ const lightGreen = [128, 255, 128];
 const darkGreen = [0, 176, 0];
 const blue = [0, 0, 255];
 
-const glow1 = [cyan, green, yellow, red, cyan];
-const glow2 = [red, blue, purple, red];
-const glow3 = [cyan, white, green, white, cyan];
+const glow1Rs3 = [cyan, green, yellow, red, cyan];
+const glow2Rs3 = [red, blue, purple, red];
+const glow3Rs3 = [cyan, white, green, white, cyan];
+
+const flash1Rs3 = [red, yellow];
+const flash2Rs3 = [blue, cyan];
+const flash3Rs3 = [darkGreen, lightGreen];
+
+const glow1Osrs = [red, yellow, green, cyan, red];
+const glow2Osrs = [red, purple, blue, red];
+const glow3Osrs = [white, green, white, cyan, white];
+
+const flash1Osrs = [red, yellow];
+const flash2Osrs = [cyan, blue];
+const flash3Osrs = [darkGreen, lightGreen];
 
 const isAnimated = (color, motion) => {
   return motion !== "none" || dynamicColors.includes(color);
@@ -42,8 +54,17 @@ module.exports = {
   lightGreen,
   darkGreen,
   blue,
-  glow1,
-  glow2,
-  glow3,
+  glow1Rs3,
+  glow2Rs3,
+  glow3Rs3,
+  flash1Rs3,
+  flash2Rs3,
+  flash3Rs3,
+  glow1Osrs,
+  glow2Osrs,
+  glow3Osrs,
+  flash1Osrs,
+  flash2Osrs,
+  flash3Osrs,
   isAnimated,
 };

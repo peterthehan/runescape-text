@@ -1,16 +1,15 @@
 const GifEncoder = require("gif-encoder");
 
 class Encoder {
-  constructor(contexts, config) {
-    this.contexts = contexts;
+  constructor(config) {
     this.config = config;
   }
 
-  encodePng() {
-    return this.contexts[0].canvas.toBuffer("image/png");
+  encodePng(contexts) {
+    return contexts[0].canvas.toBuffer("image/png");
   }
 
-  encodeGif(width, height) {
+  encodeGif(contexts, width, height) {
     const gif = new GifEncoder(width, height);
 
     gif.setRepeat(0);
@@ -26,7 +25,7 @@ class Encoder {
       gif.on("error", reject);
     });
 
-    this.contexts
+    contexts
       .map((context) => context.getImageData(0, 0, width, height).data)
       .forEach((pixels) => gif.addFrame(pixels));
 
@@ -35,21 +34,21 @@ class Encoder {
     return buffer;
   }
 
-  encodeImage() {
-    const { width, height } = this.contexts[0].canvas;
+  encode(contexts) {
+    const { width, height } = contexts[0].canvas;
 
-    return this.contexts.length === 1
+    return contexts.length === 1
       ? {
-          buffer: this.encodePng(),
-          extension: "png",
           width,
           height,
+          extension: "png",
+          buffer: this.encodePng(contexts),
         }
       : {
-          buffer: this.encodeGif(width, height),
-          extension: "gif",
           width,
           height,
+          extension: "gif",
+          buffer: this.encodeGif(contexts, width, height),
         };
   }
 }

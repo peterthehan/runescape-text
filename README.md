@@ -71,6 +71,7 @@ getRuneScapeText(string, [options], [wordWrapOptions]);
 
 | Property         | Type      | Required | Default    | Description                                                    |
 | ---------------- | --------- | -------- | ---------- | -------------------------------------------------------------- |
+| version          | `string`  | No       | `"osrs"`   | Game version to use [0]                                        |
 | color            | `string`  | No       | `"yellow"` | Color effect of the text [1]                                   |
 | motion           | `string`  | No       | `"none"`   | Motion effect of the text [2]                                  |
 | suffix           | `string`  | No       | `":"`      | String that should suffix each color and motion string         |
@@ -81,6 +82,8 @@ getRuneScapeText(string, [options], [wordWrapOptions]);
 | cycleDuration    | `number`  | No       | `3000`     | Duration of one cycle before the GIF loops                     |
 | quality          | `number`  | No       | `100`      | Quality to render GIFs at [5]                                  |
 | showLogs         | `boolean` | No       | `false`    | Determines whether to print runtime logs or not                |
+
+[0] Must be: `osrs` or `rs3`.
 
 [1] Must be: `yellow`, `red`, `green`, `cyan`, `purple`, `white`, `glow1`, `glow2`, `glow3`, `flash1`, `flash2`, or `flash3`.
 

@@ -3,25 +3,26 @@ const ValueError = require("./ValueError");
 const { colors, motions, effectsMap } = require("../utils/effectUtil");
 
 class Parser {
-  constructor(string, config, wordWrapConfig) {
-    this.string = string;
+  constructor(config, wordWrapConfig) {
     this.config = config;
     this.wordWrapConfig = wordWrapConfig;
+
+    this.setEffectsRegExp();
   }
 
-  getEffectsRegExp() {
+  setEffectsRegExp() {
     const escapedSuffix = this.config.suffix.replace(/(.{1})/g, "\\$1");
     const colorString = `(${colors.join("|")})${escapedSuffix}`;
     const motionString = `(${motions.join("|")})${escapedSuffix}`;
 
-    return RegExp(
+    this.effectsRegExp = RegExp(
       `^${colorString}(${motionString})?|^${motionString}(${colorString})?`,
       "i"
     );
   }
 
-  sanitizeMessage(effectsString) {
-    const sanitizedMessage = this.string
+  sanitizeMessage(string, effectsString) {
+    const sanitizedMessage = string
       .replace(effectsString, "")
       .replace(/([^ -~\t\n]|`)+/g, this.config.replacement)
       .trimStart()
@@ -34,11 +35,10 @@ class Parser {
     return wrap(sanitizedMessage, this.wordWrapConfig);
   }
 
-  parseString() {
-    const effectsRegExp = this.getEffectsRegExp();
-    const effectsString = (this.string.match(effectsRegExp) || [""])[0];
-
-    const effect = effectsString
+  parse(string) {
+    const effectsString = (string.match(this.effectsRegExp) || [""])[0];
+    const effects = effectsString
+      .toLowerCase()
       .split(this.config.suffix)
       .filter(Boolean)
       .reduce((value, effect) => ({ ...value, [effectsMap[effect]]: effect }), {
@@ -47,8 +47,8 @@ class Parser {
       });
 
     return {
-      ...effect,
-      message: this.sanitizeMessage(effectsString),
+      ...effects,
+      message: this.sanitizeMessage(string, effectsString),
     };
   }
 }

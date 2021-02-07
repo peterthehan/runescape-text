@@ -44,11 +44,12 @@ const measureText = (message, scale) => {
   const measurement = context.measureText(message);
 
   return {
-    ...measurement,
+    width: measurement.width,
     height:
       measurement.actualBoundingBoxAscent +
       measurement.actualBoundingBoxDescent +
       scale,
+    ascent: measurement.actualBoundingBoxAscent,
   };
 };
 
