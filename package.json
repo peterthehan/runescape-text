@@ -14,7 +14,9 @@
     "buffer",
     "gif",
     "text-animation",
-    "effects"
+    "effects",
+    "osrs",
+    "rs3"
   ],
   "homepage": "https://github.com/peterthehan/runescape-text",
   "bugs": {
