@@ -44,9 +44,9 @@ Refer to this wikiHow guide on [How to Write Text Effects on RuneScape](https://
 
 ## Table of contents
 
-- [Install](#install)
-  - [Globally](#globally)
-  - [Locally](#locally)
+- [Getting started](#getting-started)
+  - [Execute](#execute)
+  - [Example](#example)
 - [Syntax](#syntax)
   - [Parameters](#parameters)
     - [Options](#options)
@@ -55,19 +55,15 @@ Refer to this wikiHow guide on [How to Write Text Effects on RuneScape](https://
   - [Exceptions](#exceptions)
 - [Help](#help)
 
-## Install
+## Getting started
 
-### Globally
-
-```
-$ npm i -g runescape-text
-```
+### Execute
 
 ```
-$ runescape-text "wave:glow3: hello world"
+$ npx runescape-text "wave:glow3: hello world"
 ```
 
-### Locally
+### Example
 
 ```
 $ npm i runescape-text
