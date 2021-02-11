@@ -110,9 +110,9 @@ getRuneScapeText(string, [options], [wordWrapOptions]);
 | replacement      | `string`  | No       | `""`       | String to replace characters the font does not support                                                                                                    |
 | maxMessageLength | `number`  | No       | `280`      | Max message length allowed after the string has been sanitized                                                                                            |
 | scale            | `number`  | No       | `2`        | Scale factor of the font (multiples of 16px), prefer integer values greater than or equal to 1, decimal values will render blurry text                    |
-| fps              | `number`  | No       | `20`       | Frames per second to render GIFs at, prefer integer values less than or equal to 60                                                                       |
-| cycleDuration    | `number`  | No       | `3000`     | Duration in milliseconds of one cycle before the GIF loops                                                                                                                |
-| quality          | `number`  | No       | `100`      | Quality to render GIFs at, more information [here](https://github.com/twolfson/gif-encoder#setqualityquality)                                             |
+| fps              | `number`  | No       | `20`       | Frames per second to render animations at, prefer integer values less than or equal to 60                                                                 |
+| cycleDuration    | `number`  | No       | `3000`     | Duration in milliseconds of one cycle before the animation loops                                                                                          |
+| quality          | `number`  | No       | `100`      | Quality to render animations at, more information [here](https://github.com/twolfson/gif-encoder#setqualityquality)                                       |
 | showLogs         | `boolean` | No       | `false`    | Determines whether to print runtime logs or not                                                                                                           |
 
 #### WordWrapOptions
