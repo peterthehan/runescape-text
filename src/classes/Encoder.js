@@ -6,7 +6,11 @@ class Encoder {
   }
 
   encodePng(contexts) {
-    return contexts[0].canvas.toBuffer("image/png");
+    const data = contexts[0].canvas
+      .toDataURL()
+      .replace(/^data:image\/\w+;base64,/, "");
+
+    return Buffer.from(data, "base64");
   }
 
   encodeGif(contexts, width, height) {
