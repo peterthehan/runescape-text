@@ -1,6 +1,5 @@
 {
   "env": {
-    "browser": true,
     "commonjs": true,
     "es2021": true,
     "jest": true,
@@ -11,8 +10,6 @@
     "ecmaVersion": 2018
   },
   "rules": {
-    "curly": "warn",
-    "no-console": "off",
-    "sort-imports": "error"
+    "curly": "warn"
   }
 }
