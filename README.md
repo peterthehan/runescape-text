@@ -60,13 +60,13 @@ Refer to this wikiHow guide on [How to Write Text Effects on RuneScape](https://
 ### Execute
 
 ```
-$ npx runescape-text "wave:glow3: hello world"
+npx runescape-text "wave:glow3: hello world"
 ```
 
 ### Example
 
 ```
-$ npm i runescape-text
+npm i runescape-text
 ```
 
 ```js
