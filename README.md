@@ -1,6 +1,6 @@
 # RuneScape Text
 
-[![NPM](https://nodei.co/npm/runescape-text.png?mini=true)](https://www.npmjs.com/package/runescape-text) [![Discord](https://discord.com/api/guilds/258167954913361930/embed.png)](https://discord.gg/WjEFnzC) [![Twitter Follow](https://img.shields.io/twitter/follow/peterthehan.svg?style=social)](https://twitter.com/peterthehan)
+[![Discord](https://discord.com/api/guilds/258167954913361930/embed.png)](https://discord.gg/WjEFnzC) [![Twitter Follow](https://img.shields.io/twitter/follow/peterthehan.svg?style=social)](https://twitter.com/peterthehan)
 
 Convert text to a text image with [RuneScape](https://www.runescape.com/) chat effects.
 
@@ -41,19 +41,6 @@ Convert text to a text image with [RuneScape](https://www.runescape.com/) chat e
 </details>
 
 Refer to this wikiHow guide on [How to Write Text Effects on RuneScape](https://www.wikihow.com/Write-Text-Effects-on-Runescape).
-
-## Table of contents
-
-- [Getting started](#getting-started)
-  - [Execute](#execute)
-  - [Example](#example)
-- [Syntax](#syntax)
-  - [Parameters](#parameters)
-    - [Options](#options)
-    - [WordWrapOptions](#wordwrapoptions)
-  - [Return value](#return-value)
-  - [Exceptions](#exceptions)
-- [Help](#help)
 
 ## Getting started
 
@@ -147,11 +134,3 @@ The **return value** is an Object with the following properties:
 | `TypeError`            | Thrown if argument type is unexpected         |
 | `ValueError`           | Thrown if string is empty                     |
 | `ValueError`           | Thrown if the parsed message string is empty  |
-
-## Help
-
-Visit for more help or information!
-
-<a href="https://discord.gg/WjEFnzC">
-  <img src="https://discord.com/api/guilds/258167954913361930/embed.png?style=banner2" title="Discord server invite" alt="Discord server invite" />
-</a>
