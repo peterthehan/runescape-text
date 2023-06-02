@@ -68,7 +68,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "canvas": "^2.8.0",
+    "canvas": "^2.11.2",
     "gif-encoder": "^0.7.2",
     "word-wrap": "^1.2.3"
   },
