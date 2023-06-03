@@ -1,12 +1,13 @@
 import wrap from "word-wrap";
+
 import Color from "./classes/ColorStyle";
 import Encoder from "./classes/Encoder";
 import Logger from "./classes/Logger";
 import Motion from "./classes/MotionStyle";
 import Parser from "./classes/Parser";
-import { getConfig, getWordWrapConfig } from "./utils/configUtil";
 import { defaultOptions } from "./defaultOptions";
 import { defaultWordWrapOptions } from "./defaultWordWrapOptions";
+import { getConfig, getWordWrapConfig } from "./utils/configUtil";
 
 export default function getRuneScapeText(
   string: string,

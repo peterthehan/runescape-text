@@ -1,8 +1,9 @@
-import { Context, measureText } from "./Context";
+import { CanvasRenderingContext2D } from "canvas";
+
 import { isAnimated } from "../utils/effectUtil";
 import range from "../utils/range";
-import { CanvasRenderingContext2D } from "canvas";
 import Color from "./ColorStyle";
+import { Context, measureText } from "./Context";
 
 export default class MotionStyle {
   config: Config;
@@ -86,10 +87,10 @@ export default class MotionStyle {
       getX,
     }: {
       amplitudeFactor: number;
+      frameFactor: number;
       getTotalWidth:
         | ((width: number) => number)
         | ((width: number, amplitude: number) => number);
-      frameFactor: number;
       getWave: (wave: number, frame: number) => number;
       getX:
         | ((width: number) => number)

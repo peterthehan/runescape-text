@@ -1,6 +1,7 @@
-import GifEncoder from "gif-encoder";
 import { Buffer } from "node:buffer";
+
 import { CanvasRenderingContext2D } from "canvas";
+import GifEncoder from "gif-encoder";
 
 export default class Encoder {
   config: Config;

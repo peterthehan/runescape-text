@@ -1,6 +1,7 @@
 import wrap from "word-wrap";
+
 import ValueError from "../errors/ValueError";
-import { colors, motions, effectsMap } from "../utils/effectUtil";
+import { colors, effectsMap, motions } from "../utils/effectUtil";
 
 export default class Parser {
   config: Config;

@@ -1,4 +1,5 @@
 import wrap from "word-wrap";
+
 import { defaultOptions } from "../defaultOptions";
 import { defaultWordWrapOptions } from "../defaultWordWrapOptions";
 

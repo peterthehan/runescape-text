@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
+import * as console from "console";
 import { existsSync, writeFileSync } from "fs";
+
 import { name, version } from "../package.json";
 import getRuneScapeText from "./index";
-import * as console from "console";
 
 const getFilename = () => {
   return `runescape-text-${Date.now()}`;

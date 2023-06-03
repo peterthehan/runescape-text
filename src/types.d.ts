@@ -1,20 +1,20 @@
 type Options = {
-  version?: Version;
   color?: Color;
-  motion?: Motion;
-  suffix?: string;
-  replacement?: string;
-  maxMessageLength?: number;
-  scale?: number;
-  fps?: number;
   cycleDuration?: number;
-  quality?: number;
   debug?: boolean;
+  fps?: number;
+  maxMessageLength?: number;
+  motion?: Motion;
+  quality?: number;
+  replacement?: string;
+  scale?: number;
+  suffix?: string;
+  version?: Version;
 };
 
 type Config = Required<Options> & {
-  totalFrames: number;
   delayPerFrame: number;
+  totalFrames: number;
 };
 
 const enum Version {
@@ -23,25 +23,25 @@ const enum Version {
 }
 
 const enum Color {
-  Yellow = "yellow",
-  Red = "red",
-  Green = "green",
   Cyan = "cyan",
-  Purple = "purple",
-  White = "white",
-  Glow1 = "glow1",
-  Glow2 = "glow2",
-  Glow3 = "glow3",
   Flash1 = "flash1",
   Flash2 = "flash2",
   Flash3 = "flash3",
+  Glow1 = "glow1",
+  Glow2 = "glow2",
+  Glow3 = "glow3",
+  Green = "green",
+  Purple = "purple",
+  Red = "red",
+  White = "white",
+  Yellow = "yellow",
 }
 
 const enum Motion {
   None = "none",
+  Scroll = "scroll",
+  Shake = "shake",
+  Slide = "slide",
   Wave = "wave",
   Wave2 = "wave2",
-  Shake = "shake",
-  Scroll = "scroll",
-  Slide = "slide",
 }

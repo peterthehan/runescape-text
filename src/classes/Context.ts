@@ -1,5 +1,5 @@
+import { CanvasRenderingContext2D, createCanvas, registerFont } from "canvas";
 import { resolve } from "path";
-import { registerFont, CanvasRenderingContext2D, createCanvas } from "canvas";
 
 const path = resolve(__dirname, "../assets/runescape_uf.ttf");
 registerFont(path, {
