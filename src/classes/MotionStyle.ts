@@ -44,8 +44,8 @@ export default class MotionStyle {
   getWave() {
     return {
       amplitudeFactor: 1 / 3,
-      getTotalWidth: (width: number) => width,
       frameFactor: 1,
+      getTotalWidth: (width: number) => width,
       getWave: (wave: number) => 1 + wave,
       getX: (width: number) => width,
     };
@@ -54,9 +54,9 @@ export default class MotionStyle {
   getWave2() {
     return {
       amplitudeFactor: 1 / 6,
+      frameFactor: 1,
       getTotalWidth: (width: number, amplitude: number) =>
         Math.round(width + 2 * amplitude),
-      frameFactor: 1,
       getWave: (wave: number) => 1 + wave,
       getX: (width: number, displacement: number) =>
         Math.round(width + displacement),
@@ -66,8 +66,8 @@ export default class MotionStyle {
   getShake() {
     return {
       amplitudeFactor: 1 / 3,
-      getTotalWidth: (width: number) => width,
       frameFactor: 6,
+      getTotalWidth: (width: number) => width,
       getWave: (wave: number, frame: number) =>
         2 * frame > this.config.totalFrames
           ? 1

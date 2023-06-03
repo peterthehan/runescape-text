@@ -51,16 +51,16 @@ export default class Encoder {
 
     return contexts.length === 1
       ? {
-          width,
-          height,
-          extension: "png",
           buffer: this.encodePng(contexts),
+          extension: "png",
+          height,
+          width,
         }
       : {
-          width,
-          height,
-          extension: "gif",
           buffer: this.encodeGif(contexts, width, height),
+          extension: "gif",
+          height,
+          width,
         };
   }
 }

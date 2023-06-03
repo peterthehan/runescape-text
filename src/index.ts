@@ -25,7 +25,7 @@ export default function getRuneScapeText(
     const motion = new Motion(config);
     const encoder = new Encoder(config);
 
-    return { parser, color, motion, encoder };
+    return { color, encoder, motion, parser };
   });
 
   const parsed = logger.time("Parsing", () => {

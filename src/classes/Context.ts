@@ -34,7 +34,7 @@ export class Context {
   }
 
   getMerge() {
-    const { width, height } = this.context.canvas;
+    const { height, width } = this.context.canvas;
     this.context.fillStyle = "rgba(128, 128, 128, 1)";
     this.context.fillRect(0, 0, width, height);
 
@@ -49,11 +49,11 @@ export function measureText(message: string, scale: number) {
   const measurement = context.measureText(message);
 
   return {
-    width: measurement.width,
+    ascent: measurement.actualBoundingBoxAscent,
     height:
       measurement.actualBoundingBoxAscent +
       measurement.actualBoundingBoxDescent +
       scale,
-    ascent: measurement.actualBoundingBoxAscent,
+    width: measurement.width,
   };
 }

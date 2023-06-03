@@ -1,10 +1,10 @@
 import wrap from "word-wrap";
 
 export const defaultWordWrapOptions: wrap.IOptions = {
-  width: 50,
+  cut: false,
+  escape: (str: string) => str.trimEnd(),
   indent: "",
   newline: "\n",
-  escape: (str: string) => str.trimEnd(),
   trim: false,
-  cut: false,
+  width: 50,
 };
