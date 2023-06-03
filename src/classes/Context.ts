@@ -1,19 +1,24 @@
-const path = require("path");
-const { registerFont, createCanvas } = require("canvas");
+import { resolve } from "path";
+import { registerFont, CanvasRenderingContext2D, createCanvas } from "canvas";
 
-registerFont(path.resolve(__dirname, "../assets/runescape_uf.ttf"), {
+const path = resolve(__dirname, "../assets/runescape_uf.ttf");
+registerFont(path, {
   family: "RuneScape",
 });
 
-class Context {
-  constructor(width, height, scale) {
+const FONT = "RuneScape";
+
+export class Context {
+  scale: number;
+  context: CanvasRenderingContext2D;
+  constructor(width: number, height: number, scale: number) {
     this.context = createCanvas(width, height).getContext("2d");
     this.scale = scale;
   }
 
   getStatic() {
     const fontSize = 16 * this.scale;
-    this.context.font = `${fontSize}px "RuneScape"`;
+    this.context.font = `${fontSize}px ${FONT}`;
     this.context.shadowColor = "black";
     this.context.shadowOffsetX = this.scale;
     this.context.shadowOffsetY = this.scale;
@@ -37,10 +42,10 @@ class Context {
   }
 }
 
-const measureText = (message, scale) => {
+export function measureText(message: string, scale: number) {
   const fontSize = 16 * scale;
   const context = createCanvas(0, 0).getContext("2d");
-  context.font = `${fontSize}px "RuneScape"`;
+  context.font = `${fontSize}px ${FONT}`;
   const measurement = context.measureText(message);
 
   return {
@@ -51,9 +56,4 @@ const measureText = (message, scale) => {
       scale,
     ascent: measurement.actualBoundingBoxAscent,
   };
-};
-
-module.exports = {
-  Context,
-  measureText,
-};
+}

@@ -1,11 +1,14 @@
-const GifEncoder = require("gif-encoder");
+import GifEncoder from "gif-encoder";
+import { Buffer } from "node:buffer";
+import { CanvasRenderingContext2D } from "canvas";
 
-class Encoder {
-  constructor(config) {
+export default class Encoder {
+  config: Config;
+  constructor(config: Config) {
     this.config = config;
   }
 
-  encodePng(contexts) {
+  encodePng(contexts: CanvasRenderingContext2D[]) {
     const data = contexts[0].canvas
       .toDataURL()
       .replace(/^data:image\/\w+;base64,/, "");
@@ -13,7 +16,11 @@ class Encoder {
     return Buffer.from(data, "base64");
   }
 
-  encodeGif(contexts, width, height) {
+  encodeGif(
+    contexts: CanvasRenderingContext2D[],
+    width: number,
+    height: number
+  ) {
     const gif = new GifEncoder(width, height);
 
     gif.setRepeat(0);
@@ -22,8 +29,8 @@ class Encoder {
     gif.setTransparent(0x808080);
     gif.writeHeader();
 
-    const frames = [];
-    const buffer = new Promise((resolve, reject) => {
+    const frames: Buffer[] = [];
+    const buffer = new Promise<Buffer>((resolve, reject) => {
       gif.on("data", (data) => frames.push(data));
       gif.on("end", () => resolve(Buffer.concat(frames)));
       gif.on("error", reject);
@@ -38,7 +45,7 @@ class Encoder {
     return buffer;
   }
 
-  encode(contexts) {
+  encode(contexts: CanvasRenderingContext2D[]) {
     const { width, height } = contexts[0].canvas;
 
     return contexts.length === 1
@@ -56,5 +63,3 @@ class Encoder {
         };
   }
 }
-
-module.exports = Encoder;

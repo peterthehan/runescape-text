@@ -1,16 +1,15 @@
-const wrap = require("word-wrap");
-const ValueError = require("./ValueError");
-const { colors, motions, effectsMap } = require("../utils/effectUtil");
+import wrap from "word-wrap";
+import ValueError from "../errors/ValueError";
+import { colors, motions, effectsMap } from "../utils/effectUtil";
 
-class Parser {
-  constructor(config, wordWrapConfig) {
+export default class Parser {
+  config: Config;
+  wordWrapConfig: wrap.IOptions;
+  effectsRegExp: RegExp;
+  constructor(config: Config, wordWrapConfig: wrap.IOptions) {
     this.config = config;
     this.wordWrapConfig = wordWrapConfig;
 
-    this.setEffectsRegExp();
-  }
-
-  setEffectsRegExp() {
     const escapedSuffix = this.config.suffix.replace(/(.{1})/g, "\\$1");
     const colorString = `(${colors.join("|")})${escapedSuffix}`;
     const motionString = `(${motions.join("|")})${escapedSuffix}`;
@@ -21,7 +20,7 @@ class Parser {
     );
   }
 
-  sanitizeMessage(string, effectsString) {
+  sanitizeMessage(string: string, effectsString: string) {
     const sanitizedMessage = string
       .replace(effectsString, "")
       .replace(/([^ -~\t\n]|`)+/g, this.config.replacement)
@@ -35,7 +34,7 @@ class Parser {
     return wrap(sanitizedMessage, this.wordWrapConfig);
   }
 
-  parse(string) {
+  parse(string: string) {
     const effectsString = (string.match(this.effectsRegExp) || [""])[0];
     const effects = effectsString
       .toLowerCase()
@@ -52,5 +51,3 @@ class Parser {
     };
   }
 }
-
-module.exports = Parser;
