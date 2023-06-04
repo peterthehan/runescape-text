@@ -55,18 +55,18 @@
     "email": "peter.han.9493@gmail.com",
     "url": "https://github.com/peterthehan"
   },
-  "main": "./dist/src/index.js",
+  "main": "./dist/index.js",
   "bin": {
-    "runescape-text": "./dist/src/cli.js"
+    "runescape-text": "./dist/cli.js"
   },
   "files": [
     "dist/**"
   ],
   "scripts": {
-    "build": "rm -rf ./dist && npx tsc && cp -r ./src/assets ./dist/src",
+    "build": "rm -rf ./dist && npx tsc && cp -r ./src/assets ./dist",
     "lint": "npx eslint --fix .",
     "prepublishOnly": "npm run lint && npm run build",
-    "start": "node dist/src/cli.js"
+    "start": "node dist/cli.js"
   },
   "dependencies": {
     "canvas": "^2.11.1",

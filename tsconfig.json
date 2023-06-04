@@ -3,8 +3,7 @@
     "declaration": true,
     "esModuleInterop": true,
     "moduleResolution": "node",
-    "outDir": "dist",
-    "resolveJsonModule": true
+    "outDir": "dist"
   },
   "exclude": ["coverage", "dist", "node_modules", "test"],
   "extends": "@tsconfig/recommended/tsconfig.json",

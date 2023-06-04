@@ -1,21 +1,13 @@
 #!/usr/bin/env node
 
-import * as console from "console";
-import { existsSync, writeFileSync } from "fs";
+import { existsSync, writeFileSync } from "node:fs";
 
-import { name, version } from "../package.json";
 import getRuneScapeText from "./index";
 
-const getFilename = () => {
-  return `runescape-text-${Date.now()}`;
-};
-
-const main = async () => {
-  console.log(`${name} v${version}`);
-
-  const filename = getFilename();
-  if (existsSync(`./${filename}.gif`) || existsSync(`./${filename}.png`)) {
-    console.log(`File with name "${filename}" already exists! Exiting...`);
+async function main() {
+  const file = `./runescape-text-${Date.now()}.gif`;
+  if (existsSync(file)) {
+    console.log(`${file} already exists! Exiting...`);
     process.exit(1);
   }
 
@@ -23,10 +15,10 @@ const main = async () => {
   const string = args.join(" ");
   const options = { debug: true };
 
-  const { extension, data } = getRuneScapeText(string, options);
-  const path = `./${filename}.${extension}`;
-  writeFileSync(path, data);
-  console.log(`\nFile written to: ${path}`);
-};
+  const { data } = getRuneScapeText(string, options);
+
+  writeFileSync(file, data);
+  console.log(`\nFile written to: ${file}`);
+}
 
 main();
