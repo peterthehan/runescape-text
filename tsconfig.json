@@ -1,11 +1,11 @@
 {
-  "extends": "@tsconfig/recommended/tsconfig.json",
   "compilerOptions": {
     "declaration": true,
-    "outDir": "dist",
     "esModuleInterop": true,
+    "outDir": "dist",
     "resolveJsonModule": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["coverage", "dist", "node_modules", "test"]
+  "exclude": ["coverage", "dist", "node_modules", "test"],
+  "extends": "@tsconfig/recommended/tsconfig.json",
+  "include": ["src/**/*"]
 }

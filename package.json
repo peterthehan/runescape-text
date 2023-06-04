@@ -65,7 +65,8 @@
   "scripts": {
     "build": "rm -rf ./dist && npx tsc && cp -r ./src/assets ./dist/src",
     "lint": "npx eslint --fix .",
-    "start": "node src/cli.js"
+    "prepublishOnly": "npm run lint && npm run build",
+    "start": "node dist/src/cli.js"
   },
   "dependencies": {
     "canvas": "^2.8.0",
