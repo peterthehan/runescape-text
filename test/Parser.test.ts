@@ -296,21 +296,24 @@ describe("Parser", () => {
     parser = new Parser(config, wordWrapConfig);
   });
 
-  test.each([...errorTestCases])(
-    `.parse("$message") => $expected`,
-    ({ expected, message }) => {
+  describe("Error", () => {
+    test.each(errorTestCases)(`.parse("$message")`, ({ expected, message }) => {
       expect(() => parser.parse(message)).toThrow(new Error(expected));
-    }
-  );
+    });
+  });
 
-  test.each([
-    ...baseTestCases,
-    ...capitalizationTestCases,
-    ...whitespaceTestCases,
-    ...happyPathTestCases,
-    ...sadPathTestCases,
-    ...patternTestCases,
-  ])(`.parse("$message") => $expected`, ({ expected, message }) => {
-    expect(parser.parse(message)).toStrictEqual(expected);
+  [
+    { description: "Base", testCases: baseTestCases },
+    { description: "Capitalization", testCases: capitalizationTestCases },
+    { description: "Whitespace", testCases: whitespaceTestCases },
+    { description: "Happy Path", testCases: happyPathTestCases },
+    { description: "Sad Path", testCases: sadPathTestCases },
+    { description: "Pattern", testCases: patternTestCases },
+  ].forEach(({ description, testCases }) => {
+    describe(description, () => {
+      test.each(testCases)(`.parse("$message")`, ({ expected, message }) => {
+        expect(parser.parse(message)).toStrictEqual(expected);
+      });
+    });
   });
 });
