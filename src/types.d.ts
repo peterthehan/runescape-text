@@ -1,10 +1,21 @@
+type Enumerate<
+  N extends number,
+  Acc extends number[] = []
+> = Acc["length"] extends N
+  ? Acc[number]
+  : Enumerate<N, [...Acc, Acc["length"]]>;
+
+type IntRange<F extends number, T extends number> =
+  | Exclude<Enumerate<T>, Enumerate<F>>
+  | T;
+
 type Options = {
   color?: Color;
   debug?: boolean;
   duration?: number;
   enforceCapitalization?: boolean;
   format?: Format;
-  fps?: number;
+  fps?: IntRange<1, 50>;
   maxMessageLength?: number;
   motion?: Motion;
   replacement?: string;
