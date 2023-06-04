@@ -4,39 +4,15 @@ import ValueError from "../errors/ValueError";
 import { colors, effectsMap, motions } from "../utils/effectUtil";
 
 export default class Parser {
-  config: Config;
-  wordWrapConfig: wrap.IOptions;
-  effectsRegExp: RegExp;
+  private config: Config;
+  private wordWrapConfig: wrap.IOptions;
   constructor(config: Config, wordWrapConfig: wrap.IOptions) {
     this.config = config;
     this.wordWrapConfig = wordWrapConfig;
-
-    const escapedSuffix = this.config.suffix.replace(/(.{1})/g, "\\$1");
-    const colorString = `(${colors.join("|")})${escapedSuffix}`;
-    const motionString = `(${motions.join("|")})${escapedSuffix}`;
-
-    this.effectsRegExp = RegExp(
-      `^${colorString}(${motionString})?|^${motionString}(${colorString})?`,
-      "i"
-    );
-  }
-
-  sanitizeMessage(string: string, effectsString: string) {
-    const sanitizedMessage = string
-      .replace(effectsString, "")
-      .replace(/([^ -~\t\n]|`)+/g, this.config.replacement)
-      .trimStart()
-      .slice(0, this.config.maxMessageLength);
-
-    if (sanitizedMessage === "") {
-      throw new ValueError("message cannot be empty");
-    }
-
-    return wrap(sanitizedMessage, this.wordWrapConfig);
   }
 
   parse(string: string) {
-    const effectsString = (string.match(this.effectsRegExp) || [""])[0];
+    const effectsString = (string.match(this.getEffectsRegExp()) || [""])[0];
     const effects = effectsString
       .toLowerCase()
       .split(this.config.suffix)
@@ -50,5 +26,30 @@ export default class Parser {
       ...effects,
       message: this.sanitizeMessage(string, effectsString),
     };
+  }
+
+  private getEffectsRegExp() {
+    const escapedSuffix = this.config.suffix.replace(/(.{1})/g, "\\$1");
+    const colorString = `(${colors.join("|")})${escapedSuffix}`;
+    const motionString = `(${motions.join("|")})${escapedSuffix}`;
+
+    return RegExp(
+      `^${colorString}(${motionString})?|^${motionString}(${colorString})?`,
+      "i"
+    );
+  }
+
+  private sanitizeMessage(string: string, effectsString: string) {
+    const sanitizedMessage = string
+      .replace(effectsString, "")
+      .replace(/([^ -~\t\n]|`)+/g, this.config.replacement)
+      .trimStart()
+      .slice(0, this.config.maxMessageLength);
+
+    if (sanitizedMessage === "") {
+      throw new ValueError("message cannot be empty");
+    }
+
+    return wrap(sanitizedMessage, this.wordWrapConfig);
   }
 }
