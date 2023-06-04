@@ -1,4 +1,13 @@
-const staticColors = ["yellow", "red", "green", "cyan", "purple", "white"];
+const staticColors = [
+  "yellow",
+  "red",
+  "green",
+  "cyan",
+  "purple",
+  "white",
+  "rainbow",
+  "pattern",
+];
 const dynamicColors = ["glow1", "glow2", "glow3", "flash1", "flash2", "flash3"];
 const colors = [...staticColors, ...dynamicColors];
 const motions = ["wave", "wave2", "shake", "scroll", "slide"];
@@ -20,6 +29,8 @@ const white = [255, 255, 255];
 const lightGreen = [128, 255, 128];
 const darkGreen = [0, 176, 0];
 const blue = [0, 0, 255];
+
+const rainbow = [red, yellow, green, cyan, blue, purple, red];
 
 const glow1Rs3 = [cyan, green, yellow, red, cyan];
 const glow2Rs3 = [red, blue, purple, red];

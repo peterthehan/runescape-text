@@ -9,7 +9,7 @@ export default class Encoder {
     this.config = config;
   }
 
-  encode(contexts: CanvasRenderingContext2D[]) {
+  encode(contexts: CanvasRenderingContext2D[]): RuneScapeTextResponse {
     const { width, height } = contexts[0].canvas;
     return {
       data: this.encodeGif(contexts, width, height),

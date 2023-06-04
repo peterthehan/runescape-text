@@ -66,7 +66,8 @@
     "build": "rm -rf ./dist && npx tsc && cp -r ./src/assets ./dist",
     "lint": "npx eslint --fix .",
     "prepublishOnly": "npm run lint && npm run build",
-    "start": "node dist/cli.js"
+    "start": "node dist/cli.js",
+    "test": "npx jest --coverage --coverageDirectory='coverage'"
   },
   "dependencies": {
     "canvas": "^2.11.1",

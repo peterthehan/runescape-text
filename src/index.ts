@@ -11,7 +11,7 @@ export default function getRuneScapeText(
   string: string,
   options?: Options,
   wordWrapOptions?: wrap.IOptions
-) {
+): RuneScapeTextResponse {
   const config = getConfig(options);
   const wordWrapConfig = getWordWrapConfig(wordWrapOptions);
 

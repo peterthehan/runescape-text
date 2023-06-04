@@ -29,6 +29,14 @@ type Config = Required<Options> & {
   totalFrames: number;
 };
 
+type RuneScapeTextResponse = {
+  data: Uint8Array;
+  extension: string;
+  framesCount: number;
+  height: number;
+  width: number;
+};
+
 type Version = "osrs" | "rs3";
 
 type Color =
@@ -40,10 +48,50 @@ type Color =
   | "glow2"
   | "glow3"
   | "green"
+  | "pattern"
   | "purple"
+  | "rainbow"
   | "red"
   | "white"
   | "yellow";
+
+type ColorPattern =
+  | "a"
+  | "b"
+  | "c"
+  | "d"
+  | "e"
+  | "f"
+  | "g"
+  | "h"
+  | "i"
+  | "j"
+  | "k"
+  | "l"
+  | "m"
+  | "n"
+  | "o"
+  | "p"
+  | "q"
+  | "r"
+  | "s"
+  | "t"
+  | "u"
+  | "v"
+  | "w"
+  | "x"
+  | "y"
+  | "z"
+  | "0"
+  | "1"
+  | "2"
+  | "3"
+  | "4"
+  | "5"
+  | "6"
+  | "7"
+  | "8"
+  | "9";
 
 type Motion = "none" | "scroll" | "shake" | "slide" | "wave" | "wave2";
 
