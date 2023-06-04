@@ -122,7 +122,7 @@ const happyPathTestCases = [
 ];
 
 const sadPathTestCases = [
-  // first effect is parsed when two of the same effect type are used
+  // first effect is used when using two effects of the same type
   {
     expected: {
       color: "glow3",
