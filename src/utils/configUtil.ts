@@ -4,13 +4,13 @@ import { defaultOptions } from "../defaultOptions";
 import { defaultWordWrapOptions } from "../defaultWordWrapOptions";
 
 export function getConfig(options: Options): Config {
-  const merged = { ...defaultOptions, ...options };
-  const delayPerFrame = 1000 / (merged.fps as number);
-  const totalFrames = Math.round((merged.duration as number) / delayPerFrame);
+  const merged = { ...defaultOptions, ...options } as Required<Options>;
+  const delayPerFrame = 1000 / merged.fps;
+  const totalFrames = Math.round(merged.duration / delayPerFrame);
 
-  return { ...merged, delayPerFrame, totalFrames } as Config;
+  return { ...merged, delayPerFrame, totalFrames };
 }
 
-export const getWordWrapConfig = (options: wrap.IOptions) => {
-  return { ...defaultWordWrapOptions, ...options };
-};
+export function getWordWrapConfig(wordWrapOptions: wrap.IOptions) {
+  return { ...defaultWordWrapOptions, ...wordWrapOptions };
+}
