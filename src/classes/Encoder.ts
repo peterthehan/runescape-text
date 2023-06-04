@@ -1,7 +1,7 @@
 import { Buffer } from "node:buffer";
 
 import { CanvasRenderingContext2D } from "canvas";
-import GifEncoder from "gif-encoder";
+import { applyPalette, GIFEncoder, quantize } from "gifenc";
 
 export default class Encoder {
   config: Config;
@@ -9,58 +9,38 @@ export default class Encoder {
     this.config = config;
   }
 
-  encodePng(contexts: CanvasRenderingContext2D[]) {
-    const data = contexts[0].canvas
-      .toDataURL()
-      .replace(/^data:image\/\w+;base64,/, "");
-
-    return Buffer.from(data, "base64");
-  }
-
   encodeGif(
     contexts: CanvasRenderingContext2D[],
     width: number,
     height: number
   ) {
-    const gif = new GifEncoder(width, height);
+    const gif = GIFEncoder();
 
-    gif.setRepeat(0);
-    gif.setQuality(this.config.quality);
-    gif.setDelay(this.config.delayPerFrame);
-    gif.setTransparent(0x808080);
-    gif.writeHeader();
+    contexts.forEach((context) => {
+      const data = context.getImageData(0, 0, width, height).data;
+      const palette = quantize(data, 256, { format: this.config.format });
+      const index = applyPalette(data, palette, this.config.format);
 
-    const frames: Buffer[] = [];
-    const buffer = new Promise<Buffer>((resolve, reject) => {
-      gif.on("data", (data) => frames.push(data));
-      gif.on("end", () => resolve(Buffer.concat(frames)));
-      gif.on("error", reject);
+      gif.writeFrame(index, width, height, {
+        delay: this.config.delayPerFrame,
+        palette,
+        transparent: true,
+      });
     });
-
-    contexts
-      .map((context) => context.getImageData(0, 0, width, height).data)
-      .forEach((pixels) => gif.addFrame(pixels));
 
     gif.finish();
 
-    return buffer;
+    return Buffer.from(gif.bytesView());
   }
 
   encode(contexts: CanvasRenderingContext2D[]) {
     const { width, height } = contexts[0].canvas;
-
-    return contexts.length === 1
-      ? {
-          buffer: this.encodePng(contexts),
-          extension: "png",
-          height,
-          width,
-        }
-      : {
-          buffer: this.encodeGif(contexts, width, height),
-          extension: "gif",
-          height,
-          width,
-        };
+    return {
+      buffer: this.encodeGif(contexts, width, height),
+      extension: "gif",
+      framesCount: contexts.length,
+      height,
+      width,
+    };
   }
 }

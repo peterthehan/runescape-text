@@ -1,11 +1,13 @@
+type Format = "rgb444" | "rgb565" | "rgba4444";
+
 type Options = {
   color?: Color;
   cycleDuration?: number;
   debug?: boolean;
+  format?: Format;
   fps?: number;
   maxMessageLength?: number;
   motion?: Motion;
-  quality?: number;
   replacement?: string;
   scale?: number;
   suffix?: string;

@@ -69,8 +69,8 @@
     "start": "node dist/src/cli.js"
   },
   "dependencies": {
-    "canvas": "^2.8.0",
-    "gif-encoder": "^0.7.2",
+    "canvas": "^2.11.1",
+    "gifenc": "github:mattdesl/gifenc",
     "word-wrap": "^1.2.3"
   },
   "devDependencies": {
