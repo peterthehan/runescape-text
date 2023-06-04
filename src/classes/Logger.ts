@@ -1,5 +1,5 @@
 export default class Logger {
-  debug: boolean;
+  private debug: boolean;
   constructor(debug: boolean) {
     this.debug = debug;
   }
