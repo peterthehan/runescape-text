@@ -22,15 +22,37 @@ const errorTestCases = [
   },
 ];
 
-const baseTestCase = {
-  expected: {
-    color: "yellow",
-    message: "Hello world",
-    motion: "none",
-    pattern: [],
+const baseTestCases = [
+  {
+    expected: {
+      color: "yellow",
+      message: "Hello world",
+      motion: "none",
+      pattern: [],
+    },
+    message: "hello world",
   },
-  message: "hello world",
-};
+  {
+    expected: {
+      color: "yellow",
+      message: "Hello world",
+      motion: "none",
+      pattern: [],
+    },
+    message: "hello world 👍",
+  },
+  {
+    expected: {
+      color: "yellow",
+      message:
+        "01234567890123456789012345678901234567890123456789012345678901234567890123456789",
+      motion: "none",
+      pattern: [],
+    },
+    message:
+      "01234567890123456789012345678901234567890123456789012345678901234567890123456789everything beyond this will be trimmed",
+  },
+];
 
 const capitalizationTestCases = [
   {
@@ -282,7 +304,7 @@ describe("Parser", () => {
   );
 
   test.each([
-    baseTestCase,
+    ...baseTestCases,
     ...capitalizationTestCases,
     ...whitespaceTestCases,
     ...happyPathTestCases,
