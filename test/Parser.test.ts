@@ -45,11 +45,11 @@ const capitalizationTestCases = [
   {
     expected: {
       color: "yellow",
-      message: "Hello... World? Hello! World.",
+      message: "Hello.. Hello... World? Hello. World!",
       motion: "none",
       pattern: [],
     },
-    message: "hello... world? hello! world.",
+    message: "hello.. hello... world? hello. world!",
   },
 ];
 
