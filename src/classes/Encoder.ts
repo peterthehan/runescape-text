@@ -9,6 +9,17 @@ export default class Encoder {
     this.config = config;
   }
 
+  encode(contexts: CanvasRenderingContext2D[]) {
+    const { width, height } = contexts[0].canvas;
+    return {
+      buffer: this.encodeGif(contexts, width, height),
+      extension: "gif",
+      framesCount: contexts.length,
+      height,
+      width,
+    };
+  }
+
   private encodeGif(
     contexts: CanvasRenderingContext2D[],
     width: number,
@@ -33,16 +44,5 @@ export default class Encoder {
     gif.finish();
 
     return gif.bytesView();
-  }
-
-  encode(contexts: CanvasRenderingContext2D[]) {
-    const { width, height } = contexts[0].canvas;
-    return {
-      buffer: this.encodeGif(contexts, width, height),
-      extension: "gif",
-      framesCount: contexts.length,
-      height,
-      width,
-    };
   }
 }

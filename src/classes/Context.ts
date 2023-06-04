@@ -7,37 +7,37 @@ registerFont(path, { family: "RuneScape" });
 const FONT_BASE_SIZE = 16;
 const FONT_NAME = "RuneScape";
 
-export class Context {
+export default class Context {
   context: CanvasRenderingContext2D;
-  scale: number;
-  constructor(width: number, height: number, scale: number) {
+  constructor(width = 0, height = 0) {
     this.context = createCanvas(width, height).getContext("2d");
-    this.scale = scale;
   }
 
-  initialize() {
-    const fontSize = FONT_BASE_SIZE * this.scale;
-    this.context.font = `${fontSize}px ${FONT_NAME}`;
+  initialize(scale: number) {
+    this.context.font = this.getFont(scale);
     this.context.shadowColor = "black";
-    this.context.shadowOffsetX = this.scale;
-    this.context.shadowOffsetY = this.scale;
+    this.context.shadowOffsetX = scale;
+    this.context.shadowOffsetY = scale;
 
     return this.context;
   }
-}
 
-export function measureText(message: string, scale: number) {
-  const context = createCanvas(0, 0).getContext("2d");
-  const fontSize = FONT_BASE_SIZE * scale;
-  context.font = `${fontSize}px ${FONT_NAME}`;
-  const measurement = context.measureText(message);
+  measureText(text: string, scale: number) {
+    this.context.font = this.getFont(scale);
+    const measurement = this.context.measureText(text);
 
-  return {
-    ascent: measurement.actualBoundingBoxAscent,
-    height:
-      measurement.actualBoundingBoxAscent +
-      measurement.actualBoundingBoxDescent +
-      scale,
-    width: measurement.width,
-  };
+    return {
+      ascent: measurement.actualBoundingBoxAscent,
+      height:
+        measurement.actualBoundingBoxAscent +
+        measurement.actualBoundingBoxDescent +
+        scale,
+      width: measurement.width,
+    };
+  }
+
+  private getFont(scale: number) {
+    const fontSize = FONT_BASE_SIZE * scale;
+    return `${fontSize}px ${FONT_NAME}`;
+  }
 }

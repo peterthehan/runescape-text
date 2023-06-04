@@ -3,7 +3,7 @@ import { CanvasRenderingContext2D } from "canvas";
 import { isAnimated } from "../utils/effectUtil";
 import range from "../utils/range";
 import Color from "./ColorStyle";
-import { Context, measureText } from "./Context";
+import Context from "./Context";
 
 export default class MotionStyle {
   config: Config;
@@ -14,9 +14,12 @@ export default class MotionStyle {
   }
 
   renderNoneStatic(message: string, color: Color) {
-    const { width, height, ascent } = measureText(message, this.config.scale);
+    const { width, height, ascent } = new Context().measureText(
+      message,
+      this.config.scale
+    );
 
-    const context = new Context(width, height, this.config.scale).initialize();
+    const context = new Context(width, height).initialize(this.config.scale);
     context.fillStyle = color.calculate(0);
 
     context.fillText(message, 0, ascent);
@@ -25,14 +28,13 @@ export default class MotionStyle {
   }
 
   renderNoneDynamic(line: string, color: Color) {
-    const { width, height, ascent } = measureText(line, this.config.scale);
+    const { width, height, ascent } = new Context().measureText(
+      line,
+      this.config.scale
+    );
 
     return range(this.config.totalFrames).map((frame) => {
-      const context = new Context(
-        width,
-        height,
-        this.config.scale
-      ).initialize();
+      const context = new Context(width, height).initialize(this.config.scale);
       context.fillStyle = color.calculate(frame);
 
       context.fillText(line, 0, ascent);
@@ -97,18 +99,19 @@ export default class MotionStyle {
         | ((width: number, displacement: number) => number);
     }
   ) {
-    const { width, height, ascent } = measureText(line, this.config.scale);
+    const { width, height, ascent } = new Context().measureText(
+      line,
+      this.config.scale
+    );
 
     const amplitude = height * amplitudeFactor;
     const totalWidth = getTotalWidth(width, amplitude);
     const totalHeight = Math.round(height + 2 * amplitude);
 
     return range(this.config.totalFrames).map((frame) => {
-      const context = new Context(
-        totalWidth,
-        totalHeight,
+      const context = new Context(totalWidth, totalHeight).initialize(
         this.config.scale
-      ).initialize();
+      );
       context.fillStyle = color.calculate(frame);
 
       line.split("").forEach((char, index) => {
@@ -118,7 +121,8 @@ export default class MotionStyle {
         );
         const displacement = amplitude * getWave(wave, frame);
         const x = getX(
-          measureText(line.slice(0, index), this.config.scale).width,
+          new Context().measureText(line.slice(0, index), this.config.scale)
+            .width,
           displacement
         );
         const y = Math.round(ascent + displacement);
@@ -131,14 +135,13 @@ export default class MotionStyle {
   }
 
   renderScroll(line: string, color: Color) {
-    const { width, height, ascent } = measureText(line, this.config.scale);
+    const { width, height, ascent } = new Context().measureText(
+      line,
+      this.config.scale
+    );
 
     return range(this.config.totalFrames).map((frame) => {
-      const context = new Context(
-        width,
-        height,
-        this.config.scale
-      ).initialize();
+      const context = new Context(width, height).initialize(this.config.scale);
       context.fillStyle = color.calculate(frame);
 
       const displacement =
@@ -212,15 +215,14 @@ export default class MotionStyle {
       ) => number;
     }
   ) {
-    const { width, height, ascent } = measureText(line, this.config.scale);
+    const { width, height, ascent } = new Context().measureText(
+      line,
+      this.config.scale
+    );
     const motionFrameIndex = Math.round(this.config.totalFrames / 6);
 
     return range(this.config.totalFrames).map((frame) => {
-      const context = new Context(
-        width,
-        height,
-        this.config.scale
-      ).initialize();
+      const context = new Context(width, height).initialize(this.config.scale);
       context.fillStyle = color.calculate(frame);
 
       context.fillText(line, 0, getY(ascent, frame, motionFrameIndex, height));
@@ -245,8 +247,7 @@ export default class MotionStyle {
       mergedContexts[0].canvas.height + contexts[0].canvas.height;
 
     return mergedContexts.map((context, index) => {
-      const newContext = new Context(maxWidth, totalHeight, this.config.scale)
-        .context;
+      const newContext = new Context(maxWidth, totalHeight).context;
 
       newContext.drawImage(context.canvas, 0, 0);
       newContext.drawImage(contexts[index].canvas, 0, context.canvas.height);
