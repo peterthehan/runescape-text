@@ -1,16 +1,28 @@
 import Parser from "../src/classes/Parser";
 import { getConfig, getWordWrapConfig } from "../src/utils/configUtil";
 
-const happyPathTestCases = [
+const errorTestCases = [
   {
-    expected: {
-      color: "yellow",
-      message: "Hello world",
-      motion: "none",
-      pattern: [],
-    },
-    message: "hello world",
+    expected: "The message string cannot be empty.",
+    message: "",
   },
+  {
+    expected: "The message string cannot consist of only whitespaces.",
+    message: "   ",
+  },
+];
+
+const baseTestCase = {
+  expected: {
+    color: "yellow",
+    message: "Hello world",
+    motion: "none",
+    pattern: [],
+  },
+  message: "hello world",
+};
+
+const capitalizationTestCases = [
   {
     expected: {
       color: "yellow",
@@ -19,6 +31,66 @@ const happyPathTestCases = [
       pattern: [],
     },
     message: "HELLO WORLD",
+  },
+  {
+    expected: {
+      color: "yellow",
+      message: "Hello... World? Hello! World.",
+      motion: "none",
+      pattern: [],
+    },
+    message: "hello... world? hello! world.",
+  },
+];
+
+const whitespaceTestCases = [
+  {
+    expected: {
+      color: "yellow",
+      message: "   Hello world",
+      motion: "none",
+      pattern: [],
+    },
+    message: "   hello world",
+  },
+  {
+    expected: {
+      color: "yellow",
+      message: "Hello world",
+      motion: "none",
+      pattern: [],
+    },
+    message: "hello world   ",
+  },
+  {
+    expected: {
+      color: "yellow",
+      message: "Hello   world",
+      motion: "none",
+      pattern: [],
+    },
+    message: "hello   world",
+  },
+];
+
+const happyPathTestCases = [
+  {
+    expected: {
+      color: "glow3",
+      message: "Hello world",
+      motion: "none",
+      pattern: [],
+    },
+    message: "glow3:hello world",
+  },
+  {
+    expected: {
+      color: "yellow",
+      message: "Hello world",
+      motion: "wave",
+      pattern: [],
+    },
+    message: "wave:hello world",
   },
   {
     expected: {
@@ -47,17 +119,38 @@ const happyPathTestCases = [
     },
     message: "glow3:wave:   hello world",
   },
+];
+
+const sadPathTestCases = [
+  // first effect is parsed when two of the same effect type are used
   {
     expected: {
-      color: "pattern",
-      message: "Hello world",
+      color: "glow3",
+      message: "Glow1:hello world",
       motion: "none",
-      pattern: ["a", "b", "c"],
+      pattern: [],
     },
-    message: "patternabc:hello world",
+    message: "glow3:glow1:hello world",
   },
-];
-const sadPathTestCases = [
+  // only first two effects are parsed
+  {
+    expected: {
+      color: "glow3",
+      message: "Glow1:wave:hello world",
+      motion: "none",
+      pattern: [],
+    },
+    message: "glow3:glow1:wave:hello world",
+  },
+  {
+    expected: {
+      color: "glow3",
+      message: "Glow1:hello world",
+      motion: "wave",
+      pattern: [],
+    },
+    message: "glow3:wave:glow1:hello world",
+  },
   // color must come before motion
   {
     expected: {
@@ -72,11 +165,11 @@ const sadPathTestCases = [
   {
     expected: {
       color: "glow3",
-      message: " Wave: hello world",
+      message: " Wave:hello world",
       motion: "none",
       pattern: [],
     },
-    message: "glow3: wave: hello world",
+    message: "glow3: wave:hello world",
   },
   // no effects are applied if there are leading spaces
   {
@@ -98,7 +191,19 @@ const sadPathTestCases = [
     },
     message: "blah:wave:hello world",
   },
-  // invalid pattern
+];
+
+const patternTestCases = [
+  {
+    expected: {
+      color: "pattern",
+      message: "Hello world",
+      motion: "none",
+      pattern: ["a", "b", "c"],
+    },
+    message: "patternabc:hello world",
+  },
+  // invalid pattern characters
   {
     expected: {
       color: "yellow",
@@ -108,17 +213,52 @@ const sadPathTestCases = [
     },
     message: "pattern!@#:hello world",
   },
+  // no pattern characters given
+  {
+    expected: {
+      color: "yellow",
+      message: "Pattern:hello world",
+      motion: "none",
+      pattern: [],
+    },
+    message: "pattern:hello world",
+  },
+  // too many pattern characters given
+  {
+    expected: {
+      color: "yellow",
+      message: "Pattern123456789:hello world",
+      motion: "none",
+      pattern: [],
+    },
+    message: "pattern123456789:hello world",
+  },
 ];
 
 describe("Parser", () => {
-  test.each([...happyPathTestCases, ...sadPathTestCases])(
-    `.parse("$message") = $expected`,
-    ({ expected, message }) => {
-      const config = getConfig();
-      const wordWrapConfig = getWordWrapConfig();
-      const parser = new Parser(config, wordWrapConfig);
+  let parser: Parser;
 
-      expect(parser.parse(message)).toStrictEqual(expected);
+  beforeAll(() => {
+    const config = getConfig();
+    const wordWrapConfig = getWordWrapConfig();
+    parser = new Parser(config, wordWrapConfig);
+  });
+
+  test.each([...errorTestCases])(
+    `.parse("$message") => $expected`,
+    ({ expected, message }) => {
+      expect(() => parser.parse(message)).toThrow(new Error(expected));
     }
   );
+
+  test.each([
+    baseTestCase,
+    ...capitalizationTestCases,
+    ...whitespaceTestCases,
+    ...happyPathTestCases,
+    ...sadPathTestCases,
+    ...patternTestCases,
+  ])(`.parse("$message") => $expected`, ({ expected, message }) => {
+    expect(parser.parse(message)).toStrictEqual(expected);
+  });
 });

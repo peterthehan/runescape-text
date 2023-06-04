@@ -7,7 +7,7 @@ import getRuneScapeText from "./index";
 async function main() {
   const file = `./runescape-text-${Date.now()}.gif`;
   if (existsSync(file)) {
-    console.log(`${file} already exists! Exiting...`);
+    console.log(`${file} already exists. Exiting...`);
     process.exit(1);
   }
 
