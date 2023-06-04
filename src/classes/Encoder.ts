@@ -1,15 +1,15 @@
-import { Buffer } from "node:buffer";
-
 import { CanvasRenderingContext2D } from "canvas";
 import { applyPalette, GIFEncoder, quantize } from "gifenc";
 
+const MAX_COLORS = 256;
+
 export default class Encoder {
-  config: Config;
+  private config: Config;
   constructor(config: Config) {
     this.config = config;
   }
 
-  encodeGif(
+  private encodeGif(
     contexts: CanvasRenderingContext2D[],
     width: number,
     height: number
@@ -18,7 +18,9 @@ export default class Encoder {
 
     contexts.forEach((context) => {
       const data = context.getImageData(0, 0, width, height).data;
-      const palette = quantize(data, 256, { format: this.config.format });
+      const palette = quantize(data, MAX_COLORS, {
+        format: this.config.format,
+      });
       const index = applyPalette(data, palette, this.config.format);
 
       gif.writeFrame(index, width, height, {
@@ -30,7 +32,7 @@ export default class Encoder {
 
     gif.finish();
 
-    return Buffer.from(gif.bytesView());
+    return gif.bytesView();
   }
 
   encode(contexts: CanvasRenderingContext2D[]) {
