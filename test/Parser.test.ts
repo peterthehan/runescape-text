@@ -10,6 +10,16 @@ const errorTestCases = [
     expected: "The message string cannot consist of only whitespaces.",
     message: "   ",
   },
+  {
+    expected:
+      "The effects cannot be applied to a message string that is empty.",
+    message: "glow3:",
+  },
+  {
+    expected:
+      "The effects cannot be applied to a message string that consists of only whitespaces.",
+    message: "glow3:   ",
+  },
 ];
 
 const baseTestCase = {
@@ -122,6 +132,16 @@ const happyPathTestCases = [
 ];
 
 const sadPathTestCases = [
+  // invalid effect
+  {
+    expected: {
+      color: "yellow",
+      message: "Blah:hello world",
+      motion: "none",
+      pattern: [],
+    },
+    message: "blah:hello world",
+  },
   // first effect is used when using two effects of the same type
   {
     expected: {
