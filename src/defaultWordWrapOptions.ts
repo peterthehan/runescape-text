@@ -2,9 +2,9 @@ import wrap from "word-wrap";
 
 export const defaultWordWrapOptions: wrap.IOptions = {
   cut: false,
-  escape: (str: string) => str.trimEnd(),
+  escape: (string: string) => string.trim(),
   indent: "",
   newline: "\n",
   trim: false,
-  width: 50,
+  width: 80,
 };
