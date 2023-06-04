@@ -23,9 +23,9 @@ const main = async () => {
   const string = args.join(" ");
   const options = { debug: true };
 
-  const { extension, buffer } = getRuneScapeText(string, options);
+  const { extension, data } = getRuneScapeText(string, options);
   const path = `./${filename}.${extension}`;
-  writeFileSync(path, await buffer);
+  writeFileSync(path, data);
   console.log(`\nFile written to: ${path}`);
 };
 
