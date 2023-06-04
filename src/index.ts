@@ -29,15 +29,15 @@ export default function getRuneScapeText(
     }
   );
 
-  const parsed = logger.time("Parsing", () => {
+  const { color, message, motion } = logger.time("Parsing", () => {
     return parser.parse(string);
   });
 
   const contexts = logger.time("Rendering", () => {
-    colorStyle.setColor(parsed.color);
-    motionStyle.setMotion(parsed.motion);
+    colorStyle.setColor(color);
+    motionStyle.setMotion(motion);
 
-    return motionStyle.render(parsed.message, colorStyle);
+    return motionStyle.render(message, colorStyle);
   });
 
   const response = logger.time("Encoding", () => {
