@@ -142,6 +142,26 @@ const sadPathTestCases = [
     },
     message: "blah:hello world",
   },
+  // no effects are applied if the leading effect is invalid
+  {
+    expected: {
+      color: "yellow",
+      message: "Blah:wave:hello world",
+      motion: "none",
+      pattern: [],
+    },
+    message: "blah:wave:hello world",
+  },
+  // first effect is still applied if second effect is invalid
+  {
+    expected: {
+      color: "yellow",
+      message: "Blah:hello world",
+      motion: "wave",
+      pattern: [],
+    },
+    message: "wave:blah:hello world",
+  },
   // first effect is used when using two effects of the same type
   {
     expected: {
@@ -200,16 +220,6 @@ const sadPathTestCases = [
       pattern: [],
     },
     message: "   glow3:wave:hello world",
-  },
-  // no effects are applied if the leading effect is not real
-  {
-    expected: {
-      color: "yellow",
-      message: "Blah:wave:hello world",
-      motion: "none",
-      pattern: [],
-    },
-    message: "blah:wave:hello world",
   },
 ];
 
