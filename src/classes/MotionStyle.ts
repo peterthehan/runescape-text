@@ -16,7 +16,7 @@ export default class MotionStyle {
   renderNoneStatic(message: string, color: Color) {
     const { width, height, ascent } = measureText(message, this.config.scale);
 
-    const context = new Context(width, height, this.config.scale).getStatic();
+    const context = new Context(width, height, this.config.scale).initialize();
     context.fillStyle = color.calculate(0);
 
     context.fillText(message, 0, ascent);
@@ -32,7 +32,7 @@ export default class MotionStyle {
         width,
         height,
         this.config.scale
-      ).getDynamic();
+      ).initialize();
       context.fillStyle = color.calculate(frame);
 
       context.fillText(line, 0, ascent);
@@ -108,7 +108,7 @@ export default class MotionStyle {
         totalWidth,
         totalHeight,
         this.config.scale
-      ).getDynamic();
+      ).initialize();
       context.fillStyle = color.calculate(frame);
 
       line.split("").forEach((char, index) => {
@@ -138,7 +138,7 @@ export default class MotionStyle {
         width,
         height,
         this.config.scale
-      ).getDynamic();
+      ).initialize();
       context.fillStyle = color.calculate(frame);
 
       const displacement =
@@ -220,7 +220,7 @@ export default class MotionStyle {
         width,
         height,
         this.config.scale
-      ).getDynamic();
+      ).initialize();
       context.fillStyle = color.calculate(frame);
 
       context.fillText(line, 0, getY(ascent, frame, motionFrameIndex, height));
@@ -245,11 +245,8 @@ export default class MotionStyle {
       mergedContexts[0].canvas.height + contexts[0].canvas.height;
 
     return mergedContexts.map((context, index) => {
-      const newContext = new Context(
-        maxWidth,
-        totalHeight,
-        this.config.scale
-      ).getMerge();
+      const newContext = new Context(maxWidth, totalHeight, this.config.scale)
+        .context;
 
       newContext.drawImage(context.canvas, 0, 0);
       newContext.drawImage(contexts[index].canvas, 0, context.canvas.height);
