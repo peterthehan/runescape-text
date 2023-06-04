@@ -258,29 +258,29 @@ export default class MotionStyle {
 
   setMotion(motion: Motion) {
     const motionFunctionMap = {
-      [Version.Osrs]: {
-        [Motion.None]: this.renderNoneDynamic,
-        [Motion.Wave]: (line: string, color: Color) =>
-          this.renderWave(line, color, this.getWave()),
-        [Motion.Wave2]: (line: string, color: Color) =>
-          this.renderWave(line, color, this.getWave2()),
-        [Motion.Shake]: (line: string, color: Color) =>
+      osrs: {
+        none: this.renderNoneDynamic,
+        scroll: this.renderScroll,
+        shake: (line: string, color: Color) =>
           this.renderWave(line, color, this.getShake()),
-        [Motion.Scroll]: this.renderScroll,
-        [Motion.Slide]: (line: string, color: Color) =>
+        slide: (line: string, color: Color) =>
           this.renderSlide(line, color, this.getSlideOsrs()),
-      },
-      [Version.Rs3]: {
-        [Motion.None]: this.renderNoneDynamic,
-        [Motion.Wave]: (line: string, color: Color) =>
+        wave: (line: string, color: Color) =>
           this.renderWave(line, color, this.getWave()),
-        [Motion.Wave2]: (line: string, color: Color) =>
+        wave2: (line: string, color: Color) =>
           this.renderWave(line, color, this.getWave2()),
-        [Motion.Shake]: (line: string, color: Color) =>
+      },
+      rs3: {
+        none: this.renderNoneDynamic,
+        scroll: this.renderScroll,
+        shake: (line: string, color: Color) =>
           this.renderWave(line, color, this.getShake()),
-        [Motion.Scroll]: this.renderScroll,
-        [Motion.Slide]: (line: string, color: Color) =>
+        slide: (line: string, color: Color) =>
           this.renderSlide(line, color, this.getSlideRs3()),
+        wave: (line: string, color: Color) =>
+          this.renderWave(line, color, this.getWave()),
+        wave2: (line: string, color: Color) =>
+          this.renderWave(line, color, this.getWave2()),
       },
     };
 

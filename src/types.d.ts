@@ -1,9 +1,8 @@
-type Format = "rgb444" | "rgb565" | "rgba4444";
-
 type Options = {
   color?: Color;
-  cycleDuration?: number;
   debug?: boolean;
+  duration?: number;
+  enforceCapitalization?: boolean;
   format?: Format;
   fps?: number;
   maxMessageLength?: number;
@@ -19,31 +18,22 @@ type Config = Required<Options> & {
   totalFrames: number;
 };
 
-const enum Version {
-  Osrs = "osrs",
-  Rs3 = "rs3",
-}
+type Version = "osrs" | "rs3";
 
-const enum Color {
-  Cyan = "cyan",
-  Flash1 = "flash1",
-  Flash2 = "flash2",
-  Flash3 = "flash3",
-  Glow1 = "glow1",
-  Glow2 = "glow2",
-  Glow3 = "glow3",
-  Green = "green",
-  Purple = "purple",
-  Red = "red",
-  White = "white",
-  Yellow = "yellow",
-}
+type Color =
+  | "cyan"
+  | "flash1"
+  | "flash2"
+  | "flash3"
+  | "glow1"
+  | "glow2"
+  | "glow3"
+  | "green"
+  | "purple"
+  | "red"
+  | "white"
+  | "yellow";
 
-const enum Motion {
-  None = "none",
-  Scroll = "scroll",
-  Shake = "shake",
-  Slide = "slide",
-  Wave = "wave",
-  Wave2 = "wave2",
-}
+type Motion = "none" | "scroll" | "shake" | "slide" | "wave" | "wave2";
+
+type Format = "rgb444" | "rgb565" | "rgba4444";

@@ -38,17 +38,7 @@ const flash2Osrs = [cyan, blue];
 const flash3Osrs = [darkGreen, lightGreen];
 
 const isAnimated = (color: Color, motion: Motion) => {
-  return (
-    motion !== Motion.None ||
-    [
-      Color.Glow1,
-      Color.Glow2,
-      Color.Glow3,
-      Color.Flash1,
-      Color.Flash2,
-      Color.Flash3,
-    ].includes(color)
-  );
+  return motion !== "none" || dynamicColors.includes(color);
 };
 
 export {

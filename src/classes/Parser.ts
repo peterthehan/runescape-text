@@ -21,10 +21,21 @@ export default class Parser {
         color: this.config.color,
         motion: this.config.motion,
       });
+    const message = this.sanitizeMessage(string, effectsString);
 
     return {
       ...effects,
-      message: this.sanitizeMessage(string, effectsString),
+      message: this.config.enforceCapitalization
+        ? message
+            .split(" ")
+            .map((word, index) => {
+              return (
+                (index === 0 ? word.charAt(0).toUpperCase() : word.charAt(0)) +
+                word.slice(1).toLowerCase()
+              );
+            })
+            .join(" ")
+        : message,
     };
   }
 
@@ -41,10 +52,10 @@ export default class Parser {
 
   private sanitizeMessage(string: string, effectsString: string) {
     const sanitizedMessage = string
+      .slice(0, this.config.maxMessageLength)
       .replace(effectsString, "")
       .replace(/([^ -~\t\n]|`)+/g, this.config.replacement)
-      .trimStart()
-      .slice(0, this.config.maxMessageLength);
+      .trim();
 
     if (sanitizedMessage === "") {
       throw new ValueError("message cannot be empty");
