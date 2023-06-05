@@ -1,4 +1,4 @@
-export const defaultOptions: Options = {
+export const defaultOptions: Required<Options> = {
   color: "yellow",
   debug: false,
   duration: 3000,
@@ -7,6 +7,7 @@ export const defaultOptions: Options = {
   fps: 20,
   maxMessageLength: 80,
   motion: "none",
+  pattern: [],
   replacement: "",
   scale: 2,
   suffix: ":",

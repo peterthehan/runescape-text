@@ -13,6 +13,14 @@ export default class Parser {
   }
 
   parse(string: string) {
+    if (string === "") {
+      throw Error("The message string cannot be empty.");
+    }
+
+    if (string.trim() === "") {
+      throw Error("The message string cannot consist of only whitespaces.");
+    }
+
     const message = this.formatMessagePreExtract(string);
     const effects = this.extractMessageEffects(message);
 
@@ -25,8 +33,7 @@ export default class Parser {
   private formatMessagePreExtract(string: string) {
     return string
       .replace(UNSUPPORTED_FONT_CHARACTERS_REGEXP, this.config.replacement)
-      .slice(0, this.config.maxMessageLength)
-      .trimEnd();
+      .slice(0, this.config.maxMessageLength);
   }
 
   private extractMessageEffects(string: string) {
@@ -58,23 +65,46 @@ export default class Parser {
     const effectsString = this.getEffectsString(string);
     string = string.replace(effectsString, "");
 
-    if (!this.config.enforceCapitalization) {
-      return wrap(string, this.wordWrapConfig);
+    if (string === "") {
+      throw new Error(
+        "The effects cannot be applied to a message string that is empty."
+      );
     }
 
-    const leadingSpaces = " ".repeat(string.length - string.trimStart().length);
-    const message = string
-      .trim()
+    if (string.trim() === "") {
+      throw new Error(
+        "The effects cannot be applied to a message string that consists of only whitespaces."
+      );
+    }
+
+    return wrap(
+      this.config.enforceCapitalization
+        ? this.capitalizeSentences(string)
+        : string,
+      this.wordWrapConfig
+    );
+  }
+
+  private capitalizeSentences(string: string) {
+    let capitalizeNextWord = true;
+    return string
       .split(" ")
-      .map((word, index) => {
-        return (
-          (index === 0 ? word.charAt(0).toUpperCase() : word.charAt(0)) +
-          word.slice(1).toLowerCase()
+      .map((word) => {
+        if (word === "") {
+          return "";
+        }
+
+        const returnWord =
+          (capitalizeNextWord ? word.charAt(0).toUpperCase() : word.charAt(0)) +
+          word.slice(1).toLowerCase();
+
+        capitalizeNextWord = [".", "!", "?"].some((punctuation) =>
+          word.endsWith(punctuation)
         );
+
+        return returnWord;
       })
       .join(" ");
-
-    return wrap(leadingSpaces + message, this.wordWrapConfig);
   }
 
   private getEffectsString(string: string) {
@@ -90,6 +120,6 @@ export default class Parser {
       "i"
     );
 
-    return (string.match(effectsRegExp) || [""])[0];
+    return (string.match(effectsRegExp) ?? [""])[0];
   }
 }

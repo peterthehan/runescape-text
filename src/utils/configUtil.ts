@@ -11,6 +11,8 @@ export function getConfig(options: Options = {}): Config {
   return { ...mergedOptions, delayPerFrame, totalFrames };
 }
 
-export function getWordWrapConfig(wordWrapOptions: wrap.IOptions = {}) {
+export function getWordWrapConfig(
+  wordWrapOptions: wrap.IOptions = {}
+): wrap.IOptions {
   return { ...defaultWordWrapOptions, ...wordWrapOptions };
 }

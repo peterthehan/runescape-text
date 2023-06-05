@@ -1,13 +1,16 @@
+// https://stackoverflow.com/questions/39494689/is-it-possible-to-restrict-number-to-a-certain-range
 type Enumerate<
   N extends number,
   Acc extends number[] = []
 > = Acc["length"] extends N
   ? Acc[number]
   : Enumerate<N, [...Acc, Acc["length"]]>;
-
 type IntRange<F extends number, T extends number> =
   | Exclude<Enumerate<T>, Enumerate<F>>
   | T;
+
+// https://stackoverflow.com/questions/56006111/is-it-possible-to-define-a-non-empty-array-type-in-typescript
+type NonEmptyArray<T> = [T, ...T[]];
 
 type Options = {
   color?: Color;
@@ -18,6 +21,7 @@ type Options = {
   fps?: IntRange<1, 50>;
   maxMessageLength?: number;
   motion?: Motion;
+  pattern?: [];
   replacement?: string;
   scale?: number;
   suffix?: string;
@@ -31,7 +35,7 @@ type Config = Required<Options> & {
 
 type RuneScapeTextResponse = {
   data: Uint8Array;
-  extension: string;
+  extension: "gif";
   framesCount: number;
   height: number;
   width: number;
@@ -48,50 +52,10 @@ type Color =
   | "glow2"
   | "glow3"
   | "green"
-  | "pattern"
   | "purple"
-  | "rainbow"
   | "red"
   | "white"
   | "yellow";
-
-type ColorPattern =
-  | "a"
-  | "b"
-  | "c"
-  | "d"
-  | "e"
-  | "f"
-  | "g"
-  | "h"
-  | "i"
-  | "j"
-  | "k"
-  | "l"
-  | "m"
-  | "n"
-  | "o"
-  | "p"
-  | "q"
-  | "r"
-  | "s"
-  | "t"
-  | "u"
-  | "v"
-  | "w"
-  | "x"
-  | "y"
-  | "z"
-  | "0"
-  | "1"
-  | "2"
-  | "3"
-  | "4"
-  | "5"
-  | "6"
-  | "7"
-  | "8"
-  | "9";
 
 type Motion = "none" | "scroll" | "shake" | "slide" | "wave" | "wave2";
 

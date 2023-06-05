@@ -1,6 +1,6 @@
 import wrap from "word-wrap";
 
-export const defaultWordWrapOptions: wrap.IOptions = {
+export const defaultWordWrapOptions: Required<wrap.IOptions> = {
   cut: false,
   escape: (string: string) => string.trimEnd(),
   indent: "",
