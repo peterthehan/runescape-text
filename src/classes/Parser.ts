@@ -13,14 +13,6 @@ export default class Parser {
   }
 
   parse(string: string) {
-    if (string === "") {
-      throw Error("The message string cannot be empty.");
-    }
-
-    if (string.trim() === "") {
-      throw Error("The message string cannot consist of only whitespaces.");
-    }
-
     const sanitizedMessage = this.sanitizeMessage(string);
     const message = this.formatMessage(sanitizedMessage);
     const effects = this.getMessageEffects(sanitizedMessage);
@@ -29,6 +21,14 @@ export default class Parser {
   }
 
   private sanitizeMessage(string: string) {
+    if (string === "") {
+      throw Error("The message string cannot be empty.");
+    }
+
+    if (string.trim() === "") {
+      throw Error("The message string cannot consist of only whitespaces.");
+    }
+
     return string
       .replace(UNSUPPORTED_FONT_CHARACTERS_REGEXP, this.config.replacement)
       .slice(0, this.config.maxMessageLength);
