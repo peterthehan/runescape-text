@@ -7,6 +7,7 @@ const UNSUPPORTED_FONT_CHARACTERS_REGEXP = /([^ -~\t\n]|`)+/g;
 export default class Parser {
   private config: Config;
   private wordWrapConfig: wrap.IOptions;
+  private effectsRegExp!: RegExp;
   constructor(config: Config, wordWrapConfig: wrap.IOptions) {
     this.config = config;
     this.wordWrapConfig = wordWrapConfig;
@@ -14,6 +15,7 @@ export default class Parser {
 
   parse(string: string) {
     const sanitizedMessage = this.sanitizeMessage(string);
+    this.setEffectsRegExp();
     const message = this.formatMessage(sanitizedMessage);
     const effects = this.getMessageEffects(sanitizedMessage);
 
@@ -32,6 +34,20 @@ export default class Parser {
     return string
       .replace(UNSUPPORTED_FONT_CHARACTERS_REGEXP, this.config.replacement)
       .slice(0, this.config.maxMessageLength);
+  }
+
+  private setEffectsRegExp() {
+    const escapedSuffix = this.config.suffix.replace(/(.{1})/g, "\\$1");
+
+    const patternString = `pattern[a-z0-9]{1,8}`;
+    const colorString =
+      `(${[patternString, ...colors].join("|")})` + escapedSuffix;
+    const motionString = `(${motions.join("|")})` + escapedSuffix;
+
+    this.effectsRegExp = RegExp(
+      `^(${colorString}(${motionString})?|${motionString})`,
+      "i"
+    );
   }
 
   private formatMessage(string: string) {
@@ -84,19 +100,7 @@ export default class Parser {
   }
 
   private getEffectsString(string: string) {
-    const escapedSuffix = this.config.suffix.replace(/(.{1})/g, "\\$1");
-
-    const patternString = `pattern[a-z0-9]{1,8}`;
-    const colorString =
-      `(${[patternString, ...colors].join("|")})` + escapedSuffix;
-    const motionString = `(${motions.join("|")})` + escapedSuffix;
-
-    const effectsRegExp = RegExp(
-      `^(${colorString}(${motionString})?|${motionString})`,
-      "i"
-    );
-
-    return (string.match(effectsRegExp) ?? [""])[0];
+    return (string.match(this.effectsRegExp) ?? [""])[0];
   }
 
   private capitalizeSentences(string: string) {
