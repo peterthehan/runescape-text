@@ -68,7 +68,7 @@ export default class Parser {
 
     return wrap(
       this.config.enforceCapitalization
-        ? this.capitalizeSentences(string)
+        ? this.applyCapitalization(string)
         : string,
       this.wordWrapConfig
     );
@@ -91,7 +91,7 @@ export default class Parser {
       );
   }
 
-  private capitalizeSentences(string: string) {
+  private applyCapitalization(string: string) {
     let capitalizeNextWord = true;
     return string
       .split(" ")
