@@ -15,6 +15,7 @@ export default class Parser {
   parse(string: string) {
     const sanitizedMessage = this.sanitizeMessage(string);
     const effectsString = this.getEffectsString(string);
+
     const message = this.formatMessage(sanitizedMessage, effectsString);
     const effects = this.getMessageEffects(effectsString);
 
