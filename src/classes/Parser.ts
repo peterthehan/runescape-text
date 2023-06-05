@@ -21,22 +21,44 @@ export default class Parser {
       throw Error("The message string cannot consist of only whitespaces.");
     }
 
-    const message = this.formatMessagePreExtract(string);
-    const effects = this.extractMessageEffects(message);
+    const sanitizedMessage = this.sanitizeMessage(string);
+    const message = this.formatMessage(sanitizedMessage);
+    const effects = this.getMessageEffects(sanitizedMessage);
 
-    return {
-      ...effects,
-      message: this.formatMessagePostExtract(message),
-    };
+    return { ...effects, message };
   }
 
-  private formatMessagePreExtract(string: string) {
+  private sanitizeMessage(string: string) {
     return string
       .replace(UNSUPPORTED_FONT_CHARACTERS_REGEXP, this.config.replacement)
       .slice(0, this.config.maxMessageLength);
   }
 
-  private extractMessageEffects(string: string) {
+  private formatMessage(string: string) {
+    const effectsString = this.getEffectsString(string);
+    string = string.replace(effectsString, "");
+
+    if (string === "") {
+      throw new Error(
+        "The effects cannot be applied to a message string that is empty."
+      );
+    }
+
+    if (string.trim() === "") {
+      throw new Error(
+        "The effects cannot be applied to a message string that consists of only whitespaces."
+      );
+    }
+
+    return wrap(
+      this.config.enforceCapitalization
+        ? this.capitalizeSentences(string)
+        : string,
+      this.wordWrapConfig
+    );
+  }
+
+  private getMessageEffects(string: string) {
     const effectsString = this.getEffectsString(string);
     return effectsString
       .toLowerCase()
@@ -61,28 +83,20 @@ export default class Parser {
       );
   }
 
-  private formatMessagePostExtract(string: string) {
-    const effectsString = this.getEffectsString(string);
-    string = string.replace(effectsString, "");
+  private getEffectsString(string: string) {
+    const escapedSuffix = this.config.suffix.replace(/(.{1})/g, "\\$1");
 
-    if (string === "") {
-      throw new Error(
-        "The effects cannot be applied to a message string that is empty."
-      );
-    }
+    const patternString = `pattern[a-z0-9]{1,8}`;
+    const colorString =
+      `(${[patternString, ...colors].join("|")})` + escapedSuffix;
+    const motionString = `(${motions.join("|")})` + escapedSuffix;
 
-    if (string.trim() === "") {
-      throw new Error(
-        "The effects cannot be applied to a message string that consists of only whitespaces."
-      );
-    }
-
-    return wrap(
-      this.config.enforceCapitalization
-        ? this.capitalizeSentences(string)
-        : string,
-      this.wordWrapConfig
+    const effectsRegExp = RegExp(
+      `^(${colorString}(${motionString})?|${motionString})`,
+      "i"
     );
+
+    return (string.match(effectsRegExp) ?? [""])[0];
   }
 
   private capitalizeSentences(string: string) {
@@ -105,21 +119,5 @@ export default class Parser {
         return returnWord;
       })
       .join(" ");
-  }
-
-  private getEffectsString(string: string) {
-    const escapedSuffix = this.config.suffix.replace(/(.{1})/g, "\\$1");
-
-    const patternString = `pattern[a-z0-9]{1,8}`;
-    const colorString =
-      `(${[patternString, ...colors].join("|")})` + escapedSuffix;
-    const motionString = `(${motions.join("|")})` + escapedSuffix;
-
-    const effectsRegExp = RegExp(
-      `^(${colorString}(${motionString})?|${motionString})`,
-      "i"
-    );
-
-    return (string.match(effectsRegExp) ?? [""])[0];
   }
 }
