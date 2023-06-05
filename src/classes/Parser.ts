@@ -7,7 +7,6 @@ const UNSUPPORTED_FONT_CHARACTERS_REGEXP = /([^ -~\t\n]|`)+/g;
 export default class Parser {
   private config: Config;
   private wordWrapConfig: wrap.IOptions;
-  private effectsRegExp!: RegExp;
   constructor(config: Config, wordWrapConfig: wrap.IOptions) {
     this.config = config;
     this.wordWrapConfig = wordWrapConfig;
@@ -15,9 +14,9 @@ export default class Parser {
 
   parse(string: string) {
     const sanitizedMessage = this.sanitizeMessage(string);
-    this.setEffectsRegExp();
-    const message = this.formatMessage(sanitizedMessage);
-    const effects = this.getMessageEffects(sanitizedMessage);
+    const effectsString = this.getEffectsString(string);
+    const message = this.formatMessage(sanitizedMessage, effectsString);
+    const effects = this.getMessageEffects(effectsString);
 
     return { ...effects, message };
   }
@@ -36,22 +35,22 @@ export default class Parser {
       .slice(0, this.config.maxMessageLength);
   }
 
-  private setEffectsRegExp() {
-    const escapedSuffix = this.config.suffix.replace(/(.{1})/g, "\\$1");
+  private getEffectsString(string: string) {
+    const escapedSuffix = "\\" + this.config.suffix.split("").join("\\");
 
-    const patternString = `pattern[a-z0-9]{1,8}`;
-    const colorString =
-      `(${[patternString, ...colors].join("|")})` + escapedSuffix;
+    // const patternString = `pattern[a-z0-9]{1,8}`;
+    const colorString = `(${colors.join("|")})` + escapedSuffix;
     const motionString = `(${motions.join("|")})` + escapedSuffix;
 
-    this.effectsRegExp = RegExp(
+    const effectsRegExp = RegExp(
       `^(${colorString}(${motionString})?|${motionString})`,
       "i"
     );
+
+    return (string.match(effectsRegExp) ?? [""])[0];
   }
 
-  private formatMessage(string: string) {
-    const effectsString = this.getEffectsString(string);
+  private formatMessage(string: string, effectsString: string) {
     string = string.replace(effectsString, "");
 
     if (string === "") {
@@ -74,33 +73,21 @@ export default class Parser {
     );
   }
 
-  private getMessageEffects(string: string) {
-    const effectsString = this.getEffectsString(string);
+  private getMessageEffects(effectsString: string) {
     return effectsString
       .toLowerCase()
       .split(this.config.suffix)
       .filter(Boolean)
       .reduce(
         (value, effect) => {
-          if (effect.startsWith("pattern")) {
-            return {
-              ...value,
-              color: "pattern" as Color,
-              pattern: effect.replace("pattern", "").split(""),
-            };
-          }
           return { ...value, [effectsMap[effect]]: effect };
         },
         {
           color: this.config.color,
           motion: this.config.motion,
-          pattern: [] as string[],
+          pattern: [],
         }
       );
-  }
-
-  private getEffectsString(string: string) {
-    return (string.match(this.effectsRegExp) ?? [""])[0];
   }
 
   private capitalizeSentences(string: string) {
