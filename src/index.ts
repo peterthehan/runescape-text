@@ -34,7 +34,7 @@ export default function getRuneScapeText(
   });
 
   const contexts = logger.time("Rendering", () => {
-    colorStyle.setColor(color);
+    colorStyle.setColor(color, pattern, message);
     motionStyle.setMotion(motion);
 
     return motionStyle.render(message, colorStyle);

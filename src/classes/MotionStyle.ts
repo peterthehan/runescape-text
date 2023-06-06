@@ -6,251 +6,14 @@ import Color from "./ColorStyle";
 import Context from "./Context";
 
 export default class MotionStyle {
-  config: Config;
-  motion!: Motion;
-  motionFunction!: (line: string, color: Color) => CanvasRenderingContext2D[];
+  private config: Config;
+  private motion!: Motion;
+  private motionFunction!: (
+    line: string,
+    color: Color
+  ) => CanvasRenderingContext2D[];
   constructor(config: Config) {
     this.config = config;
-  }
-
-  renderNoneStatic(message: string, color: Color) {
-    const { width, height, ascent } = new Context(this.config).measureText(
-      message
-    );
-
-    const context = new Context(this.config, width, height).initialize();
-    context.fillStyle = color.calculate(0);
-
-    context.fillText(message, 0, ascent);
-
-    return [context];
-  }
-
-  renderNoneDynamic(line: string, color: Color) {
-    const { width, height, ascent } = new Context(this.config).measureText(
-      line
-    );
-
-    return range(this.config.totalFrames).map((frame) => {
-      const context = new Context(this.config, width, height).initialize();
-      context.fillStyle = color.calculate(frame);
-
-      context.fillText(line, 0, ascent);
-
-      return context;
-    });
-  }
-
-  getWave() {
-    return {
-      amplitudeFactor: 1 / 3,
-      frameFactor: 1,
-      getTotalWidth: (width: number) => width,
-      getWave: (wave: number) => 1 + wave,
-      getX: (width: number) => width,
-    };
-  }
-
-  getWave2() {
-    return {
-      amplitudeFactor: 1 / 6,
-      frameFactor: 1,
-      getTotalWidth: (width: number, amplitude: number) =>
-        Math.round(width + 2 * amplitude),
-      getWave: (wave: number) => 1 + wave,
-      getX: (width: number, displacement: number) =>
-        Math.round(width + displacement),
-    };
-  }
-
-  getShake() {
-    return {
-      amplitudeFactor: 1 / 3,
-      frameFactor: 6,
-      getTotalWidth: (width: number) => width,
-      getWave: (wave: number, frame: number) =>
-        2 * frame > this.config.totalFrames
-          ? 1
-          : 1 + wave * (1 - (2 * frame) / this.config.totalFrames),
-      getX: (width: number) => width,
-    };
-  }
-
-  renderWave(
-    line: string,
-    color: Color,
-    {
-      amplitudeFactor,
-      getTotalWidth,
-      frameFactor,
-      getWave,
-      getX,
-    }: {
-      amplitudeFactor: number;
-      frameFactor: number;
-      getTotalWidth:
-        | ((width: number) => number)
-        | ((width: number, amplitude: number) => number);
-      getWave: (wave: number, frame: number) => number;
-      getX:
-        | ((width: number) => number)
-        | ((width: number, displacement: number) => number);
-    }
-  ) {
-    const { width, height, ascent } = new Context(this.config).measureText(
-      line
-    );
-
-    const amplitude = height * amplitudeFactor;
-    const totalWidth = getTotalWidth(width, amplitude);
-    const totalHeight = Math.round(height + 2 * amplitude);
-
-    return range(this.config.totalFrames).map((frame) => {
-      const context = new Context(
-        this.config,
-        totalWidth,
-        totalHeight
-      ).initialize();
-      context.fillStyle = color.calculate(frame);
-
-      line.split("").forEach((char, index) => {
-        const wave = Math.sin(
-          Math.PI *
-            (index / 6 + 8 * frameFactor * (frame / this.config.totalFrames))
-        );
-        const displacement = amplitude * getWave(wave, frame);
-        const x = getX(
-          new Context(this.config).measureText(line.slice(0, index)).width,
-          displacement
-        );
-        const y = Math.round(ascent + displacement);
-
-        context.fillText(char, x, y);
-      });
-
-      return context;
-    });
-  }
-
-  renderScroll(line: string, color: Color) {
-    const { width, height, ascent } = new Context(this.config).measureText(
-      line
-    );
-
-    return range(this.config.totalFrames).map((frame) => {
-      const context = new Context(this.config, width, height).initialize();
-      context.fillStyle = color.calculate(frame);
-
-      const displacement =
-        width - ((2 * frame) / this.config.totalFrames) * width;
-
-      context.fillText(line, Math.round(displacement), ascent);
-
-      return context;
-    });
-  }
-
-  getSlideOsrs() {
-    return {
-      getY: (
-        ascent: number,
-        frame: number,
-        motionFrameIndex: number,
-        height: number
-      ) => {
-        let displacement = ascent;
-        if (frame < motionFrameIndex) {
-          displacement -=
-            ((motionFrameIndex - frame) / motionFrameIndex) * height;
-        } else if (frame > this.config.totalFrames - motionFrameIndex) {
-          displacement -=
-            ((this.config.totalFrames - motionFrameIndex - frame) /
-              motionFrameIndex) *
-            height;
-        }
-
-        return Math.round(displacement);
-      },
-    };
-  }
-
-  getSlideRs3() {
-    return {
-      getY: (
-        ascent: number,
-        frame: number,
-        motionFrameIndex: number,
-        height: number
-      ) => {
-        let displacement = ascent;
-        if (frame < motionFrameIndex) {
-          displacement +=
-            ((motionFrameIndex - frame) / motionFrameIndex) * height;
-        } else if (frame > this.config.totalFrames - motionFrameIndex) {
-          displacement +=
-            ((this.config.totalFrames - motionFrameIndex - frame) /
-              motionFrameIndex) *
-            height;
-        }
-
-        return Math.round(displacement);
-      },
-    };
-  }
-
-  renderSlide(
-    line: string,
-    color: Color,
-    {
-      getY,
-    }: {
-      getY: (
-        ascent: number,
-        frame: number,
-        motionFrameIndex: number,
-        height: number
-      ) => number;
-    }
-  ) {
-    const { width, height, ascent } = new Context(this.config).measureText(
-      line
-    );
-    const motionFrameIndex = Math.round(this.config.totalFrames / 6);
-
-    return range(this.config.totalFrames).map((frame) => {
-      const context = new Context(this.config, width, height).initialize();
-      context.fillStyle = color.calculate(frame);
-
-      context.fillText(line, 0, getY(ascent, frame, motionFrameIndex, height));
-
-      return context;
-    });
-  }
-
-  mergeContexts(
-    mergedContexts: CanvasRenderingContext2D[],
-    contexts: CanvasRenderingContext2D[]
-  ) {
-    if (mergedContexts.length === 0) {
-      return contexts;
-    }
-
-    const maxWidth = Math.max(
-      mergedContexts[0].canvas.width,
-      contexts[0].canvas.width
-    );
-    const totalHeight =
-      mergedContexts[0].canvas.height + contexts[0].canvas.height;
-
-    return mergedContexts.map((context, index) => {
-      const newContext = new Context(this.config, maxWidth, totalHeight)
-        .context;
-
-      newContext.drawImage(context.canvas, 0, 0);
-      newContext.drawImage(contexts[index].canvas, 0, context.canvas.height);
-
-      return newContext;
-    });
   }
 
   setMotion(motion: Motion) {
@@ -296,5 +59,245 @@ export default class MotionStyle {
         const contexts = this.motionFunction(line, color);
         return this.mergeContexts(mergedContexts, contexts);
       }, []);
+  }
+
+  private renderNoneStatic(message: string, color: Color) {
+    const { ascent, height, width } = new Context(this.config).measureText(
+      message
+    );
+
+    const context = new Context(this.config, width, height).initialize();
+    context.fillStyle = color.calculate({ frame: 0, index: 0 });
+
+    context.fillText(message, 0, ascent);
+
+    return [context];
+  }
+
+  private renderNoneDynamic(line: string, color: Color) {
+    const { ascent, height, width } = new Context(this.config).measureText(
+      line
+    );
+
+    return range(this.config.totalFrames).map((frame) => {
+      const context = new Context(this.config, width, height).initialize();
+      context.fillStyle = color.calculate({ frame, index: 0 });
+
+      context.fillText(line, 0, ascent);
+
+      return context;
+    });
+  }
+
+  private getWave() {
+    return {
+      amplitudeFactor: 1 / 3,
+      frameFactor: 1,
+      getTotalWidth: (width: number) => width,
+      getWave: (wave: number) => 1 + wave,
+      getX: (width: number) => width,
+    };
+  }
+
+  private getWave2() {
+    return {
+      amplitudeFactor: 1 / 6,
+      frameFactor: 1,
+      getTotalWidth: (width: number, amplitude: number) =>
+        Math.round(width + 2 * amplitude),
+      getWave: (wave: number) => 1 + wave,
+      getX: (width: number, displacement: number) =>
+        Math.round(width + displacement),
+    };
+  }
+
+  private getShake() {
+    return {
+      amplitudeFactor: 1 / 3,
+      frameFactor: 6,
+      getTotalWidth: (width: number) => width,
+      getWave: (wave: number, frame: number) =>
+        2 * frame > this.config.totalFrames
+          ? 1
+          : 1 + wave * (1 - (2 * frame) / this.config.totalFrames),
+      getX: (width: number) => width,
+    };
+  }
+
+  private renderWave(
+    line: string,
+    color: Color,
+    {
+      amplitudeFactor,
+      frameFactor,
+      getTotalWidth,
+      getWave,
+      getX,
+    }: {
+      amplitudeFactor: number;
+      frameFactor: number;
+      getTotalWidth:
+        | ((width: number) => number)
+        | ((width: number, amplitude: number) => number);
+      getWave: (wave: number, frame: number) => number;
+      getX:
+        | ((width: number) => number)
+        | ((width: number, displacement: number) => number);
+    }
+  ) {
+    const { ascent, height, width } = new Context(this.config).measureText(
+      line
+    );
+
+    const amplitude = height * amplitudeFactor;
+    const totalWidth = getTotalWidth(width, amplitude);
+    const totalHeight = Math.round(height + 2 * amplitude);
+
+    return range(this.config.totalFrames).map((frame) => {
+      const context = new Context(
+        this.config,
+        totalWidth,
+        totalHeight
+      ).initialize();
+
+      line.split("").forEach((char, index) => {
+        context.fillStyle = color.calculate({ frame, index });
+        const wave = Math.sin(
+          Math.PI *
+            (index / 6 + 8 * frameFactor * (frame / this.config.totalFrames))
+        );
+        const displacement = amplitude * getWave(wave, frame);
+        const x = getX(
+          new Context(this.config).measureText(line.slice(0, index)).width,
+          displacement
+        );
+        const y = Math.round(ascent + displacement);
+
+        context.fillText(char, x, y);
+      });
+
+      return context;
+    });
+  }
+
+  private renderScroll(line: string, color: Color) {
+    const { ascent, height, width } = new Context(this.config).measureText(
+      line
+    );
+
+    return range(this.config.totalFrames).map((frame) => {
+      const context = new Context(this.config, width, height).initialize();
+      context.fillStyle = color.calculate({ frame, index: 0 });
+
+      const displacement =
+        width - ((2 * frame) / this.config.totalFrames) * width;
+
+      context.fillText(line, Math.round(displacement), ascent);
+
+      return context;
+    });
+  }
+
+  private getSlideOsrs() {
+    return {
+      getY: (
+        ascent: number,
+        frame: number,
+        motionFrameIndex: number,
+        height: number
+      ) => {
+        let displacement = ascent;
+        if (frame < motionFrameIndex) {
+          displacement -=
+            ((motionFrameIndex - frame) / motionFrameIndex) * height;
+        } else if (frame > this.config.totalFrames - motionFrameIndex) {
+          displacement -=
+            ((this.config.totalFrames - motionFrameIndex - frame) /
+              motionFrameIndex) *
+            height;
+        }
+
+        return Math.round(displacement);
+      },
+    };
+  }
+
+  private getSlideRs3() {
+    return {
+      getY: (
+        ascent: number,
+        frame: number,
+        motionFrameIndex: number,
+        height: number
+      ) => {
+        let displacement = ascent;
+        if (frame < motionFrameIndex) {
+          displacement +=
+            ((motionFrameIndex - frame) / motionFrameIndex) * height;
+        } else if (frame > this.config.totalFrames - motionFrameIndex) {
+          displacement +=
+            ((this.config.totalFrames - motionFrameIndex - frame) /
+              motionFrameIndex) *
+            height;
+        }
+
+        return Math.round(displacement);
+      },
+    };
+  }
+
+  private renderSlide(
+    line: string,
+    color: Color,
+    {
+      getY,
+    }: {
+      getY: (
+        ascent: number,
+        frame: number,
+        motionFrameIndex: number,
+        height: number
+      ) => number;
+    }
+  ) {
+    const { ascent, height, width } = new Context(this.config).measureText(
+      line
+    );
+    const motionFrameIndex = Math.round(this.config.totalFrames / 6);
+
+    return range(this.config.totalFrames).map((frame) => {
+      const context = new Context(this.config, width, height).initialize();
+      context.fillStyle = color.calculate({ frame, index: 0 });
+
+      context.fillText(line, 0, getY(ascent, frame, motionFrameIndex, height));
+
+      return context;
+    });
+  }
+
+  private mergeContexts(
+    mergedContexts: CanvasRenderingContext2D[],
+    contexts: CanvasRenderingContext2D[]
+  ) {
+    if (mergedContexts.length === 0) {
+      return contexts;
+    }
+
+    const maxWidth = Math.max(
+      mergedContexts[0].canvas.width,
+      contexts[0].canvas.width
+    );
+    const totalHeight =
+      mergedContexts[0].canvas.height + contexts[0].canvas.height;
+
+    return mergedContexts.map((context, index) => {
+      const newContext = new Context(this.config, maxWidth, totalHeight)
+        .context;
+
+      newContext.drawImage(context.canvas, 0, 0);
+      newContext.drawImage(contexts[index].canvas, 0, context.canvas.height);
+
+      return newContext;
+    });
   }
 }

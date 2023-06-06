@@ -76,6 +76,16 @@ type Color =
 type Pattern = "pattern";
 
 type PatternCharacter =
+  | "0"
+  | "1"
+  | "2"
+  | "3"
+  | "4"
+  | "5"
+  | "6"
+  | "7"
+  | "8"
+  | "9"
   | "a"
   | "b"
   | "c"
@@ -101,20 +111,15 @@ type PatternCharacter =
   | "w"
   | "x"
   | "y"
-  | "z"
-  | "0"
-  | "1"
-  | "2"
-  | "3"
-  | "4"
-  | "5"
-  | "6"
-  | "7"
-  | "8"
-  | "9";
+  | "z";
 
 type Motion = "none" | "scroll" | "shake" | "slide" | "wave" | "wave2";
 
 type Format = "rgb444" | "rgb565" | "rgba4444";
 
 type Extension = "gif";
+
+type ColorFunctionInput = {
+  frame: number;
+  index: number;
+};

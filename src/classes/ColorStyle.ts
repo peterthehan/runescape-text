@@ -1,33 +1,100 @@
 import {
-  cyan,
-  flash1Osrs,
-  flash1Rs3,
-  flash2Osrs,
-  flash2Rs3,
-  flash3Osrs,
-  flash3Rs3,
-  glow1Osrs,
-  glow1Rs3,
-  glow2Osrs,
-  glow2Rs3,
-  glow3Osrs,
-  glow3Rs3,
-  green,
-  purple,
-  red,
-  white,
-  yellow,
-} from "../utils/effectUtil";
+  CYAN,
+  FLASH_1_OSRS,
+  FLASH_1_RS3,
+  FLASH_2_OSRS,
+  FLASH_2_RS3,
+  FLASH_3_OSRS,
+  FLASH_3_RS3,
+  GLOW_1_OSRS,
+  GLOW_1_RS3,
+  GLOW_2_OSRS,
+  GLOW_2_RS3,
+  GLOW_3_OSRS,
+  GLOW_3_RS3,
+  GREEN,
+  patternCharacterToColorMap,
+  PURPLE,
+  RED,
+  WHITE,
+  YELLOW,
+} from "../utils/ColorUtil";
 
 export default class ColorStyle {
-  config: Config;
-  color!: Color | Pattern;
-  colorFunction!: (() => number[]) | ((frame: number) => number[]);
+  private config: Config;
+  private _color!: Color | Pattern;
+  private colorFunction!: (input: ColorFunctionInput) => number[];
   constructor(config: Config) {
     this.config = config;
   }
 
-  getGlow(frame: number, glow: number[][]) {
+  get color() {
+    return this._color;
+  }
+
+  setColor(
+    color: Color | Pattern,
+    pattern: [] | NonEmptyArray<PatternCharacter>,
+    message: string
+  ) {
+    const patternColors = this.createPatternColors(pattern, message);
+
+    const colorFunctionMap = {
+      osrs: {
+        cyan: () => CYAN,
+        flash1: (input: ColorFunctionInput) =>
+          this.getFlash(input, FLASH_1_OSRS),
+        flash2: (input: ColorFunctionInput) =>
+          this.getFlash(input, FLASH_2_OSRS),
+        flash3: (input: ColorFunctionInput) =>
+          this.getFlash(input, FLASH_3_OSRS),
+        glow1: (input: ColorFunctionInput) => this.getGlow(input, GLOW_1_OSRS),
+        glow2: (input: ColorFunctionInput) => this.getGlow(input, GLOW_2_OSRS),
+        glow3: (input: ColorFunctionInput) => this.getGlow(input, GLOW_3_OSRS),
+        green: () => GREEN,
+        pattern: (input: ColorFunctionInput) =>
+          this.getPattern(input, patternColors),
+        purple: () => PURPLE,
+        red: () => RED,
+        white: () => WHITE,
+        yellow: () => YELLOW,
+      },
+      rs3: {
+        cyan: () => CYAN,
+        flash1: (input: ColorFunctionInput) =>
+          this.getFlash(input, FLASH_1_RS3),
+        flash2: (input: ColorFunctionInput) =>
+          this.getFlash(input, FLASH_2_RS3),
+        flash3: (input: ColorFunctionInput) =>
+          this.getFlash(input, FLASH_3_RS3),
+        glow1: (input: ColorFunctionInput) => this.getGlow(input, GLOW_1_RS3),
+        glow2: (input: ColorFunctionInput) => this.getGlow(input, GLOW_2_RS3),
+        glow3: (input: ColorFunctionInput) => this.getGlow(input, GLOW_3_RS3),
+        green: () => GREEN,
+        pattern: (input: ColorFunctionInput) =>
+          this.getPattern(input, patternColors),
+        purple: () => PURPLE,
+        red: () => RED,
+        white: () => WHITE,
+        yellow: () => YELLOW,
+      },
+    };
+
+    this._color = color;
+    this.colorFunction = colorFunctionMap[this.config.version][this.color];
+  }
+
+  calculate(input: ColorFunctionInput) {
+    return `rgba(${this.colorFunction(input)}, 1)`;
+  }
+
+  private getFlash({ frame }: ColorFunctionInput, flash: number[][]) {
+    return flash[
+      Number(((2 * frame) % this.config.fps) * 2 >= this.config.fps)
+    ];
+  }
+
+  private getGlow({ frame }: ColorFunctionInput, glow: number[][]) {
     const inbetweenFrames = this.config.totalFrames / (glow.length - 1);
 
     const index = Math.floor(frame / inbetweenFrames);
@@ -42,51 +109,37 @@ export default class ColorStyle {
     );
   }
 
-  getFlash(frame: number, flash: number[][]) {
-    return flash[
-      Number(((2 * frame) % this.config.fps) * 2 >= this.config.fps)
-    ];
+  private getPattern({ index }: ColorFunctionInput, pattern: number[][]) {
+    return pattern[index];
   }
 
-  setColor(color: Color | Pattern) {
-    const colorFunctionMap = {
-      osrs: {
-        cyan: () => cyan,
-        flash1: (frame: number) => this.getFlash(frame, flash1Osrs),
-        flash2: (frame: number) => this.getFlash(frame, flash2Osrs),
-        flash3: (frame: number) => this.getFlash(frame, flash3Osrs),
-        glow1: (frame: number) => this.getGlow(frame, glow1Osrs),
-        glow2: (frame: number) => this.getGlow(frame, glow2Osrs),
-        glow3: (frame: number) => this.getGlow(frame, glow3Osrs),
-        green: () => green,
-        pattern: () => yellow,
-        purple: () => purple,
-        red: () => red,
-        white: () => white,
-        yellow: () => yellow,
-      },
-      rs3: {
-        cyan: () => cyan,
-        flash1: (frame: number) => this.getFlash(frame, flash1Rs3),
-        flash2: (frame: number) => this.getFlash(frame, flash2Rs3),
-        flash3: (frame: number) => this.getFlash(frame, flash3Rs3),
-        glow1: (frame: number) => this.getGlow(frame, glow1Rs3),
-        glow2: (frame: number) => this.getGlow(frame, glow2Rs3),
-        glow3: (frame: number) => this.getGlow(frame, glow3Rs3),
-        green: () => green,
-        pattern: () => yellow,
-        purple: () => purple,
-        red: () => red,
-        white: () => white,
-        yellow: () => yellow,
-      },
-    };
+  private createPatternColors(
+    pattern: [] | NonEmptyArray<PatternCharacter>,
+    message: string
+  ) {
+    const buckets = this.createPatternBuckets(pattern.length, message.length);
 
-    this.color = color;
-    this.colorFunction = colorFunctionMap[this.config.version][this.color];
+    return pattern.flatMap((character, index) => {
+      const output = [];
+      for (let i = 0; i < buckets[index]; ++i) {
+        output.push(patternCharacterToColorMap[character]);
+      }
+
+      return output;
+    });
   }
 
-  calculate(frame: number) {
-    return `rgba(${this.colorFunction(frame)}, 1)`;
+  // naive implementation
+  private createPatternBuckets(patternLength: number, messageLength: number) {
+    const buckets = [];
+    for (let i = 0; i < messageLength; ++i) {
+      if (buckets.length < patternLength) {
+        buckets.push(0);
+      }
+
+      ++buckets[i % patternLength];
+    }
+
+    return buckets;
   }
 }
