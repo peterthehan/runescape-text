@@ -18,7 +18,7 @@ export default class Context {
   initialize() {
     this.context.font = this.getFont();
     if (this.config.hasShadow) {
-      this.context.shadowColor = "black";
+      this.context.shadowColor = this.config.shadowColor;
       this.context.shadowOffsetX = this.config.scale;
       this.context.shadowOffsetY = this.config.scale;
     }

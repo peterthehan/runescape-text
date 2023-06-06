@@ -25,6 +25,7 @@ type Options = {
   pattern?: [];
   replacement?: string;
   scale?: number;
+  shadowColor?: string;
   suffix?: string;
   version?: Version;
 };

@@ -11,6 +11,7 @@ export const defaultOptions: Required<Options> = {
   pattern: [],
   replacement: "",
   scale: 2,
+  shadowColor: "black",
   suffix: ":",
   version: "osrs",
 };
