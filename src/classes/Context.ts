@@ -9,26 +9,29 @@ const FONT_NAME = "RuneScape";
 
 export default class Context {
   private config: Config;
-  context: CanvasRenderingContext2D;
+  private _context: CanvasRenderingContext2D;
   constructor(config: Config, width = 0, height = 0) {
     this.config = config;
-    this.context = createCanvas(width, height).getContext("2d");
+    this._context = createCanvas(width, height).getContext("2d");
+    this._context.font = `${FONT_BASE_SIZE * this.config.scale}px ${FONT_NAME}`;
+  }
+
+  get context() {
+    return this._context;
   }
 
   initialize() {
-    this.context.font = this.getFont();
     if (this.config.hasShadow) {
-      this.context.shadowColor = this.config.shadowColor;
-      this.context.shadowOffsetX = this.config.scale;
-      this.context.shadowOffsetY = this.config.scale;
+      this._context.shadowColor = this.config.shadowColor;
+      this._context.shadowOffsetX = this.config.scale;
+      this._context.shadowOffsetY = this.config.scale;
     }
 
-    return this.context;
+    return this._context;
   }
 
   measureText(text: string) {
-    this.context.font = this.getFont();
-    const measurement = this.context.measureText(text);
+    const measurement = this._context.measureText(text);
 
     return {
       ascent: measurement.actualBoundingBoxAscent,
@@ -38,10 +41,5 @@ export default class Context {
         (this.config.hasShadow ? this.config.scale : 0),
       width: measurement.width,
     };
-  }
-
-  private getFont() {
-    const fontSize = FONT_BASE_SIZE * this.config.scale;
-    return `${fontSize}px ${FONT_NAME}`;
   }
 }
