@@ -10,7 +10,7 @@ export default class Encoder {
   }
 
   encode(contexts: CanvasRenderingContext2D[]) {
-    const { width, height } = contexts[0].canvas;
+    const { height, width } = contexts[0].canvas;
 
     return {
       data: this.encodeGif(contexts, width, height),
