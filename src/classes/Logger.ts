@@ -4,14 +4,14 @@ export default class Logger {
     this.debug = debug;
   }
 
-  time<T>(message: string, callback: () => T): T {
+  time<T>(description: string, callback: () => T): T {
     if (!this.debug) {
       return callback();
     }
 
-    console.time(message);
+    console.time(description);
     const returnValue = callback();
-    console.timeEnd(message);
+    console.timeEnd(description);
 
     return returnValue;
   }

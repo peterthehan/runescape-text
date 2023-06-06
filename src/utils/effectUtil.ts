@@ -39,7 +39,7 @@ const flash1Osrs = [red, yellow];
 const flash2Osrs = [cyan, blue];
 const flash3Osrs = [darkGreen, lightGreen];
 
-const isAnimated = (color: Color, motion: Motion) => {
+const isAnimated = (color: Color | Pattern, motion: Motion) => {
   return motion !== "none" || dynamicColors.includes(color);
 };
 

@@ -29,7 +29,7 @@ export default function getRuneScapeText(
     }
   );
 
-  const { color, message, motion } = logger.time("Parsing", () => {
+  const { color, message, motion, pattern } = logger.time("Parsing", () => {
     return parser.parse(string);
   });
 
@@ -44,5 +44,5 @@ export default function getRuneScapeText(
     return encoder.encode(contexts);
   });
 
-  return response;
+  return { ...response, color, message, motion, pattern };
 }

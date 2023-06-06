@@ -21,7 +21,7 @@ import {
 
 export default class ColorStyle {
   config: Config;
-  color!: Color;
+  color!: Color | Pattern;
   colorFunction!: (() => number[]) | ((frame: number) => number[]);
   constructor(config: Config) {
     this.config = config;
@@ -48,7 +48,7 @@ export default class ColorStyle {
     ];
   }
 
-  setColor(color: Color) {
+  setColor(color: Color | Pattern) {
     const colorFunctionMap = {
       osrs: {
         cyan: () => cyan,
@@ -59,6 +59,7 @@ export default class ColorStyle {
         glow2: (frame: number) => this.getGlow(frame, glow2Osrs),
         glow3: (frame: number) => this.getGlow(frame, glow3Osrs),
         green: () => green,
+        pattern: () => yellow,
         purple: () => purple,
         red: () => red,
         white: () => white,
@@ -73,6 +74,7 @@ export default class ColorStyle {
         glow2: (frame: number) => this.getGlow(frame, glow2Rs3),
         glow3: (frame: number) => this.getGlow(frame, glow3Rs3),
         green: () => green,
+        pattern: () => yellow,
         purple: () => purple,
         red: () => red,
         white: () => white,

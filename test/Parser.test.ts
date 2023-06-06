@@ -282,6 +282,15 @@ const patternTestCases = [
     },
     message: "patternabc:hello world",
   },
+  {
+    expected: {
+      color: "pattern",
+      message: "Hello world",
+      motion: "wave",
+      pattern: ["1", "2", "3"],
+    },
+    message: "pattern123:wave:hello world",
+  },
   // no pattern characters given
   {
     expected: {
@@ -335,7 +344,7 @@ describe("Parser", () => {
     { description: "Whitespace", testCases: whitespaceTestCases },
     { description: "Happy Path", testCases: happyPathTestCases },
     { description: "Sad Path", testCases: sadPathTestCases },
-    // { description: "Pattern", testCases: patternTestCases },
+    { description: "Pattern", testCases: patternTestCases },
   ].forEach(({ description, testCases }) => {
     describe(description, () => {
       test.each(testCases)(`.parse("$message")`, ({ expected, message }) => {

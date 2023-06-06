@@ -39,8 +39,9 @@ export default class Parser {
   private getEffectsString(string: string) {
     const escapedSuffix = "\\" + this.config.suffix.split("").join("\\");
 
-    // const patternString = `pattern[a-z0-9]{1,8}`;
-    const colorString = `(${colors.join("|")})` + escapedSuffix;
+    const patternString = `pattern[a-z0-9]{1,8}`;
+    const colorString =
+      `(${patternString}|${colors.join("|")})` + escapedSuffix;
     const motionString = `(${motions.join("|")})` + escapedSuffix;
 
     const effectsRegExp = RegExp(
@@ -81,12 +82,19 @@ export default class Parser {
       .filter(Boolean)
       .reduce(
         (value, effect) => {
+          if (effect.startsWith("pattern")) {
+            return {
+              ...value,
+              color: "pattern",
+              pattern: effect.replace("pattern", "").split(""),
+            } as Required<EffectsOptions>;
+          }
           return { ...value, [effectsMap[effect]]: effect };
         },
         {
           color: this.config.color,
           motion: this.config.motion,
-          pattern: [],
+          pattern: this.config.pattern,
         }
       );
   }
