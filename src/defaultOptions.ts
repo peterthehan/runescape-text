@@ -5,6 +5,7 @@ export const defaultOptions: Required<Options> = {
   enforceCapitalization: true,
   format: "rgba4444",
   fps: 20,
+  hasShadow: true,
   maxMessageLength: 80,
   motion: "none",
   pattern: [],

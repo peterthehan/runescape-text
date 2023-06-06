@@ -19,6 +19,7 @@ type Options = {
   enforceCapitalization?: boolean;
   format?: Format;
   fps?: IntRange<1, 50>;
+  hasShadow?: boolean;
   maxMessageLength?: number;
   motion?: Motion;
   pattern?: [];
