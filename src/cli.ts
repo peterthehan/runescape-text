@@ -14,8 +14,9 @@ async function main() {
   const [, , ...args] = process.argv;
   const string = args.join(" ");
   const options = { debug: true };
+  const wordWrapOptions = { width: 40 };
 
-  const { data } = getRuneScapeText(string, options);
+  const { data } = getRuneScapeText(string, options, wordWrapOptions);
 
   writeFileSync(file, data);
   console.log(`\nFile written to: ${file}`);
