@@ -69,6 +69,7 @@ type Color =
   | "glow3"
   | "green"
   | "purple"
+  | "rainbow"
   | "red"
   | "white"
   | "yellow";

@@ -2,10 +2,10 @@ import { CanvasRenderingContext2D } from "canvas";
 
 import { isAnimated } from "../utils/effectUtil";
 import range from "../utils/range";
-import Color from "./ColorStyle";
+import Color from "./ColorEffect";
 import Context from "./Context";
 
-export default class MotionStyle {
+export default class MotionEffect {
   private config: Config;
   private motion!: Motion;
   private motionFunction!: (

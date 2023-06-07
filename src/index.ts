@@ -1,9 +1,9 @@
 import wrap from "word-wrap";
 
-import ColorStyle from "./classes/ColorStyle";
+import ColorEffect from "./classes/ColorEffect";
 import Encoder from "./classes/Encoder";
 import Logger from "./classes/Logger";
-import MotionStyle from "./classes/MotionStyle";
+import MotionEffect from "./classes/MotionEffect";
 import Parser from "./classes/Parser";
 import { getConfig, getWordWrapConfig } from "./utils/configUtil";
 
@@ -21,8 +21,8 @@ export default function getRuneScapeText(
     "Initializing",
     () => {
       const parser = new Parser(config, wordWrapConfig);
-      const colorStyle = new ColorStyle(config);
-      const motionStyle = new MotionStyle(config);
+      const colorStyle = new ColorEffect(config);
+      const motionStyle = new MotionEffect(config);
       const encoder = new Encoder(config);
 
       return { colorStyle, encoder, motionStyle, parser };
