@@ -3,7 +3,7 @@ import wrap from "word-wrap";
 import { defaultOptions } from "../defaultOptions";
 import { defaultWordWrapOptions } from "../defaultWordWrapOptions";
 
-export function getConfig(options: Options = {}): Config {
+function getConfig(options: Options = {}): Config {
   const mergedOptions = { ...defaultOptions, ...options } as Required<Options>;
   const delayPerFrame = 1000 / mergedOptions.fps;
   const totalFrames = Math.round(mergedOptions.duration / delayPerFrame);
@@ -11,8 +11,8 @@ export function getConfig(options: Options = {}): Config {
   return { ...mergedOptions, delayPerFrame, totalFrames };
 }
 
-export function getWordWrapConfig(
-  wordWrapOptions: wrap.IOptions = {}
-): wrap.IOptions {
+function getWordWrapConfig(wordWrapOptions: wrap.IOptions = {}): wrap.IOptions {
   return { ...defaultWordWrapOptions, ...wordWrapOptions };
 }
+
+export { getConfig, getWordWrapConfig };

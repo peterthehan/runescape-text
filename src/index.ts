@@ -5,7 +5,7 @@ import Encoder from "./classes/Encoder";
 import Logger from "./classes/Logger";
 import MotionEffect from "./classes/MotionEffect";
 import Parser from "./classes/Parser";
-import { getConfig, getWordWrapConfig } from "./utils/configUtil";
+import { getConfig, getWordWrapConfig } from "./utils/ConfigUtil";
 
 export default function getRuneScapeText(
   string: string,

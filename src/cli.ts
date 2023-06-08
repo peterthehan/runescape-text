@@ -14,7 +14,7 @@ async function main() {
   const [, , ...args] = process.argv;
   const string = args.join(" ");
   const options = { debug: true };
-  const wordWrapOptions = { width: 3 };
+  const wordWrapOptions = { width: 40 };
 
   const { data } = getRuneScapeText(string, options, wordWrapOptions);
 

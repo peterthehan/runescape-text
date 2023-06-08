@@ -27,19 +27,16 @@ export default class Context {
       this._context.shadowOffsetY = this.config.scale;
     }
 
-    return this._context;
+    return this;
   }
 
   measureText(text: string) {
-    const measurement = this._context.measureText(text);
+    const {
+      actualBoundingBoxAscent: ascent,
+      actualBoundingBoxDescent: descent,
+      width,
+    } = this._context.measureText(text);
 
-    return {
-      ascent: measurement.actualBoundingBoxAscent,
-      height:
-        measurement.actualBoundingBoxAscent +
-        measurement.actualBoundingBoxDescent +
-        (this.config.hasShadow ? this.config.scale : 0),
-      width: measurement.width,
-    };
+    return { ascent, height: ascent + descent, width };
   }
 }
