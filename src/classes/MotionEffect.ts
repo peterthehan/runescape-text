@@ -101,7 +101,9 @@ export default class MotionEffect {
   private getMotionFunction() {
     switch (this.motion) {
       case "none":
+        return this.renderNone;
       case "scroll":
+        return this.renderScroll;
       case "shake":
       case "slide":
       case "wave":
@@ -119,10 +121,38 @@ export default class MotionEffect {
     lineContext,
     messageCharacterIndex,
   }: MotionFunctionInput) {
+    const { ascent: y } = this.measureContext.measureText(line);
     const x = this.measureContext.measureText(
       line.slice(0, lineCharacterIndex)
     ).width;
-    const y = this.measureContext.measureText(line).ascent;
+
+    lineContext.context.fillStyle = color.calculate({
+      frame,
+      index: messageCharacterIndex,
+    });
+    lineContext.context.fillText(character, x, y);
+
+    return lineContext;
+  }
+
+  private renderScroll({
+    character,
+    color,
+    frame,
+    line,
+    lineCharacterIndex,
+    lineContext,
+    messageCharacterIndex,
+  }: MotionFunctionInput) {
+    const { ascent: y, width: lineWidth } =
+      this.measureContext.measureText(line);
+    const { width } = this.measureContext.measureText(
+      line.slice(0, lineCharacterIndex)
+    );
+    const displacement = Math.round(
+      (1 - (2 * frame) / this.config.totalFrames) * lineWidth
+    );
+    const x = displacement + width;
 
     lineContext.context.fillStyle = color.calculate({
       frame,
