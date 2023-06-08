@@ -1,6 +1,6 @@
 import wrap from "word-wrap";
 
-import { colors, effectsMap, motions } from "../utils/effectUtil";
+import { COLORS, EFFECTS_MAP, MOTIONS } from "../utils/EffectsUtil";
 
 const UNSUPPORTED_FONT_CHARACTERS_REGEXP = /([^ -~\t\n]|`)+/g;
 
@@ -41,8 +41,8 @@ export default class Parser {
 
     const patternString = `pattern[a-z0-9]{1,8}`;
     const colorString =
-      `(${patternString}|${colors.join("|")})` + escapedSuffix;
-    const motionString = `(${motions.join("|")})` + escapedSuffix;
+      `(${patternString}|${COLORS.join("|")})` + escapedSuffix;
+    const motionString = `(${MOTIONS.join("|")})` + escapedSuffix;
 
     const effectsRegExp = RegExp(
       `^(${colorString}(${motionString})?|${motionString})`,
@@ -89,7 +89,7 @@ export default class Parser {
               pattern: effect.replace("pattern", "").split(""),
             } as Required<EffectsOptions>;
           }
-          return { ...value, [effectsMap[effect]]: effect };
+          return { ...value, [EFFECTS_MAP[effect]]: effect };
         },
         {
           color: this.config.color,

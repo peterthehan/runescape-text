@@ -1,303 +1,157 @@
 import { CanvasRenderingContext2D } from "canvas";
 
-import { isAnimated } from "../utils/effectUtil";
+import { isAnimated } from "../utils/EffectsUtil";
 import range from "../utils/range";
-import Color from "./ColorEffect";
+import ColorEffect from "./ColorEffect";
 import Context from "./Context";
+
+type MotionFunctionInput = {
+  character: string;
+  color: ColorEffect;
+  frame: number;
+  line: string;
+  lineCharacterIndex: number;
+  lineContext: Context;
+  messageCharacterIndex: number;
+};
 
 export default class MotionEffect {
   private config: Config;
+  private measureContext: Context;
   private motion!: Motion;
-  private motionFunction!: (
-    line: string,
-    color: Color
-  ) => CanvasRenderingContext2D[];
+  private motionFunction!: (input: MotionFunctionInput) => Context;
   constructor(config: Config) {
     this.config = config;
+    this.measureContext = new Context(this.config);
   }
 
   setMotion(motion: Motion) {
-    const motionFunctionMap = {
-      osrs: {
-        none: this.renderNoneDynamic,
-        scroll: this.renderScroll,
-        shake: (line: string, color: Color) =>
-          this.renderWave(line, color, this.getShake()),
-        slide: (line: string, color: Color) =>
-          this.renderSlide(line, color, this.getSlideOsrs()),
-        wave: (line: string, color: Color) =>
-          this.renderWave(line, color, this.getWave()),
-        wave2: (line: string, color: Color) =>
-          this.renderWave(line, color, this.getWave2()),
-      },
-      rs3: {
-        none: this.renderNoneDynamic,
-        scroll: this.renderScroll,
-        shake: (line: string, color: Color) =>
-          this.renderWave(line, color, this.getShake()),
-        slide: (line: string, color: Color) =>
-          this.renderSlide(line, color, this.getSlideRs3()),
-        wave: (line: string, color: Color) =>
-          this.renderWave(line, color, this.getWave()),
-        wave2: (line: string, color: Color) =>
-          this.renderWave(line, color, this.getWave2()),
-      },
-    };
-
     this.motion = motion;
-    this.motionFunction = motionFunctionMap[this.config.version][this.motion];
+    this.motionFunction = this.getMotionFunction();
   }
 
-  render(message: string, color: Color) {
-    if (!isAnimated(color.color, this.motion)) {
-      return this.renderNoneStatic(message, color);
-    }
+  render(message: string, color: ColorEffect) {
+    const contexts: CanvasRenderingContext2D[] = [];
 
-    return message
-      .split("\n")
-      .reduce((mergedContexts: CanvasRenderingContext2D[], line) => {
-        const contexts = this.motionFunction(line, color);
-        return this.mergeContexts(mergedContexts, contexts);
-      }, []);
-  }
+    const framesCount = isAnimated(color.color, this.motion)
+      ? this.config.totalFrames
+      : 1;
 
-  private renderNoneStatic(message: string, color: Color) {
-    const { ascent, height, width } = new Context(this.config).measureText(
-      message
-    );
+    for (const frame of range(framesCount)) {
+      let messageCharacterIndex = 0;
+      let messageContext = new Context(this.config).context;
 
-    const context = new Context(this.config, width, height).initialize();
-    context.fillStyle = color.calculate({ frame: 0, index: 0 });
+      for (const line of message.split("\n")) {
+        let lineCharacterIndex = 0;
+        let lineContext = this.getLineContext(line);
 
-    context.fillText(message, 0, ascent);
+        for (const character of line.split("")) {
+          lineContext = this.motionFunction({
+            character,
+            color,
+            frame,
+            line,
+            lineCharacterIndex,
+            lineContext,
+            messageCharacterIndex,
+          });
 
-    return [context];
-  }
-
-  private renderNoneDynamic(line: string, color: Color) {
-    const { ascent, height, width } = new Context(this.config).measureText(
-      line
-    );
-
-    return range(this.config.totalFrames).map((frame) => {
-      const context = new Context(this.config, width, height).initialize();
-      context.fillStyle = color.calculate({ frame, index: 0 });
-
-      context.fillText(line, 0, ascent);
-
-      return context;
-    });
-  }
-
-  private getWave() {
-    return {
-      amplitudeFactor: 1 / 3,
-      frameFactor: 1,
-      getTotalWidth: (width: number) => width,
-      getWave: (wave: number) => 1 + wave,
-      getX: (width: number) => width,
-    };
-  }
-
-  private getWave2() {
-    return {
-      amplitudeFactor: 1 / 6,
-      frameFactor: 1,
-      getTotalWidth: (width: number, amplitude: number) =>
-        Math.round(width + 2 * amplitude),
-      getWave: (wave: number) => 1 + wave,
-      getX: (width: number, displacement: number) =>
-        Math.round(width + displacement),
-    };
-  }
-
-  private getShake() {
-    return {
-      amplitudeFactor: 1 / 3,
-      frameFactor: 6,
-      getTotalWidth: (width: number) => width,
-      getWave: (wave: number, frame: number) =>
-        2 * frame > this.config.totalFrames
-          ? 1
-          : 1 + wave * (1 - (2 * frame) / this.config.totalFrames),
-      getX: (width: number) => width,
-    };
-  }
-
-  private renderWave(
-    line: string,
-    color: Color,
-    {
-      amplitudeFactor,
-      frameFactor,
-      getTotalWidth,
-      getWave,
-      getX,
-    }: {
-      amplitudeFactor: number;
-      frameFactor: number;
-      getTotalWidth:
-        | ((width: number) => number)
-        | ((width: number, amplitude: number) => number);
-      getWave: (wave: number, frame: number) => number;
-      getX:
-        | ((width: number) => number)
-        | ((width: number, displacement: number) => number);
-    }
-  ) {
-    const { ascent, height, width } = new Context(this.config).measureText(
-      line
-    );
-
-    const amplitude = height * amplitudeFactor;
-    const totalWidth = getTotalWidth(width, amplitude);
-    const totalHeight = Math.round(height + 2 * amplitude);
-
-    return range(this.config.totalFrames).map((frame) => {
-      const context = new Context(
-        this.config,
-        totalWidth,
-        totalHeight
-      ).initialize();
-
-      line.split("").forEach((char, index) => {
-        context.fillStyle = color.calculate({ frame, index });
-        const wave = Math.sin(
-          Math.PI *
-            (index / 6 + 8 * frameFactor * (frame / this.config.totalFrames))
-        );
-        const displacement = amplitude * getWave(wave, frame);
-        const x = getX(
-          new Context(this.config).measureText(line.slice(0, index)).width,
-          displacement
-        );
-        const y = Math.round(ascent + displacement);
-
-        context.fillText(char, x, y);
-      });
-
-      return context;
-    });
-  }
-
-  private renderScroll(line: string, color: Color) {
-    const { ascent, height, width } = new Context(this.config).measureText(
-      line
-    );
-
-    return range(this.config.totalFrames).map((frame) => {
-      const context = new Context(this.config, width, height).initialize();
-      context.fillStyle = color.calculate({ frame, index: 0 });
-
-      const displacement =
-        width - ((2 * frame) / this.config.totalFrames) * width;
-
-      context.fillText(line, Math.round(displacement), ascent);
-
-      return context;
-    });
-  }
-
-  private getSlideOsrs() {
-    return {
-      getY: (
-        ascent: number,
-        frame: number,
-        motionFrameIndex: number,
-        height: number
-      ) => {
-        let displacement = ascent;
-        if (frame < motionFrameIndex) {
-          displacement -=
-            ((motionFrameIndex - frame) / motionFrameIndex) * height;
-        } else if (frame > this.config.totalFrames - motionFrameIndex) {
-          displacement -=
-            ((this.config.totalFrames - motionFrameIndex - frame) /
-              motionFrameIndex) *
-            height;
+          ++messageCharacterIndex;
+          ++lineCharacterIndex;
         }
 
-        return Math.round(displacement);
-      },
-    };
-  }
+        messageContext = this.mergeContexts(
+          messageContext,
+          lineContext.context
+        );
+      }
 
-  private getSlideRs3() {
-    return {
-      getY: (
-        ascent: number,
-        frame: number,
-        motionFrameIndex: number,
-        height: number
-      ) => {
-        let displacement = ascent;
-        if (frame < motionFrameIndex) {
-          displacement +=
-            ((motionFrameIndex - frame) / motionFrameIndex) * height;
-        } else if (frame > this.config.totalFrames - motionFrameIndex) {
-          displacement +=
-            ((this.config.totalFrames - motionFrameIndex - frame) /
-              motionFrameIndex) *
-            height;
-        }
-
-        return Math.round(displacement);
-      },
-    };
-  }
-
-  private renderSlide(
-    line: string,
-    color: Color,
-    {
-      getY,
-    }: {
-      getY: (
-        ascent: number,
-        frame: number,
-        motionFrameIndex: number,
-        height: number
-      ) => number;
+      contexts.push(messageContext);
     }
-  ) {
-    const { ascent, height, width } = new Context(this.config).measureText(
-      line
-    );
-    const motionFrameIndex = Math.round(this.config.totalFrames / 6);
 
-    return range(this.config.totalFrames).map((frame) => {
-      const context = new Context(this.config, width, height).initialize();
-      context.fillStyle = color.calculate({ frame, index: 0 });
+    return contexts;
+  }
 
-      context.fillText(line, 0, getY(ascent, frame, motionFrameIndex, height));
+  private getLineContext(line: string) {
+    const { height, width } = this.getLineDimensions(line);
 
-      return context;
+    return new Context(this.config, width, height).initialize();
+  }
+
+  private getLineDimensions(line: string) {
+    const { height } = this.measureContext.measureText("\n");
+    const { width } = this.measureContext.measureText(line);
+
+    if (["none", "scroll", "slide"].includes(this.motion)) {
+      return { height, width };
+    }
+
+    if (["shake", "wave"].includes(this.motion)) {
+      const amplitude = height / 3;
+      return { height: Math.round(height + 2 * amplitude), width };
+    }
+
+    const amplitude = height / 6;
+    return {
+      height: Math.round(height + 2 * amplitude),
+      width: Math.round(width + 2 * amplitude),
+    };
+  }
+
+  private getMotionFunction() {
+    switch (this.motion) {
+      case "none":
+      case "scroll":
+      case "shake":
+      case "slide":
+      case "wave":
+      case "wave2":
+        return this.renderNone;
+    }
+  }
+
+  private renderNone({
+    character,
+    color,
+    frame,
+    line,
+    lineCharacterIndex,
+    lineContext,
+    messageCharacterIndex,
+  }: MotionFunctionInput) {
+    const x = this.measureContext.measureText(
+      line.slice(0, lineCharacterIndex)
+    ).width;
+    const y = this.measureContext.measureText(line).ascent;
+
+    lineContext.context.fillStyle = color.calculate({
+      frame,
+      index: messageCharacterIndex,
     });
+    lineContext.context.fillText(character, x, y);
+
+    return lineContext;
   }
 
   private mergeContexts(
-    mergedContexts: CanvasRenderingContext2D[],
-    contexts: CanvasRenderingContext2D[]
+    messageContext: CanvasRenderingContext2D,
+    lineContext: CanvasRenderingContext2D
   ) {
-    if (mergedContexts.length === 0) {
-      return contexts;
+    if (messageContext.canvas.height === 0) {
+      return lineContext;
     }
 
     const maxWidth = Math.max(
-      mergedContexts[0].canvas.width,
-      contexts[0].canvas.width
+      messageContext.canvas.width,
+      lineContext.canvas.width
     );
     const totalHeight =
-      mergedContexts[0].canvas.height + contexts[0].canvas.height;
+      messageContext.canvas.height + lineContext.canvas.height;
 
-    return mergedContexts.map((context, index) => {
-      const newContext = new Context(this.config, maxWidth, totalHeight)
-        .context;
+    const newContext = new Context(this.config, maxWidth, totalHeight).context;
+    newContext.drawImage(messageContext.canvas, 0, 0);
+    newContext.drawImage(lineContext.canvas, 0, messageContext.canvas.height);
 
-      newContext.drawImage(context.canvas, 0, 0);
-      newContext.drawImage(contexts[index].canvas, 0, context.canvas.height);
-
-      return newContext;
-    });
+    return newContext;
   }
 }

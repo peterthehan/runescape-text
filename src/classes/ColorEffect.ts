@@ -13,12 +13,12 @@ import {
   GLOW_3_OSRS,
   GLOW_3_RS3,
   GREEN,
-  patternCharacterToColorMap,
+  PATTERN_CHARACTER_TO_COLOR_MAP,
   PURPLE,
   RED,
   WHITE,
   YELLOW,
-} from "../utils/ColorUtil";
+} from "../utils/EffectsUtil";
 
 export default class ColorEffect {
   private config: Config;
@@ -133,7 +133,7 @@ export default class ColorEffect {
     return pattern.flatMap((character, index) => {
       const output = [];
       for (let i = 0; i < buckets[index]; ++i) {
-        output.push(patternCharacterToColorMap[character]);
+        output.push(PATTERN_CHARACTER_TO_COLOR_MAP[character]);
       }
 
       return output;

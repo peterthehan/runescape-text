@@ -1,5 +1,5 @@
 import Parser from "../src/classes/Parser";
-import { getConfig, getWordWrapConfig } from "../src/utils/configUtil";
+import { getConfig, getWordWrapConfig } from "../src/utils/ConfigUtil";
 
 const errorTestCases = [
   {

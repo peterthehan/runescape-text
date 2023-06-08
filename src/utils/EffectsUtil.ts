@@ -1,3 +1,35 @@
+const STATIC_COLORS = [
+  "cyan",
+  "green",
+  "purple",
+  "rainbow",
+  "red",
+  "white",
+  "yellow",
+];
+const DYNAMIC_COLORS = [
+  "flash1",
+  "flash2",
+  "flash3",
+  "glow1",
+  "glow2",
+  "glow3",
+];
+
+const COLORS = [...STATIC_COLORS, ...DYNAMIC_COLORS];
+const MOTIONS = ["scroll", "shake", "slide", "wave", "wave2"];
+
+const EFFECTS_MAP = {
+  ...Object.fromEntries([
+    ...COLORS.map((color) => [color, "color"]),
+    ...MOTIONS.map((motion) => [motion, "motion"]),
+  ]),
+};
+
+function isAnimated(color: Color | Pattern, motion: Motion) {
+  return motion !== "none" || DYNAMIC_COLORS.includes(color);
+}
+
 const YELLOW = [255, 255, 0];
 const RED = [255, 0, 0];
 const GREEN = [0, 255, 0];
@@ -43,7 +75,7 @@ const PATTERN_X = [214, 2, 112];
 const PATTERN_Y = [163, 2, 98];
 const PATTERN_Z = [61, 26, 120];
 
-const patternCharacterToColorMap = {
+const PATTERN_CHARACTER_TO_COLOR_MAP = {
   "0": PATTERN_0,
   "1": PATTERN_1,
   "2": PATTERN_2,
@@ -106,7 +138,9 @@ const FLASH_3_OSRS = [DARK_GREEN, LIGHT_GREEN];
 // const RAINBOW = [RED, YELLOW, GREEN, CYAN, BLUE, PURPLE, RED];
 
 export {
+  COLORS,
   CYAN,
+  EFFECTS_MAP,
   FLASH_1_OSRS,
   FLASH_1_RS3,
   FLASH_2_OSRS,
@@ -120,7 +154,9 @@ export {
   GLOW_3_OSRS,
   GLOW_3_RS3,
   GREEN,
-  patternCharacterToColorMap,
+  isAnimated,
+  MOTIONS,
+  PATTERN_CHARACTER_TO_COLOR_MAP,
   PURPLE,
   RED,
   WHITE,
