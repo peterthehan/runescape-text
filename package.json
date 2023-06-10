@@ -1,6 +1,6 @@
 {
   "name": "runescape-text",
-  "version": "1.1.10",
+  "version": "2.0.0",
   "description": "Convert text to a text image with RuneScape chat effects.",
   "keywords": [
     "cli",
@@ -21,7 +21,7 @@
   "homepage": "https://github.com/peterthehan/runescape-text",
   "bugs": {
     "url": "https://github.com/peterthehan/runescape-text/issues",
-    "email": "peter.han.9493@gmail.com"
+    "email": "me@peterhan.dev"
   },
   "repository": {
     "type": "git",
@@ -52,8 +52,8 @@
   "license": "MIT",
   "author": {
     "name": "Peter Han",
-    "email": "peter.han.9493@gmail.com",
-    "url": "https://github.com/peterthehan"
+    "email": "me@peterhan.dev",
+    "url": "https://peterhan.dev"
   },
   "main": "./dist/index.js",
   "bin": {
@@ -65,7 +65,7 @@
   "scripts": {
     "build": "rm -rf ./dist && npx tsc && cp -r ./src/assets ./dist",
     "lint": "npx eslint --fix .",
-    "prepublishOnly": "npm run lint && npm run build",
+    "prepublishOnly": "npm run lint && npm run build && npm test",
     "start": "node dist/cli.js",
     "test": "npx jest --coverage --coverageDirectory='coverage'"
   },
