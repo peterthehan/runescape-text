@@ -4,14 +4,14 @@ import getRuneScapeText from "../src/index";
 
 const testCases = [
   {
-    fileName: "./test/resources/hello_world.gif",
-    message: "hello world",
+    fileName: "./test/resources/asdf.gif",
+    message: "asdf",
     options: {},
     wordWrapOptions: {},
   },
   {
-    fileName: "./test/resources/glow3_wave_hello_world.gif",
-    message: "glow3:wave:hello world",
+    fileName: "./test/resources/glow3_wave_asdf.gif",
+    message: "glow3:wave:asdf",
     options: {},
     wordWrapOptions: {},
   },
