@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "outDir": "dist"
+  },
+  "exclude": ["coverage", "dist", "node_modules", "test"],
+  "extends": "@tsconfig/recommended/tsconfig.json",
+  "include": ["src/**/*"]
+}

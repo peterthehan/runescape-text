@@ -1,15 +1,24 @@
 {
-  "env": {
-    "commonjs": true,
-    "es2021": true,
-    "jest": true,
-    "node": true
-  },
-  "extends": "eslint:recommended",
-  "parserOptions": {
-    "ecmaVersion": 2018
-  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint",
+    "simple-import-sort",
+    "sort-destructure-keys",
+    "sort-keys-fix",
+    "typescript-sort-keys"
+  ],
+  "root": true,
   "rules": {
-    "curly": "warn"
+    "simple-import-sort/exports": "error",
+    "simple-import-sort/imports": "error",
+    "sort-destructure-keys/sort-destructure-keys": "error",
+    "sort-keys-fix/sort-keys-fix": "error",
+    "typescript-sort-keys/interface": "error",
+    "typescript-sort-keys/string-enum": "error"
   }
 }
