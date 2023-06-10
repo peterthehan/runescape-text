@@ -5,6 +5,7 @@ import Encoder from "./classes/Encoder";
 import Logger from "./classes/Logger";
 import MotionEffect from "./classes/MotionEffect";
 import Parser from "./classes/Parser";
+import Renderer from "./classes/Renderer";
 import { getConfig, getWordWrapConfig } from "./utils/ConfigUtil";
 
 export default function getRuneScapeText(
@@ -17,15 +18,16 @@ export default function getRuneScapeText(
 
   const logger = new Logger(config.debug);
 
-  const { colorStyle, encoder, motionStyle, parser } = logger.time(
+  const { colorEffect, encoder, motionEffect, parser, renderer } = logger.time(
     "Initializing",
     () => {
       const parser = new Parser(config, wordWrapConfig);
-      const colorStyle = new ColorEffect(config);
-      const motionStyle = new MotionEffect(config);
+      const colorEffect = new ColorEffect(config);
+      const motionEffect = new MotionEffect(config);
+      const renderer = new Renderer(config);
       const encoder = new Encoder(config);
 
-      return { colorStyle, encoder, motionStyle, parser };
+      return { colorEffect, encoder, motionEffect, parser, renderer };
     }
   );
 
@@ -33,11 +35,14 @@ export default function getRuneScapeText(
     return parser.parse(string);
   });
 
-  const contexts = logger.time("Rendering", () => {
-    colorStyle.setColor(color, pattern, message);
-    motionStyle.setMotion(motion);
+  logger.time("Setting", () => {
+    colorEffect.setColor(color, pattern, message);
+    motionEffect.setMotion(motion);
+    renderer.setEffects(colorEffect, motionEffect);
+  });
 
-    return motionStyle.render(message, colorStyle);
+  const contexts = logger.time("Rendering", () => {
+    return renderer.render(message);
   });
 
   const response = logger.time("Encoding", () => {

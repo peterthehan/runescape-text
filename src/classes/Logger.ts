@@ -1,11 +1,11 @@
 export default class Logger {
-  private debug: boolean;
+  private _debug: boolean;
   constructor(debug: boolean) {
-    this.debug = debug;
+    this._debug = debug;
   }
 
   time<T>(description: string, callback: () => T): T {
-    if (!this.debug) {
+    if (!this._debug) {
       return callback();
     }
 

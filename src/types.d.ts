@@ -120,7 +120,30 @@ type Format = "rgb444" | "rgb565" | "rgba4444";
 
 type Extension = "gif";
 
+type ContextFillInput = {
+  colorEffect: ColorEffect;
+  fragment: string;
+  frame: number;
+  index: number;
+  x: number;
+  y: number;
+};
+
 type ColorFunctionInput = {
   frame: number;
   index: number;
 };
+
+type MotionFunctionInput = {
+  colorEffect: ColorEffect;
+  context: Context;
+  fragment: string;
+  frame: number;
+  line: string;
+  lineCharacterIndex: number;
+  messageCharacterIndex: number;
+};
+
+type RGB = [number, number, number];
+
+type Coordinates = { x: number; y: number };

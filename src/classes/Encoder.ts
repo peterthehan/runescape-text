@@ -4,9 +4,9 @@ import { applyPalette, GIFEncoder, quantize } from "gifenc";
 const MAX_COLORS = 256;
 
 export default class Encoder {
-  private config: Config;
+  private _config: Config;
   constructor(config: Config) {
-    this.config = config;
+    this._config = config;
   }
 
   encode(contexts: CanvasRenderingContext2D[]) {
@@ -31,12 +31,12 @@ export default class Encoder {
     contexts.forEach((context) => {
       const data = context.getImageData(0, 0, width, height).data;
       const palette = quantize(data, MAX_COLORS, {
-        format: this.config.format,
+        format: this._config.format,
       });
-      const index = applyPalette(data, palette, this.config.format);
+      const index = applyPalette(data, palette, this._config.format);
 
       gif.writeFrame(index, width, height, {
-        delay: this.config.delayPerFrame,
+        delay: this._config.delayPerFrame,
         palette,
         transparent: true,
       });

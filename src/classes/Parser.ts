@@ -5,11 +5,11 @@ import { COLORS, EFFECTS_MAP, MOTIONS } from "../utils/EffectsUtil";
 const UNSUPPORTED_FONT_CHARACTERS_REGEXP = /([^ -~\t\n]|`)+/g;
 
 export default class Parser {
-  private config: Config;
-  private wordWrapConfig: wrap.IOptions;
+  private _config: Config;
+  private _wordWrapConfig: wrap.IOptions;
   constructor(config: Config, wordWrapConfig: wrap.IOptions) {
-    this.config = config;
-    this.wordWrapConfig = wordWrapConfig;
+    this._config = config;
+    this._wordWrapConfig = wordWrapConfig;
   }
 
   parse(string: string) {
@@ -32,12 +32,12 @@ export default class Parser {
     }
 
     return string
-      .replace(UNSUPPORTED_FONT_CHARACTERS_REGEXP, this.config.replacement)
-      .slice(0, this.config.maxMessageLength);
+      .replace(UNSUPPORTED_FONT_CHARACTERS_REGEXP, this._config.replacement)
+      .slice(0, this._config.maxMessageLength);
   }
 
   private getEffectsString(string: string) {
-    const escapedSuffix = "\\" + this.config.suffix.split("").join("\\");
+    const escapedSuffix = "\\" + this._config.suffix.split("").join("\\");
 
     const patternString = `pattern[a-z0-9]{1,8}`;
     const colorString =
@@ -68,17 +68,17 @@ export default class Parser {
     }
 
     return wrap(
-      this.config.enforceCapitalization
+      this._config.enforceCapitalization
         ? this.applyCapitalization(string)
         : string,
-      this.wordWrapConfig
+      this._wordWrapConfig
     );
   }
 
   private getMessageEffects(effectsString: string) {
     return effectsString
       .toLowerCase()
-      .split(this.config.suffix)
+      .split(this._config.suffix)
       .filter(Boolean)
       .reduce(
         (value, effect) => {
@@ -92,9 +92,9 @@ export default class Parser {
           return { ...value, [EFFECTS_MAP[effect]]: effect };
         },
         {
-          color: this.config.color,
-          motion: this.config.motion,
-          pattern: this.config.pattern,
+          color: this._config.color,
+          motion: this._config.motion,
+          pattern: this._config.pattern,
         }
       );
   }

@@ -21,11 +21,11 @@ import {
 } from "../utils/EffectsUtil";
 
 export default class ColorEffect {
-  private config: Config;
+  private _config: Config;
   private _color!: Color | Pattern;
-  private colorFunction!: (input: ColorFunctionInput) => number[];
+  private _colorFunction!: (input: ColorFunctionInput) => RGB;
   constructor(config: Config) {
-    this.config = config;
+    this._config = config;
   }
 
   get color() {
@@ -38,11 +38,11 @@ export default class ColorEffect {
     message: string
   ) {
     this._color = color;
-    this.colorFunction = this.getColorFunction(pattern, message);
+    this._colorFunction = this.getColorFunction(pattern, message);
   }
 
   calculate(input: ColorFunctionInput) {
-    return `rgba(${this.colorFunction(input)}, 1)`;
+    return `rgba(${this._colorFunction(input)}, 1)`;
   }
 
   private getColorFunction(
@@ -53,27 +53,27 @@ export default class ColorEffect {
       case "cyan":
         return () => CYAN;
       case "flash1":
-        return this.config.version === "osrs"
+        return this._config.version === "osrs"
           ? (input: ColorFunctionInput) => this.getFlash(input, FLASH_1_OSRS)
           : (input: ColorFunctionInput) => this.getFlash(input, FLASH_1_RS3);
       case "flash2":
-        return this.config.version === "osrs"
+        return this._config.version === "osrs"
           ? (input: ColorFunctionInput) => this.getFlash(input, FLASH_2_OSRS)
           : (input: ColorFunctionInput) => this.getFlash(input, FLASH_2_RS3);
       case "flash3":
-        return this.config.version === "osrs"
+        return this._config.version === "osrs"
           ? (input: ColorFunctionInput) => this.getFlash(input, FLASH_3_OSRS)
           : (input: ColorFunctionInput) => this.getFlash(input, FLASH_3_RS3);
       case "glow1":
-        return this.config.version === "osrs"
+        return this._config.version === "osrs"
           ? (input: ColorFunctionInput) => this.getGlow(input, GLOW_1_OSRS)
           : (input: ColorFunctionInput) => this.getGlow(input, GLOW_1_RS3);
       case "glow2":
-        return this.config.version === "osrs"
+        return this._config.version === "osrs"
           ? (input: ColorFunctionInput) => this.getGlow(input, GLOW_2_OSRS)
           : (input: ColorFunctionInput) => this.getGlow(input, GLOW_2_RS3);
       case "glow3":
-        return this.config.version === "osrs"
+        return this._config.version === "osrs"
           ? (input: ColorFunctionInput) => this.getGlow(input, GLOW_3_OSRS)
           : (input: ColorFunctionInput) => this.getGlow(input, GLOW_3_RS3);
       case "green":
@@ -99,14 +99,14 @@ export default class ColorEffect {
     }
   }
 
-  private getFlash({ frame }: ColorFunctionInput, flash: number[][]) {
+  private getFlash({ frame }: ColorFunctionInput, flash: RGB[]) {
     return flash[
-      Number(((2 * frame) % this.config.fps) * 2 >= this.config.fps)
+      Number(((2 * frame) % this._config.fps) * 2 >= this._config.fps)
     ];
   }
 
-  private getGlow({ frame }: ColorFunctionInput, glow: number[][]) {
-    const inbetweenFrames = this.config.totalFrames / (glow.length - 1);
+  private getGlow({ frame }: ColorFunctionInput, glow: RGB[]) {
+    const inbetweenFrames = this._config.totalFrames / (glow.length - 1);
 
     const index = Math.floor(frame / inbetweenFrames);
     const currentColor = glow[index];
@@ -117,10 +117,10 @@ export default class ColorEffect {
     return currentColor.map(
       (color, index) =>
         color + Math.round((nextColor[index] - color) * incrementFactor)
-    );
+    ) as RGB;
   }
 
-  private getPattern({ index }: ColorFunctionInput, pattern: number[][]) {
+  private getPattern({ index }: ColorFunctionInput, pattern: RGB[]) {
     return pattern[index];
   }
 
@@ -130,14 +130,9 @@ export default class ColorEffect {
   ) {
     const buckets = this.createPatternBuckets(pattern.length, message.length);
 
-    return pattern.flatMap((character, index) => {
-      const output = [];
-      for (let i = 0; i < buckets[index]; ++i) {
-        output.push(PATTERN_CHARACTER_TO_COLOR_MAP[character]);
-      }
-
-      return output;
-    });
+    return pattern.flatMap((character, index) =>
+      Array<RGB>(buckets[index]).fill(PATTERN_CHARACTER_TO_COLOR_MAP[character])
+    );
   }
 
   private createRainbowColors(message: string) {
@@ -149,7 +144,7 @@ export default class ColorEffect {
 
   private createPatternBuckets(patternLength: number, messageLength: number) {
     const baseBucketSize = Math.floor(messageLength / patternLength);
-    const buckets = [...Array(patternLength).keys()].fill(baseBucketSize);
+    const buckets = Array<number>(patternLength).fill(baseBucketSize);
     const remainder = messageLength % patternLength;
     const increment = Math.floor(patternLength / remainder);
 
