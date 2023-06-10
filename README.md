@@ -33,14 +33,20 @@ Convert text to a text image with [RuneScape](https://www.runescape.com/) chat e
 
   <div>
     <img
+      src="https://raw.githubusercontent.com/peterthehan/runescape-text/master/assets/fun_things_are_fun.gif"
+      title="Fun things are fun."
+      alt="Fun things are fun."
+    />
+  </div>
+
+  <div>
+    <img
       src="https://raw.githubusercontent.com/peterthehan/runescape-text/master/assets/lorem_ipsum.gif"
       title="Lorem ipsum"
       alt="Lorem ipsum"
     />
   </div>
 </details>
-
-Refer to this wikiHow guide on [How to Write Text Effects on RuneScape](https://www.wikihow.com/Write-Text-Effects-on-Runescape).
 
 ## Getting started
 
@@ -53,3 +59,16 @@ npm i runescape-text
 ```
 npx runescape-text "glow3:wave:hello world"
 ```
+
+## References
+
+- wikiHow guide on [How to Write Text Effects on Runescape](https://www.wikihow.com/Write-Text-Effects-on-Runescape).
+- Color chart reference for the `pattern` color effect:
+
+  <div>
+    <img
+      src="https://raw.githubusercontent.com/peterthehan/runescape-text/master/assets/ColourChart.png"
+      title="Pattern color chart"
+      alt="Pattern color chart"
+    />
+  </div>
