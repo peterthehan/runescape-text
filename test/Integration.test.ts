@@ -1,4 +1,4 @@
-import fs from "node:fs";
+import { readFileSync } from "node:fs";
 
 import getRuneScapeText from "../src/index";
 
@@ -40,7 +40,7 @@ describe("Integration", () => {
     `getRuneScapeText("$message", $options, $wordWrapOptions)`,
     ({ fileName, message, options, wordWrapOptions }) => {
       const { data } = getRuneScapeText(message, options, wordWrapOptions);
-      const fileData = new Uint8Array(fs.readFileSync(fileName));
+      const fileData = new Uint8Array(readFileSync(fileName));
       expect(data).toStrictEqual(fileData);
     }
   );
