@@ -47,25 +47,26 @@ export default class MotionEffect {
     }
   }
 
-  private renderNone({ line, lineCharacterIndex }: MotionFunctionInput) {
+  private renderNone({ fragment, lineCharacterIndex }: MotionFunctionInput) {
     const { width: x } = this._measureContext.measureText(
-      line.slice(0, lineCharacterIndex)
+      fragment.slice(0, lineCharacterIndex)
     );
-    const { ascent: y } = this._measureContext.measureText(line);
+    const { ascent: y } = this._measureContext.measureText(fragment);
 
     return { x, y };
   }
 
   private renderScroll({
+    fragment,
     frame,
-    line,
     lineCharacterIndex,
   }: MotionFunctionInput) {
     const { ascent: y, width: lineWidth } =
-      this._measureContext.measureText(line);
+      this._measureContext.measureText(fragment);
     const { width } = this._measureContext.measureText(
-      line.slice(0, lineCharacterIndex)
+      fragment.slice(0, lineCharacterIndex)
     );
+
     const displacement = Math.round(
       (1 - (2 * frame) / this._config.totalFrames) * lineWidth
     );
@@ -75,13 +76,14 @@ export default class MotionEffect {
   }
 
   private renderSlide(
-    { frame, line, lineCharacterIndex }: MotionFunctionInput,
+    { fragment, frame, lineCharacterIndex }: MotionFunctionInput,
     { getY }: SlideInput
   ) {
     const { width: x } = this._measureContext.measureText(
-      line.slice(0, lineCharacterIndex)
+      fragment.slice(0, lineCharacterIndex)
     );
-    const { ascent, height } = this._measureContext.measureText(line);
+    const { ascent, height } = this._measureContext.measureText(fragment);
+
     const motionFrameIndex = Math.round(this._config.totalFrames / 6);
     const y = getY({ ascent, frame, height, motionFrameIndex });
 
@@ -89,10 +91,13 @@ export default class MotionEffect {
   }
 
   private renderWave(
-    { frame, line, lineCharacterIndex }: MotionFunctionInput,
+    { fragment, frame, lineCharacterIndex }: MotionFunctionInput,
     { amplitudeFactor, frameFactor, getWave, getX }: WaveInput
   ) {
-    const { ascent, height } = this._measureContext.measureText(line);
+    const { ascent, height } = this._measureContext.measureText(fragment);
+    const { width } = this._measureContext.measureText(
+      fragment.slice(0, lineCharacterIndex)
+    );
 
     const amplitude = height * amplitudeFactor;
     const wave = Math.sin(
@@ -100,12 +105,9 @@ export default class MotionEffect {
         (lineCharacterIndex / 6 +
           8 * frameFactor * (frame / this._config.totalFrames))
     );
-    const displacement = amplitude * getWave(wave, frame);
+    const displacement = amplitude * getWave({ frame, wave });
 
-    const x = getX(
-      this._measureContext.measureText(line.slice(0, lineCharacterIndex)).width,
-      displacement
-    );
+    const x = getX({ displacement, width });
     const y = Math.round(ascent + displacement);
 
     return { x, y };
@@ -153,11 +155,11 @@ export default class MotionEffect {
     return {
       amplitudeFactor: 1 / 3,
       frameFactor: 6,
-      getWave: (wave, frame = 0) =>
+      getWave: ({ frame, wave }) =>
         2 * frame > this._config.totalFrames
           ? 1
           : 1 + wave * (1 - (2 * frame) / this._config.totalFrames),
-      getX: (width) => width,
+      getX: ({ width }) => width,
     };
   }
 
@@ -165,8 +167,8 @@ export default class MotionEffect {
     return {
       amplitudeFactor: 1 / 3,
       frameFactor: 1,
-      getWave: (wave) => 1 + wave,
-      getX: (width) => width,
+      getWave: ({ wave }) => 1 + wave,
+      getX: ({ width }) => width,
     };
   }
 
@@ -174,8 +176,8 @@ export default class MotionEffect {
     return {
       amplitudeFactor: 1 / 6,
       frameFactor: 1,
-      getWave: (wave) => 1 + wave,
-      getX: (width, displacement = 0) => Math.round(width + displacement),
+      getWave: ({ wave }) => 1 + wave,
+      getX: ({ displacement, width }) => Math.round(width + displacement),
     };
   }
 }

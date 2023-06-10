@@ -38,98 +38,78 @@ export default class Renderer {
       this._colorEffect.color,
       this._motionEffect.motion
     );
-
     const processPerCharacter = requiresProcessingPerCharacter(
       this._colorEffect.color,
       this._motionEffect.motion
     );
 
     for (const frame of range(framesCount)) {
+      if (!processPerLine) {
+        const messageContext = this.getContext(message);
+        this.renderFrame({ context: messageContext, fragment: message, frame });
+        contexts.push(messageContext.context);
+        continue;
+      }
+
       let messageCharacterIndex = 0;
-      let messageContext: Context;
+      let messageContext = new Context(this._config);
 
-      if (processPerLine) {
-        messageContext = new Context(this._config);
+      for (const line of message.split("\n")) {
+        const lineContext = this.getContext(line);
 
-        for (const line of message.split("\n")) {
-          const lineContext = this.getContext(line);
-
-          if (processPerCharacter) {
-            let lineCharacterIndex = 0;
-
-            for (const character of line.split("")) {
-              const { x, y } = this._motionEffect.motionFunction({
-                colorEffect: this._colorEffect,
-                context: lineContext,
-                fragment: character,
-                frame,
-                line,
-                lineCharacterIndex,
-                messageCharacterIndex,
-              });
-
-              lineContext.fill({
-                colorEffect: this._colorEffect,
-                fragment: character,
-                frame,
-                index: messageCharacterIndex,
-                x,
-                y,
-              });
-
-              ++messageCharacterIndex;
-              ++lineCharacterIndex;
-            }
-          } else {
-            const { x, y } = this._motionEffect.motionFunction({
-              colorEffect: this._colorEffect,
-              context: lineContext,
-              fragment: line,
-              frame,
-              line,
-              lineCharacterIndex: 0,
-              messageCharacterIndex: 0,
-            });
-
-            lineContext.fill({
-              colorEffect: this._colorEffect,
-              fragment: line,
-              frame,
-              index: 0,
-              x,
-              y,
-            });
-          }
-
+        if (!processPerCharacter) {
+          this.renderFrame({ context: lineContext, fragment: line, frame });
           messageContext = this.mergeContexts(messageContext, lineContext);
+          continue;
         }
-      } else {
-        messageContext = this.getContext(message);
 
-        const { x, y } = this._motionEffect.motionFunction({
-          colorEffect: this._colorEffect,
-          context: messageContext,
-          fragment: message,
-          frame,
-          line: message,
-          lineCharacterIndex: 0,
-          messageCharacterIndex: 0,
-        });
+        let lineCharacterIndex = 0;
 
-        messageContext.fill({
-          colorEffect: this._colorEffect,
-          fragment: message,
-          frame,
-          index: 0,
-          x,
-          y,
-        });
+        for (const character of line.split("")) {
+          this.renderFrame({
+            character,
+            context: lineContext,
+            fragment: line,
+            frame,
+            index: messageCharacterIndex,
+            lineCharacterIndex,
+          });
+
+          ++messageCharacterIndex;
+          ++lineCharacterIndex;
+        }
+
+        messageContext = this.mergeContexts(messageContext, lineContext);
       }
 
       contexts.push(messageContext.context);
     }
 
     return contexts;
+  }
+
+  private renderFrame({
+    character,
+    context,
+    fragment,
+    frame,
+    index = 0,
+    lineCharacterIndex = 0,
+  }: RenderInput) {
+    const { x, y } = this._motionEffect.motionFunction({
+      fragment,
+      frame,
+      lineCharacterIndex,
+    });
+
+    context.fill({
+      colorEffect: this._colorEffect,
+      fragment: character ?? fragment,
+      frame,
+      index,
+      x,
+      y,
+    });
   }
 
   private getContext(line: string) {

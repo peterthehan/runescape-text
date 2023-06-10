@@ -135,8 +135,8 @@ type ColorFunctionInput = {
 };
 
 type MotionFunctionInput = {
+  fragment: string;
   frame: number;
-  line: string;
   lineCharacterIndex: number;
 };
 
@@ -152,8 +152,17 @@ type SlideInput = {
 type WaveInput = {
   amplitudeFactor: number;
   frameFactor: number;
-  getWave: (wave: number, frame?: number) => number;
-  getX: (width: number, displacement?: number) => number;
+  getWave: (input: { frame: number; wave: number }) => number;
+  getX: (input: { displacement: number; width: number }) => number;
+};
+
+type RenderInput = {
+  character?: string;
+  context: Context;
+  fragment: string;
+  frame: number;
+  index?: number;
+  lineCharacterIndex?: number;
 };
 
 type RGB = [number, number, number];
