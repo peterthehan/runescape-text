@@ -135,13 +135,25 @@ type ColorFunctionInput = {
 };
 
 type MotionFunctionInput = {
-  colorEffect: ColorEffect;
-  context: Context;
-  fragment: string;
   frame: number;
   line: string;
   lineCharacterIndex: number;
-  messageCharacterIndex: number;
+};
+
+type SlideInput = {
+  getY: (input: {
+    ascent: number;
+    frame: number;
+    height: number;
+    motionFrameIndex: number;
+  }) => number;
+};
+
+type WaveInput = {
+  amplitudeFactor: number;
+  frameFactor: number;
+  getWave: (wave: number, frame?: number) => number;
+  getX: (width: number, displacement?: number) => number;
 };
 
 type RGB = [number, number, number];
