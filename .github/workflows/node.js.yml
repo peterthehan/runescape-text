@@ -11,9 +11,10 @@ on:
 
 jobs:
   build:
+    runs-on: windows-latest
+
     strategy:
       matrix:
-        runs-on: [macos-latest, ubuntu-latest, windows-latest]
         node-version: [18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
