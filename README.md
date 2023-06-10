@@ -17,7 +17,7 @@ Convert text to a text image with [RuneScape](https://www.runescape.com/) chat e
 
   <div>
     <img
-      src="https://raw.githubusercontent.com/peterthehan/runescape-text/master/assets/default_styling.gif"
+      src="https://raw.githubusercontent.com/peterthehan/runescape-text/master/assets/default_styling.png"
       title="Default styling"
       alt="Default styling"
     />
