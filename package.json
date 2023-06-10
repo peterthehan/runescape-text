@@ -70,7 +70,7 @@
     "test": "npx jest --coverage --coverageDirectory='coverage'"
   },
   "dependencies": {
-    "canvas": "^2.11.1",
+    "canvas": "2.11.1",
     "gifenc": "github:mattdesl/gifenc",
     "word-wrap": "^1.2.3"
   },
