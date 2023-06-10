@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "declaration": true,
-    "moduleResolution": "node",
     "outDir": "dist"
   },
   "exclude": ["coverage", "dist", "node_modules", "test"],
