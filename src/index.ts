@@ -6,6 +6,7 @@ import Logger from "./classes/Logger";
 import MotionEffect from "./classes/MotionEffect";
 import Parser from "./classes/Parser";
 import Renderer from "./classes/Renderer";
+import { Options, RuneScapeTextResponse } from "./types";
 import { getConfig, getWordWrapConfig } from "./utils/ConfigUtil";
 
 export default function getRuneScapeText(

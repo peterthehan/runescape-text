@@ -1,6 +1,8 @@
 import { CanvasRenderingContext2D } from "canvas";
 import { applyPalette, GIFEncoder, quantize } from "gifenc";
 
+import { Config, Extension } from "../types";
+
 const MAX_COLORS = 256;
 
 export default class Encoder {

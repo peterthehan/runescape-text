@@ -1,3 +1,6 @@
+import ColorEffect from "./classes/ColorEffect";
+import Context from "./classes/Context";
+
 // https://stackoverflow.com/questions/39494689/is-it-possible-to-restrict-number-to-a-certain-range
 type Enumerate<
   N extends number,
@@ -168,3 +171,27 @@ type RenderInput = {
 type RGB = [number, number, number];
 
 type Coordinates = { x: number; y: number };
+
+export {
+  Color,
+  ColorFunctionInput,
+  Config,
+  ContextFillInput,
+  Coordinates,
+  EffectsOptions,
+  Extension,
+  Format,
+  IntRange,
+  Motion,
+  MotionFunctionInput,
+  NonEmptyArray,
+  Options,
+  Pattern,
+  PatternCharacter,
+  RenderInput,
+  RGB,
+  RuneScapeTextResponse,
+  SlideInput,
+  Version,
+  WaveInput,
+};

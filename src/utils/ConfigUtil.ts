@@ -2,6 +2,7 @@ import wrap from "word-wrap";
 
 import { defaultOptions } from "../defaultOptions";
 import { defaultWordWrapOptions } from "../defaultWordWrapOptions";
+import { Config, Options } from "../types";
 
 function getConfig(options: Options = {}): Config {
   const mergedOptions = { ...defaultOptions, ...options } as Required<Options>;

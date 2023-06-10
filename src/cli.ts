@@ -3,6 +3,7 @@
 import { existsSync, writeFileSync } from "node:fs";
 
 import getRuneScapeText from "./index";
+import { Options } from "./types";
 
 async function main() {
   const file = `./runescape-text-${Date.now()}.gif`;

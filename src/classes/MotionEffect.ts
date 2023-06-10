@@ -1,3 +1,11 @@
+import {
+  Config,
+  Coordinates,
+  Motion,
+  MotionFunctionInput,
+  SlideInput,
+  WaveInput,
+} from "../types";
 import Context from "./Context";
 
 export default class MotionEffect {

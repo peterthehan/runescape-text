@@ -1,3 +1,5 @@
+import { Color, Motion, Pattern, RGB } from "../types";
+
 const STATIC_COLORS = [
   "cyan",
   "green",

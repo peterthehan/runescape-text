@@ -1,3 +1,5 @@
+import { Options } from "./types";
+
 export const defaultOptions: Required<Options> = {
   color: "yellow",
   debug: false,

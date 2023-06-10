@@ -1,4 +1,13 @@
 import {
+  Color,
+  ColorFunctionInput,
+  Config,
+  NonEmptyArray,
+  Pattern,
+  PatternCharacter,
+  RGB,
+} from "../types";
+import {
   CYAN,
   FLASH_1_OSRS,
   FLASH_1_RS3,

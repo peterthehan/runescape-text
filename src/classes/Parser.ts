@@ -1,5 +1,6 @@
 import wrap from "word-wrap";
 
+import { Config, EffectsOptions } from "../types";
 import { COLORS, EFFECTS_MAP, MOTIONS } from "../utils/EffectsUtil";
 
 const UNSUPPORTED_FONT_CHARACTERS_REGEXP = /([^ -~\t\n]|`)+/g;

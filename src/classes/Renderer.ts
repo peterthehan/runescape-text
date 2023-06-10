@@ -1,5 +1,6 @@
 import { CanvasRenderingContext2D } from "canvas";
 
+import { Config, RenderInput } from "../types";
 import {
   isAnimated,
   requiresProcessingPerCharacter,
