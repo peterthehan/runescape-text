@@ -24,6 +24,13 @@ import {
   GREEN,
   PATTERN_CHARACTER_TO_COLOR_MAP,
   PURPLE,
+  RAINBOW_1,
+  RAINBOW_2,
+  RAINBOW_3,
+  RAINBOW_4,
+  RAINBOW_5,
+  RAINBOW_6,
+  RAINBOW_7,
   RED,
   WHITE,
   YELLOW,
@@ -121,12 +128,12 @@ export default class ColorEffect {
     const currentColor = glow[index];
     const nextColor = glow[index + 1];
 
-    const incrementFactor = (frame % inbetweenFrames) / inbetweenFrames;
-
-    return currentColor.map(
-      (color, index) =>
-        color + Math.round((nextColor[index] - color) * incrementFactor)
-    ) as RGB;
+    return this.getInbetweenColor(
+      currentColor,
+      nextColor,
+      frame,
+      inbetweenFrames
+    );
   }
 
   private getPattern({ index }: ColorFunctionInput, pattern: RGB[]) {
@@ -145,10 +152,69 @@ export default class ColorEffect {
   }
 
   private createRainbowColors(message: string) {
-    return this.createPatternColors(
-      ["1", "3", "4", "f", "v", "7", "1"],
-      message
+    switch (message.length) {
+      case 1:
+        return RAINBOW_1;
+      case 2:
+        return RAINBOW_2;
+      case 3:
+        return RAINBOW_3;
+      case 4:
+        return RAINBOW_4;
+      case 5:
+        return RAINBOW_5;
+      case 6:
+        return RAINBOW_6;
+    }
+
+    const buckets = this.createPatternBuckets(
+      RAINBOW_7.length - 1,
+      message.length - 1
     );
+
+    buckets.push(1);
+
+    return buckets
+      .map((bucket, bucketsIndex) => {
+        const colors = Array<RGB>(bucket).fill(WHITE);
+        colors[0] = RAINBOW_7[bucketsIndex];
+        return colors;
+      })
+      .flatMap((bucket, bucketsIndex) => {
+        if (bucket.length === 1 || bucketsIndex === buckets.length - 1) {
+          return bucket;
+        }
+
+        const currentColor = RAINBOW_7[bucketsIndex];
+        const nextColor = RAINBOW_7[bucketsIndex + 1];
+
+        return bucket.map((b, bucketIndex) => {
+          if (bucketIndex === 0) {
+            return b;
+          }
+
+          return this.getInbetweenColor(
+            currentColor,
+            nextColor,
+            bucketIndex,
+            bucket.length
+          );
+        });
+      });
+  }
+
+  private getInbetweenColor(
+    currentColor: RGB,
+    nextColor: RGB,
+    step: number,
+    inbetweenLength: number
+  ) {
+    const incrementFactor = (step % inbetweenLength) / inbetweenLength;
+
+    return currentColor.map(
+      (color, index) =>
+        color + Math.round((nextColor[index] - color) * incrementFactor)
+    ) as RGB;
   }
 
   private createPatternBuckets(patternLength: number, messageLength: number) {
