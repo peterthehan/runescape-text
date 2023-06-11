@@ -31,7 +31,9 @@ export default class Encoder {
     const gif = GIFEncoder();
 
     contexts.forEach((context) => {
-      const data = context.getImageData(0, 0, width, height).data;
+      const data = new Uint8Array(
+        context.getImageData(0, 0, width, height).data
+      );
       const palette = quantize(data, MAX_COLORS, {
         format: this._config.format,
       });
