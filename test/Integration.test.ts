@@ -33,6 +33,13 @@ const testCases = [
     options: {},
     wordWrapOptions: { width: 5 },
   },
+  {
+    fileName: "./test/resources/rainbow_0s.gif",
+    message:
+      "rainbow:000000000000000000000000000000000000000000000000000000000000000000000000",
+    options: {},
+    wordWrapOptions: {},
+  },
 ];
 
 describe("Integration", () => {
