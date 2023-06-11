@@ -60,6 +60,18 @@ npm i runescape-text
 npx runescape-text "glow3:wave:hello world"
 ```
 
+```ts
+import { writeFileSync } from "node:fs";
+
+import getRuneScapeText from "runescape-text";
+
+const message = "glow3:wave:hello world";
+const options = { debug: true };
+const { data, extension } = getRuneScapeText(message, options);
+
+writeFileSync(`./runescape-text.${extension}`, Buffer.from(data));
+```
+
 ## References
 
 - wikiHow guide on [How to Write Text Effects on Runescape](https://www.wikihow.com/Write-Text-Effects-on-Runescape).

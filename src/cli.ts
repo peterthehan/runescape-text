@@ -3,7 +3,6 @@
 import { existsSync, writeFileSync } from "node:fs";
 
 import getRuneScapeText from "./index";
-import { Options } from "./types";
 
 async function main() {
   const file = `./runescape-text-${Date.now()}.gif`;
@@ -14,7 +13,7 @@ async function main() {
 
   const [, , ...args] = process.argv;
   const string = args.join(" ");
-  const options = { debug: true } as Options;
+  const options = { debug: true };
   const wordWrapOptions = {};
 
   const { data } = getRuneScapeText(string, options, wordWrapOptions);
