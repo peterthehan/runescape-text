@@ -40,7 +40,7 @@ export default class Parser {
   private getEffectsString(string: string) {
     const escapedSuffix = "\\" + this._config.suffix.split("").join("\\");
 
-    const patternString = `pattern[a-z0-9]{1,8}`;
+    const patternString = `pattern[a-z0-9]{1,${this._config.maxPatternLength}}`;
     const colorString =
       `(${patternString}|${COLORS.join("|")})` + escapedSuffix;
     const motionString = `(${MOTIONS.join("|")})` + escapedSuffix;

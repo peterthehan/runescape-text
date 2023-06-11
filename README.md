@@ -6,7 +6,7 @@ Convert text to a text image with [RuneScape](https://www.runescape.com/) chat e
 
 <div>
   <img
-    src="https://raw.githubusercontent.com/peterthehan/runescape-text/master/assets/selling_rune_scimmy_15k.gif"
+    src="https://raw.githubusercontent.com/peterthehan/runescape-text/master/assets/glow1_wave_selling_rune_scimmy_15k.gif"
     title="Selling rune scimmy 15k"
     alt="Selling rune scimmy 15k"
   />
@@ -17,15 +17,15 @@ Convert text to a text image with [RuneScape](https://www.runescape.com/) chat e
 
   <div>
     <img
-      src="https://raw.githubusercontent.com/peterthehan/runescape-text/master/assets/default_styling.png"
-      title="Default styling"
-      alt="Default styling"
+      src="https://raw.githubusercontent.com/peterthehan/runescape-text/master/assets/92_is_half_of_99.png"
+      title="92 is half of 99"
+      alt="92 is half of 99"
     />
   </div>
 
   <div>
     <img
-      src="https://raw.githubusercontent.com/peterthehan/runescape-text/master/assets/free_armor_trimming.gif"
+      src="https://raw.githubusercontent.com/peterthehan/runescape-text/master/assets/flash1_scroll_free_armor_trimming.gif"
       title="Free armor trimming!"
       alt="Free armor trimming!"
     />
@@ -33,7 +33,7 @@ Convert text to a text image with [RuneScape](https://www.runescape.com/) chat e
 
   <div>
     <img
-      src="https://raw.githubusercontent.com/peterthehan/runescape-text/master/assets/fun_things_are_fun.gif"
+      src="https://raw.githubusercontent.com/peterthehan/runescape-text/master/assets/patternkdomph_shake_fun_things_are_fun.gif"
       title="Fun things are fun."
       alt="Fun things are fun."
     />
@@ -41,7 +41,15 @@ Convert text to a text image with [RuneScape](https://www.runescape.com/) chat e
 
   <div>
     <img
-      src="https://raw.githubusercontent.com/peterthehan/runescape-text/master/assets/lorem_ipsum.gif"
+      src="https://raw.githubusercontent.com/peterthehan/runescape-text/master/assets/rainbow_the_quick_brown_fox_jumps_over_the_lazy_dog.gif"
+      title="The quick brown fox jumps over the lazy dog"
+      alt="The quick brown fox jumps over the lazy dog"
+    />
+  </div>
+
+  <div>
+    <img
+      src="https://raw.githubusercontent.com/peterthehan/runescape-text/master/assets/flash3_slide_lorem_ipsum.gif"
       title="Lorem ipsum"
       alt="Lorem ipsum"
     />
