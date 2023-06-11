@@ -9,6 +9,7 @@ export const defaultOptions: Required<Options> = {
   fps: 20,
   hasShadow: true,
   maxMessageLength: 80,
+  maxPatternLength: 8,
   motion: "none",
   pattern: [],
   replacement: "",

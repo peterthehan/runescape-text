@@ -36,6 +36,7 @@ type Options = EffectsOptions & {
   fps?: IntRange<1, 50>;
   hasShadow?: boolean;
   maxMessageLength?: number;
+  maxPatternLength?: number;
   replacement?: string;
   scale?: number;
   shadowColor?: string;
