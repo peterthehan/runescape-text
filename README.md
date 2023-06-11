@@ -41,7 +41,7 @@ Convert text to a text image with [RuneScape](https://www.runescape.com/) chat e
 
   <div>
     <img
-      src="https://raw.githubusercontent.com/peterthehan/runescape-text/master/assets/rainbow_the_quick_brown_fox_jumps_over_the_lazy_dog.gif"
+      src="https://raw.githubusercontent.com/peterthehan/runescape-text/master/assets/rainbow_the_quick_brown_fox_jumps_over_the_lazy_dog.png"
       title="The quick brown fox jumps over the lazy dog"
       alt="The quick brown fox jumps over the lazy dog"
     />
