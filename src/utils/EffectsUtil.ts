@@ -1,4 +1,4 @@
-import { Color, Motion, Pattern, RGB } from "../types";
+import { Color, Motion, Pattern, RGB, RGBA } from "../types";
 
 const STATIC_COLORS = [
   "cyan",
@@ -44,6 +44,10 @@ function requiresProcessingPerCharacter(
     ["pattern", "rainbow"].includes(color) ||
     ["shake", "wave", "wave2"].includes(motion)
   );
+}
+
+function getRGBAString(rgba: RGBA) {
+  return `rgba(${rgba.join(",")})`;
 }
 
 const YELLOW: RGB = [255, 255, 0];
@@ -173,6 +177,7 @@ export {
   FLASH_2_RS3,
   FLASH_3_OSRS,
   FLASH_3_RS3,
+  getRGBAString,
   GLOW_1_OSRS,
   GLOW_1_RS3,
   GLOW_2_OSRS,
