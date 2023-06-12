@@ -39,7 +39,7 @@ type Options = EffectsOptions & {
   maxPatternLength?: number;
   replacement?: string;
   scale?: number;
-  shadowColor?: RGBA;
+  shadowColor?: RGB;
   suffix?: string;
   version?: Version;
 };
@@ -171,8 +171,6 @@ type RenderInput = {
 
 type RGB = [IntRange<0, 255>, IntRange<0, 255>, IntRange<0, 255>];
 
-type RGBA = [IntRange<0, 255>, IntRange<0, 255>, IntRange<0, 255>, number];
-
 type Coordinates = { x: number; y: number };
 
 export {
@@ -193,7 +191,6 @@ export {
   PatternCharacter,
   RenderInput,
   RGB,
-  RGBA,
   RuneScapeTextResponse,
   SlideInput,
   Version,

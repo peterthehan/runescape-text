@@ -59,7 +59,7 @@ export default class ColorEffect {
   }
 
   calculate(input: ColorFunctionInput) {
-    return getRGBAString([...this._colorFunction(input), 1]);
+    return getRGBAString(this._colorFunction(input));
   }
 
   private getColorFunction(

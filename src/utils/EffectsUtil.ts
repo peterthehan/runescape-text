@@ -1,4 +1,4 @@
-import { Color, Motion, Pattern, RGB, RGBA } from "../types";
+import { Color, Motion, Pattern, RGB } from "../types";
 
 const STATIC_COLORS = [
   "cyan",
@@ -46,8 +46,8 @@ function requiresProcessingPerCharacter(
   );
 }
 
-function getRGBAString(rgba: RGBA) {
-  return `rgba(${rgba.join(",")})`;
+function getRGBAString(rgb: RGB) {
+  return `rgba(${[...rgb, 1].join(",")})`;
 }
 
 const YELLOW: RGB = [255, 255, 0];
