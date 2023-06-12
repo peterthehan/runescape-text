@@ -37,6 +37,10 @@ type Options = EffectsOptions & {
   hasShadow?: boolean;
   maxMessageLength?: number;
   maxPatternLength?: number;
+  paddingBottom?: number;
+  paddingLeft?: number;
+  paddingRight?: number;
+  paddingTop?: number;
   replacement?: string;
   scale?: number;
   shadowColor?: RGB;

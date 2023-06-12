@@ -86,6 +86,17 @@ export default class Renderer {
       contexts.push(messageContext.context);
     }
 
+    if (
+      [
+        this._config.paddingTop,
+        this._config.paddingRight,
+        this._config.paddingBottom,
+        this._config.paddingLeft,
+      ].some(Boolean)
+    ) {
+      return contexts.map((context) => this.setPadding(context));
+    }
+
     return contexts;
   }
 
@@ -159,5 +170,25 @@ export default class Renderer {
     );
 
     return newContext;
+  }
+
+  private setPadding(context: CanvasRenderingContext2D) {
+    const newWidth =
+      context.canvas.width +
+      this._config.paddingLeft +
+      this._config.paddingRight;
+    const newHeight =
+      context.canvas.height +
+      this._config.paddingTop +
+      this._config.paddingBottom;
+
+    const newContext = new Context(this._config, newWidth, newHeight);
+    newContext.context.drawImage(
+      context.canvas,
+      this._config.paddingLeft,
+      this._config.paddingTop
+    );
+
+    return newContext.context;
   }
 }
