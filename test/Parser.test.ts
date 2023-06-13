@@ -31,6 +31,7 @@ const baseTestCases = [
       pattern: [],
     },
     message: "hello world",
+    options: {},
   },
   {
     expected: {
@@ -40,6 +41,7 @@ const baseTestCases = [
       pattern: [],
     },
     message: "hello world 👍",
+    options: {},
   },
   {
     expected: {
@@ -51,6 +53,7 @@ const baseTestCases = [
     },
     message:
       "01234567890123456789012345678901234567890123456789012345678901234567890123456789everything beyond this will be trimmed",
+    options: {},
   },
 ];
 
@@ -63,6 +66,7 @@ const capitalizationTestCases = [
       pattern: [],
     },
     message: "HELLO WORLD",
+    options: {},
   },
   {
     expected: {
@@ -72,6 +76,7 @@ const capitalizationTestCases = [
       pattern: [],
     },
     message: "0. hello world",
+    options: {},
   },
   {
     expected: {
@@ -81,6 +86,7 @@ const capitalizationTestCases = [
       pattern: [],
     },
     message: "0.0 hello world",
+    options: {},
   },
   {
     expected: {
@@ -90,6 +96,7 @@ const capitalizationTestCases = [
       pattern: [],
     },
     message: "hello.. hello... world? hello. world!",
+    options: {},
   },
   {
     expected: {
@@ -99,6 +106,17 @@ const capitalizationTestCases = [
       pattern: [],
     },
     message: "   hello..   hello...   world?   hello.   world!   ",
+    options: {},
+  },
+  {
+    expected: {
+      color: "yellow",
+      message: "HELLO WORLD",
+      motion: "none",
+      pattern: [],
+    },
+    message: "HELLO WORLD",
+    options: { enforceCapitalization: false },
   },
 ];
 
@@ -111,6 +129,7 @@ const whitespaceTestCases = [
       pattern: [],
     },
     message: "   hello world",
+    options: {},
   },
   {
     expected: {
@@ -120,6 +139,7 @@ const whitespaceTestCases = [
       pattern: [],
     },
     message: "hello world   ",
+    options: {},
   },
   {
     expected: {
@@ -129,6 +149,7 @@ const whitespaceTestCases = [
       pattern: [],
     },
     message: "hello   world",
+    options: {},
   },
 ];
 
@@ -141,6 +162,7 @@ const happyPathTestCases = [
       pattern: [],
     },
     message: "glow3:hello world",
+    options: {},
   },
   {
     expected: {
@@ -150,6 +172,7 @@ const happyPathTestCases = [
       pattern: [],
     },
     message: "wave:hello world",
+    options: {},
   },
   {
     expected: {
@@ -159,6 +182,7 @@ const happyPathTestCases = [
       pattern: [],
     },
     message: "glow3:wave:hello world",
+    options: {},
   },
   {
     expected: {
@@ -168,6 +192,7 @@ const happyPathTestCases = [
       pattern: [],
     },
     message: "GLOW3:WAVE:hello world",
+    options: {},
   },
   {
     expected: {
@@ -177,6 +202,7 @@ const happyPathTestCases = [
       pattern: [],
     },
     message: "glow3:wave:   hello world",
+    options: {},
   },
 ];
 
@@ -190,6 +216,7 @@ const sadPathTestCases = [
       pattern: [],
     },
     message: "blah:hello world",
+    options: {},
   },
   // no effects are applied if the leading effect is invalid
   {
@@ -200,6 +227,7 @@ const sadPathTestCases = [
       pattern: [],
     },
     message: "blah:wave:hello world",
+    options: {},
   },
   // first effect is still applied if second effect is invalid
   {
@@ -210,6 +238,7 @@ const sadPathTestCases = [
       pattern: [],
     },
     message: "wave:blah:hello world",
+    options: {},
   },
   // first effect is used when using two effects of the same type
   {
@@ -220,6 +249,7 @@ const sadPathTestCases = [
       pattern: [],
     },
     message: "glow3:glow1:hello world",
+    options: {},
   },
   // only first two effects are parsed
   {
@@ -230,6 +260,7 @@ const sadPathTestCases = [
       pattern: [],
     },
     message: "glow3:glow1:wave:hello world",
+    options: {},
   },
   {
     expected: {
@@ -239,6 +270,7 @@ const sadPathTestCases = [
       pattern: [],
     },
     message: "glow3:wave:glow1:hello world",
+    options: {},
   },
   // color must come before motion
   {
@@ -249,6 +281,7 @@ const sadPathTestCases = [
       pattern: [],
     },
     message: "wave:glow3:hello world",
+    options: {},
   },
   // there cannot be spaces in between effects
   {
@@ -259,6 +292,7 @@ const sadPathTestCases = [
       pattern: [],
     },
     message: "glow3: wave:hello world",
+    options: {},
   },
   // no effects are applied if there are leading spaces
   {
@@ -269,6 +303,7 @@ const sadPathTestCases = [
       pattern: [],
     },
     message: "   glow3:wave:hello world",
+    options: {},
   },
 ];
 
@@ -281,6 +316,7 @@ const patternTestCases = [
       pattern: ["a", "b", "c"],
     },
     message: "patternabc:hello world",
+    options: {},
   },
   {
     expected: {
@@ -290,6 +326,7 @@ const patternTestCases = [
       pattern: ["1", "2", "3"],
     },
     message: "pattern123:wave:hello world",
+    options: {},
   },
   // no pattern characters given
   {
@@ -300,6 +337,7 @@ const patternTestCases = [
       pattern: [],
     },
     message: "pattern:hello world",
+    options: {},
   },
   // invalid pattern characters
   {
@@ -310,6 +348,7 @@ const patternTestCases = [
       pattern: [],
     },
     message: "pattern!@#:hello world",
+    options: {},
   },
   // too many pattern characters given
   {
@@ -320,20 +359,16 @@ const patternTestCases = [
       pattern: [],
     },
     message: "pattern123456789:hello world",
+    options: {},
   },
 ];
 
 describe("Parser", () => {
-  let parser: Parser;
-
-  beforeAll(() => {
-    const config = getConfig();
-    const wordWrapConfig = getWordWrapConfig();
-    parser = new Parser(config, wordWrapConfig);
-  });
-
   describe("Error", () => {
     test.each(errorTestCases)(`.parse("$message")`, ({ expected, message }) => {
+      const config = getConfig();
+      const wordWrapConfig = getWordWrapConfig();
+      const parser = new Parser(config, wordWrapConfig);
       expect(() => parser.parse(message)).toThrow(new Error(expected));
     });
   });
@@ -347,9 +382,15 @@ describe("Parser", () => {
     { description: "Pattern", testCases: patternTestCases },
   ].forEach(({ description, testCases }) => {
     describe(description, () => {
-      test.each(testCases)(`.parse("$message")`, ({ expected, message }) => {
-        expect(parser.parse(message)).toStrictEqual(expected);
-      });
+      test.each(testCases)(
+        `.parse("$message")`,
+        ({ expected, message, options }) => {
+          const config = getConfig(options);
+          const wordWrapConfig = getWordWrapConfig();
+          const parser = new Parser(config, wordWrapConfig);
+          expect(parser.parse(message)).toStrictEqual(expected);
+        }
+      );
     });
   });
 });
