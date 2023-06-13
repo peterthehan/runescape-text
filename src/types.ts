@@ -37,9 +37,13 @@ type Options = EffectsOptions & {
   hasShadow?: boolean;
   maxMessageLength?: number;
   maxPatternLength?: number;
+  paddingBottom?: number;
+  paddingLeft?: number;
+  paddingRight?: number;
+  paddingTop?: number;
   replacement?: string;
   scale?: number;
-  shadowColor?: string;
+  shadowColor?: RGB;
   suffix?: string;
   version?: Version;
 };
@@ -169,7 +173,7 @@ type RenderInput = {
   lineCharacterIndex?: number;
 };
 
-type RGB = [number, number, number];
+type RGB = [IntRange<0, 255>, IntRange<0, 255>, IntRange<0, 255>];
 
 type Coordinates = { x: number; y: number };
 

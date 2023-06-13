@@ -15,6 +15,7 @@ import {
   FLASH_2_RS3,
   FLASH_3_OSRS,
   FLASH_3_RS3,
+  getRGBAString,
   GLOW_1_OSRS,
   GLOW_1_RS3,
   GLOW_2_OSRS,
@@ -58,7 +59,7 @@ export default class ColorEffect {
   }
 
   calculate(input: ColorFunctionInput) {
-    return `rgba(${this._colorFunction(input)}, 1)`;
+    return getRGBAString(this._colorFunction(input));
   }
 
   private getColorFunction(

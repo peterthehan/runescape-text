@@ -2,6 +2,7 @@ import { CanvasRenderingContext2D, createCanvas, registerFont } from "canvas";
 import { resolve } from "path";
 
 import { Config, ContextFillInput } from "../types";
+import { getRGBAString } from "../utils/EffectsUtil";
 
 const path = resolve(__dirname, "../assets/runescape_uf.ttf");
 registerFont(path, { family: "RuneScape" });
@@ -26,7 +27,7 @@ export default class Context {
 
   initialize() {
     if (this._config.hasShadow) {
-      this._context.shadowColor = this._config.shadowColor;
+      this._context.shadowColor = getRGBAString(this._config.shadowColor);
       this._context.shadowOffsetX = this._config.scale;
       this._context.shadowOffsetY = this._config.scale;
     }

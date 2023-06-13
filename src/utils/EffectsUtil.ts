@@ -46,6 +46,10 @@ function requiresProcessingPerCharacter(
   );
 }
 
+function getRGBAString(rgb: RGB) {
+  return `rgba(${[...rgb, 1].join(",")})`;
+}
+
 const YELLOW: RGB = [255, 255, 0];
 const RED: RGB = [255, 0, 0];
 const GREEN: RGB = [0, 255, 0];
@@ -173,6 +177,7 @@ export {
   FLASH_2_RS3,
   FLASH_3_OSRS,
   FLASH_3_RS3,
+  getRGBAString,
   GLOW_1_OSRS,
   GLOW_1_RS3,
   GLOW_2_OSRS,
