@@ -62,6 +62,8 @@ Convert text to a text image with [RuneScape](https://www.runescape.com/) chat e
 npm i runescape-text
 ```
 
+> If you're on Windows and installation fails due to issues with `canvas`, follow the instructions at https://github.com/Automattic/node-canvas/wiki/Installation:-Windows to install the necessary dependencies. You can find installation instructions for other operating systems in the same wiki.
+
 ## Examples
 
 ```
@@ -82,7 +84,9 @@ writeFileSync(`./runescape-text.${extension}`, Buffer.from(data));
 
 ## References
 
-- wikiHow guide on [How to Write Text Effects on Runescape](https://www.wikihow.com/Write-Text-Effects-on-Runescape).
+- Chat effect guides:
+  - https://oldschool.runescape.wiki/w/Chat_Interface#Chat_effects
+  - https://www.wikihow.com/Write-Text-Effects-on-Runescape
 - Color chart reference for the `pattern` color effect:
 
   <div>
