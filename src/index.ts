@@ -1,3 +1,5 @@
+import Canvas from "canvas";
+import { resolve } from "path";
 import wrap from "word-wrap";
 
 import ColorEffect from "./classes/ColorEffect";
@@ -8,6 +10,11 @@ import Parser from "./classes/Parser";
 import Renderer from "./classes/Renderer";
 import { Options, RuneScapeTextResponse } from "./types";
 import { getConfig, getWordWrapConfig } from "./utils/ConfigUtil";
+
+if (Canvas.registerFont) {
+  const path = resolve(__dirname, "./assets/runescape_uf.ttf");
+  Canvas.registerFont(path, { family: "RuneScape" });
+}
 
 export default function getRuneScapeText(
   string: string,

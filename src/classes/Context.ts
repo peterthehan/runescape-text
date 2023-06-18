@@ -1,11 +1,7 @@
-import { CanvasRenderingContext2D, createCanvas, registerFont } from "canvas";
-import { resolve } from "path";
+import { CanvasRenderingContext2D, createCanvas } from "canvas";
 
 import { Config, ContextFillInput } from "../types";
 import { getRGBAString } from "../utils/EffectsUtil";
-
-const path = resolve(__dirname, "../assets/runescape_uf.ttf");
-registerFont(path, { family: "RuneScape" });
 
 const FONT_BASE_SIZE = 16;
 const FONT_NAME = "RuneScape";
