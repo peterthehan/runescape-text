@@ -1,7 +1,5 @@
 # RuneScape Text
 
-[![Discord](https://discord.com/api/guilds/258167954913361930/embed.png)](https://discord.gg/WjEFnzC) [![Twitter Follow](https://img.shields.io/twitter/follow/peterthehan.svg?style=social)](https://twitter.com/peterthehan)
-
 Convert text to a text image with [RuneScape](https://www.runescape.com/) chat effects.
 
 <div>
