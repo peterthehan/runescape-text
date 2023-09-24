@@ -20,6 +20,16 @@ const errorTestCases = [
       "The effects cannot be applied to a message string that consists of only whitespaces.",
     message: "glow3:   ",
   },
+  {
+    expected:
+      "The effects cannot be applied to a message string that is empty.",
+    message: "ΣΣ",
+  },
+  {
+    expected:
+      "The effects cannot be applied to a message string that consists of only whitespaces.",
+    message: "Σ Σ",
+  },
 ];
 
 const baseTestCases = [
