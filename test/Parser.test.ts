@@ -130,6 +130,49 @@ const capitalizationTestCases = [
   },
 ];
 
+const effectOrderTestCases = [
+  {
+    expected: {
+      color: "glow3",
+      message: "Hello world",
+      motion: "wave",
+      pattern: [],
+    },
+    message: "wave:glow3:hello world",
+    options: { enforceEffectOrder: false },
+  },
+  {
+    expected: {
+      color: "glow3",
+      message: "Hello world",
+      motion: "wave",
+      pattern: [],
+    },
+    message: "glow3:wave:hello world",
+    options: { enforceEffectOrder: false },
+  },
+  {
+    expected: {
+      color: "glow3",
+      message: "Hello world",
+      motion: "none",
+      pattern: [],
+    },
+    message: "glow3:hello world",
+    options: { enforceEffectOrder: false },
+  },
+  {
+    expected: {
+      color: "yellow",
+      message: "Hello world",
+      motion: "wave",
+      pattern: [],
+    },
+    message: "wave:hello world",
+    options: { enforceEffectOrder: false },
+  },
+];
+
 const whitespaceTestCases = [
   {
     expected: {
@@ -386,6 +429,7 @@ describe("Parser", () => {
   [
     { description: "Base", testCases: baseTestCases },
     { description: "Capitalization", testCases: capitalizationTestCases },
+    { description: "Effect Order", testCases: effectOrderTestCases },
     { description: "Whitespace", testCases: whitespaceTestCases },
     { description: "Happy Path", testCases: happyPathTestCases },
     { description: "Sad Path", testCases: sadPathTestCases },
