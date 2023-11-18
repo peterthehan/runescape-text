@@ -45,10 +45,11 @@ export default class Parser {
       `(${patternString}|${COLORS.join("|")})` + escapedSuffix;
     const motionString = `(${MOTIONS.join("|")})` + escapedSuffix;
 
-    const effectsRegExp = RegExp(
-      `^(${colorString}(${motionString})?|${motionString})`,
-      "i",
-    );
+    const effectsRegExpString = this._config.enforceEffectOrder
+      ? `^(${colorString}(${motionString})?|${motionString})`
+      : `^(${colorString}(${motionString})?|${motionString}(${colorString})?)`;
+
+    const effectsRegExp = RegExp(effectsRegExpString, "i");
 
     return (string.match(effectsRegExp) ?? [""])[0];
   }

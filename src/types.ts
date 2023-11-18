@@ -32,6 +32,7 @@ type Options = EffectsOptions & {
   debug?: boolean;
   duration?: number;
   enforceCapitalization?: boolean;
+  enforceEffectOrder?: boolean;
   format?: Format;
   fps?: IntRange<1, 50>;
   hasShadow?: boolean;

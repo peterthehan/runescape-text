@@ -5,6 +5,7 @@ export const defaultOptions: Required<Options> = {
   debug: false,
   duration: 3000,
   enforceCapitalization: true,
+  enforceEffectOrder: true,
   format: "rgba4444",
   fps: 20,
   hasShadow: true,
