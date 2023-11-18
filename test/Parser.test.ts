@@ -399,7 +399,7 @@ describe("Parser", () => {
           const wordWrapConfig = getWordWrapConfig();
           const parser = new Parser(config, wordWrapConfig);
           expect(parser.parse(message)).toStrictEqual(expected);
-        }
+        },
       );
     });
   });

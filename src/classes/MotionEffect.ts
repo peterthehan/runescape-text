@@ -57,7 +57,7 @@ export default class MotionEffect {
 
   private renderNone({ fragment, lineCharacterIndex }: MotionFunctionInput) {
     const { width: x } = this._measureContext.measureText(
-      fragment.slice(0, lineCharacterIndex)
+      fragment.slice(0, lineCharacterIndex),
     );
     const { ascent: y } = this._measureContext.measureText(fragment);
 
@@ -72,11 +72,11 @@ export default class MotionEffect {
     const { ascent: y, width: lineWidth } =
       this._measureContext.measureText(fragment);
     const { width } = this._measureContext.measureText(
-      fragment.slice(0, lineCharacterIndex)
+      fragment.slice(0, lineCharacterIndex),
     );
 
     const displacement = Math.round(
-      (1 - (2 * frame) / this._config.totalFrames) * lineWidth
+      (1 - (2 * frame) / this._config.totalFrames) * lineWidth,
     );
     const x = width + displacement;
 
@@ -85,10 +85,10 @@ export default class MotionEffect {
 
   private renderSlide(
     { fragment, frame, lineCharacterIndex }: MotionFunctionInput,
-    { getY }: SlideInput
+    { getY }: SlideInput,
   ) {
     const { width: x } = this._measureContext.measureText(
-      fragment.slice(0, lineCharacterIndex)
+      fragment.slice(0, lineCharacterIndex),
     );
     const { ascent, height } = this._measureContext.measureText(fragment);
 
@@ -100,18 +100,18 @@ export default class MotionEffect {
 
   private renderWave(
     { fragment, frame, lineCharacterIndex }: MotionFunctionInput,
-    { amplitudeFactor, frameFactor, getWave, getX }: WaveInput
+    { amplitudeFactor, frameFactor, getWave, getX }: WaveInput,
   ) {
     const { ascent, height } = this._measureContext.measureText(fragment);
     const { width } = this._measureContext.measureText(
-      fragment.slice(0, lineCharacterIndex)
+      fragment.slice(0, lineCharacterIndex),
     );
 
     const amplitude = height * amplitudeFactor;
     const wave = Math.sin(
       Math.PI *
         (lineCharacterIndex / 6 +
-          8 * frameFactor * (frame / this._config.totalFrames))
+          8 * frameFactor * (frame / this._config.totalFrames)),
     );
     const displacement = amplitude * getWave({ frame, wave });
 

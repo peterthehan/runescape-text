@@ -26,13 +26,13 @@ export default class Encoder {
   private encodeGif(
     contexts: CanvasRenderingContext2D[],
     width: number,
-    height: number
+    height: number,
   ) {
     const gif = GIFEncoder();
 
     contexts.forEach((context) => {
       const data = new Uint8Array(
-        context.getImageData(0, 0, width, height).data
+        context.getImageData(0, 0, width, height).data,
       );
       const palette = quantize(data, MAX_COLORS, {
         format: this._config.format,

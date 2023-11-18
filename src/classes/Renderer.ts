@@ -31,17 +31,17 @@ export default class Renderer {
 
     const framesCount = isAnimated(
       this._colorEffect.color,
-      this._motionEffect.motion
+      this._motionEffect.motion,
     )
       ? this._config.totalFrames
       : 1;
     const processPerLine = requiresProcessingPerLine(
       this._colorEffect.color,
-      this._motionEffect.motion
+      this._motionEffect.motion,
     );
     const processPerCharacter = requiresProcessingPerCharacter(
       this._colorEffect.color,
-      this._motionEffect.motion
+      this._motionEffect.motion,
     );
 
     for (const frame of range(framesCount)) {
@@ -156,7 +156,7 @@ export default class Renderer {
 
     const maxWidth = Math.max(
       messageContext.context.canvas.width,
-      lineContext.context.canvas.width
+      lineContext.context.canvas.width,
     );
     const totalHeight =
       messageContext.context.canvas.height + lineContext.context.canvas.height;
@@ -166,7 +166,7 @@ export default class Renderer {
     newContext.context.drawImage(
       lineContext.context.canvas,
       0,
-      messageContext.context.canvas.height
+      messageContext.context.canvas.height,
     );
 
     return newContext;
@@ -186,7 +186,7 @@ export default class Renderer {
     newContext.context.drawImage(
       context.canvas,
       this._config.paddingLeft,
-      this._config.paddingTop
+      this._config.paddingTop,
     );
 
     return newContext.context;

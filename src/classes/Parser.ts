@@ -47,7 +47,7 @@ export default class Parser {
 
     const effectsRegExp = RegExp(
       `^(${colorString}(${motionString})?|${motionString})`,
-      "i"
+      "i",
     );
 
     return (string.match(effectsRegExp) ?? [""])[0];
@@ -58,13 +58,13 @@ export default class Parser {
 
     if (string === "") {
       throw new Error(
-        "The effects cannot be applied to a message string that is empty."
+        "The effects cannot be applied to a message string that is empty.",
       );
     }
 
     if (string.trim() === "") {
       throw new Error(
-        "The effects cannot be applied to a message string that consists of only whitespaces."
+        "The effects cannot be applied to a message string that consists of only whitespaces.",
       );
     }
 
@@ -72,7 +72,7 @@ export default class Parser {
       this._config.enforceCapitalization
         ? this.applyCapitalization(string)
         : string,
-      this._wordWrapConfig
+      this._wordWrapConfig,
     );
   }
 
@@ -96,7 +96,7 @@ export default class Parser {
           color: this._config.color,
           motion: this._config.motion,
           pattern: this._config.pattern,
-        }
+        },
       );
   }
 
@@ -114,7 +114,7 @@ export default class Parser {
           word.slice(1).toLowerCase();
 
         capitalizeNextWord = [".", "!", "?"].some((punctuation) =>
-          word.endsWith(punctuation)
+          word.endsWith(punctuation),
         );
 
         return returnWord;

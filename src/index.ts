@@ -19,7 +19,7 @@ if (Canvas.registerFont) {
 export default function getRuneScapeText(
   string: string,
   options?: Options,
-  wordWrapOptions?: wrap.IOptions
+  wordWrapOptions?: wrap.IOptions,
 ): RuneScapeTextResponse {
   const config = getConfig(options);
   const wordWrapConfig = getWordWrapConfig(wordWrapOptions);
@@ -36,7 +36,7 @@ export default function getRuneScapeText(
       const encoder = new Encoder(config);
 
       return { colorEffect, encoder, motionEffect, parser, renderer };
-    }
+    },
   );
 
   const { color, message, motion, pattern } = logger.time("Parsing", () => {

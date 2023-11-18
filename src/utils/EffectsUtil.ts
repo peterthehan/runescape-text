@@ -38,7 +38,7 @@ function requiresProcessingPerLine(color: Color | Pattern, motion: Motion) {
 
 function requiresProcessingPerCharacter(
   color: Color | Pattern,
-  motion: Motion
+  motion: Motion,
 ) {
   return (
     ["pattern", "rainbow"].includes(color) ||

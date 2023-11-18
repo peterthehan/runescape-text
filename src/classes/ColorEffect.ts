@@ -52,7 +52,7 @@ export default class ColorEffect {
   setColor(
     color: Color | Pattern,
     pattern: [] | NonEmptyArray<PatternCharacter>,
-    message: string
+    message: string,
   ) {
     this._color = color;
     this._colorFunction = this.getColorFunction(pattern, message);
@@ -64,7 +64,7 @@ export default class ColorEffect {
 
   private getColorFunction(
     pattern: [] | NonEmptyArray<PatternCharacter>,
-    message: string
+    message: string,
   ) {
     switch (this.color) {
       case "cyan":
@@ -133,7 +133,7 @@ export default class ColorEffect {
       currentColor,
       nextColor,
       frame,
-      inbetweenFrames
+      inbetweenFrames,
     );
   }
 
@@ -143,12 +143,14 @@ export default class ColorEffect {
 
   private createPatternColors(
     pattern: [] | NonEmptyArray<PatternCharacter>,
-    message: string
+    message: string,
   ) {
     const buckets = this.createPatternBuckets(pattern.length, message.length);
 
     return pattern.flatMap((character, index) =>
-      Array<RGB>(buckets[index]).fill(PATTERN_CHARACTER_TO_COLOR_MAP[character])
+      Array<RGB>(buckets[index]).fill(
+        PATTERN_CHARACTER_TO_COLOR_MAP[character],
+      ),
     );
   }
 
@@ -170,7 +172,7 @@ export default class ColorEffect {
 
     const buckets = this.createPatternBuckets(
       RAINBOW_7.length - 1,
-      message.length - 1
+      message.length - 1,
     );
 
     buckets.push(1);
@@ -198,7 +200,7 @@ export default class ColorEffect {
             currentColor,
             nextColor,
             bucketIndex,
-            bucket.length
+            bucket.length,
           );
         });
       });
@@ -208,13 +210,13 @@ export default class ColorEffect {
     currentColor: RGB,
     nextColor: RGB,
     step: number,
-    inbetweenLength: number
+    inbetweenLength: number,
   ) {
     const incrementFactor = (step % inbetweenLength) / inbetweenLength;
 
     return currentColor.map(
       (color, index) =>
-        color + Math.round((nextColor[index] - color) * incrementFactor)
+        color + Math.round((nextColor[index] - color) * incrementFactor),
     ) as RGB;
   }
 

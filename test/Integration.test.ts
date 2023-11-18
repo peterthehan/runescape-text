@@ -49,6 +49,6 @@ describe("Integration", () => {
       const { data } = getRuneScapeText(message, options, wordWrapOptions);
       const fileData = new Uint8Array(readFileSync(fileName));
       expect(data).toStrictEqual(fileData);
-    }
+    },
   );
 });
