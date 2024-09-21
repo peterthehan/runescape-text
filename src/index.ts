@@ -1,5 +1,6 @@
+import { resolve } from "node:path";
+
 import Canvas from "canvas";
-import { resolve } from "path";
 import wrap from "word-wrap";
 
 import ColorEffect from "./classes/ColorEffect";
