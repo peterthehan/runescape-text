@@ -1,6 +1,6 @@
 {
   "name": "runescape-text",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Convert text to a text image with RuneScape chat effects.",
   "keywords": [
     "cli",
@@ -71,25 +71,24 @@
   },
   "dependencies": {
     "canvas": "2.11.1",
-    "gifenc": "github:mattdesl/gifenc",
-    "word-wrap": "^1.2.3"
+    "gifenc": "github:mattdesl/gifenc#64842fca317b112a8590f8fef2bf3825da8f6fe3",
+    "word-wrap": "^1.2.5"
   },
   "devDependencies": {
-    "@tsconfig/recommended": "^1.0.3",
-    "@types/jest": "^29.5.8",
-    "@typescript-eslint/eslint-plugin": "^6.11.0",
-    "@typescript-eslint/parser": "^6.11.0",
-    "eslint": "^8.54.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-prettier": "^5.0.1",
-    "eslint-plugin-simple-import-sort": "^10.0.0",
-    "eslint-plugin-sort-destructure-keys": "^1.5.0",
+    "@tsconfig/recommended": "^1.0.7",
+    "@types/jest": "^29.5.13",
+    "@typescript-eslint/eslint-plugin": "^8.6.0",
+    "@typescript-eslint/parser": "^8.6.0",
+    "eslint": "^9.11.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-sort-destructure-keys": "^2.0.0",
     "eslint-plugin-sort-keys-fix": "^1.1.2",
-    "eslint-plugin-typescript-sort-keys": "^3.1.0",
     "jest": "^29.7.0",
-    "prettier": "^3.1.0",
-    "ts-jest": "^29.1.1",
-    "typescript": "^5.2.2"
+    "prettier": "^3.3.3",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.6.2"
   },
   "engines": {
     "node": ">=18"
