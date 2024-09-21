@@ -70,8 +70,8 @@
     "test": "npx jest --coverage --coverageDirectory='coverage'"
   },
   "dependencies": {
-    "canvas": "2.11.2",
-    "gifenc": "github:mattdesl/gifenc",
+    "canvas": "2.11.1",
+    "gifenc": "github:mattdesl/gifenc#64842fca317b112a8590f8fef2bf3825da8f6fe3",
     "word-wrap": "^1.2.5"
   },
   "devDependencies": {
